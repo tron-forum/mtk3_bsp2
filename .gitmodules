@@ -1,0 +1,3 @@
+[submodule "mtkernel"]
+	path = mtkernel
+	url = https://github.com/tron-forum/mtkernel_3.git
