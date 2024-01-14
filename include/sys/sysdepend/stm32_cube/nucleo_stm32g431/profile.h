@@ -21,7 +21,7 @@
 #define _MTKBSP_SYS_DEPEND_PROFILE_H_
 
 /*
- **** CPU Core depeneded profile (ARMv7M)
+ **** CPU Core depended profile (ARMv7M)
  */
 #include <sys/sysdepend/stm32_cube/cpu/core/armv7m/profile.h>
 

@@ -34,7 +34,7 @@
 
 # 1. はじめに
 本書はμT-Kernel 3.0 BSP2の使用法について説明します。  
-μT-Kenrel 3.0 BSP2は、マイコン・メーカなどから提供されるマイコンの開発環境、ツールを使用し、また同様に提供されるファームウェアなどを活用してリアルタイムOS μT-Kernel 3.0を使用するためのBSP(Board Suport Package)です。  
+μT-Kenrel 3.0 BSP2は、マイコン・メーカなどから提供されるマイコンの開発環境、ツールを使用し、また同様に提供されるファームウェアなどを活用してリアルタイムOS μT-Kernel 3.0を使用するためのBSP(Board Support Package)です。  
 
 本書ではSTマイクロエレクトロニクス株式会社のマイコンSTM32を搭載したマイコンボードのμT-Kernel 3.0 BSP2について説明します。
 
@@ -340,7 +340,7 @@ e2studioでプログラムのプロジェクトを作成し、μT-Kenrel 3.0 BSP
 (2) 対象のマイコンボードを選択します。  
 (3) 以下の設定のプロジェクトを作成します。  
 - Target Language : C
-- Target Binay Type : Excutable
+- Target Binary Type : Executable
 - Target Project Type : STM32Cube
 
 マイコンのピン設定、コンフィギュレーションの基本的な設定はできていますで、開発するアプリケーションに応じて必要な設定を行ってください。
@@ -363,7 +363,7 @@ gitのコマンドを使用する場合は、プロジェクトのディレク�
 
 ### 3.2.2 ビルド設定の追加
 プロジェクトのプロパティに、μT-Kernel 3.0 BSP2のスースコードをビルドするための設定を追加します。  
-[C/C++ Builed]→[Settings]→[Tool Setteings]で以下を設定します。
+[C/C++ Builed]→[Settings]→[Tool Settings]で以下を設定します。
 
 (1) [MCU GCC Compiler]→[Preprocessor]  
 [Define symbles]に対象マイコンボードのターゲット名を設定します。

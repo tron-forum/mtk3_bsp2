@@ -13,7 +13,7 @@
 
 /*
  *	knldef.h
- *	micro T-Kernel system definition form Configulation
+ *	micro T-Kernel system definition form Configuration
  */
 
 #ifndef _MTKBSP_SYS_KNLDEF_H_

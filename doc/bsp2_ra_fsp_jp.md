@@ -35,7 +35,7 @@
 
 # 1. 概要
 本書はμT-Kernel 3.0 BSP2の使用法について説明します。  
-μT-Kenrel 3.0 BSP2は、マイコン・メーカなどから提供されるマイコンの開発環境、ツールを使用し、また同様に提供されるファームウェアなどを活用してリアルタイムOS μT-Kernel 3.0を使用するためのBSP(Board Suport Package)です。  
+μT-Kenrel 3.0 BSP2は、マイコン・メーカなどから提供されるマイコンの開発環境、ツールを使用し、また同様に提供されるファームウェアなどを活用してリアルタイムOS μT-Kernel 3.0を使用するためのBSP(Board Support Package)です。  
 
 本書ではルネサス エレクトロニクス株式会社のマイコンRAを搭載したマイコンボードのμT-Kernel 3.0 BSP2について説明します。
 
@@ -96,7 +96,7 @@ RAマイコンのCPUスタックポインタモニタの機能を使用し、タ
 /*
  *  Stack pointer monitoring function
  */
- #define USE_SPMON		(1)		// 1:Vaild   0:invalid
+ #define USE_SPMON		(1)		// 1:Valid   0:invalid
 ```
 
 ## 2.2 デバッグ用シリアル出力
