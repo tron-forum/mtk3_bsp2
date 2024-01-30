@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -43,8 +43,8 @@
 /* Device usage settings
  *	1: Use   0: Do not use
  */
-#define DEVCNF_USE_HAL_IIC		0	// I2C communication device (Use IIC )
-#define DEVCNF_USE_HAL_SCI_IIC		0	// I2C communication device (Use SCI )
-#define DEVCNF_USE_HAL_ADC		0	// A/D conversion device
+#define DEVCNF_USE_HAL_IIC		1	// I2C communication device (Use IIC )
+#define DEVCNF_USE_HAL_SCI_IIC		1	// I2C communication device (Use SCI )
+#define DEVCNF_USE_HAL_ADC		1	// A/D conversion device
 
 #endif	/* _MTKBSP_BSP_CONFIG_DEVENV_H_ */

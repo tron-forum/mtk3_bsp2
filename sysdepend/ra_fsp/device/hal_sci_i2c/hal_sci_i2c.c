@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -21,21 +21,21 @@
 #include <tk/tkernel.h>
 #include <tk/device.h>
 
-#include <sysdepend/stm32_cube/cpu_status.h>
+#include <sysdepend/ra_fsp/cpu_status.h>
 #include <mtkernel/kernel/knlinc/tstdlib.h>
 #include <mtkernel/device/common/drvif/msdrvif.h>
-#include "sci_i2c_cnf.h"
+#include "hal_sci_i2c_cnf.h"
 
 /*
- *	sci_i2c.c
- *	I2C device driver (STM32Cube FW)
+ *	hal_sci_i2c.c
+ *	I2C device driver (RA FSP)
 */
 
 /*---------------------------------------------------------------------*/
 /*I2C Device driver Control block
  */
 typedef struct {
-	sci_i2c_instance_ctrl_t	*hi2c;		// I2C handle
+	i2c_master_ctrl_t	*hi2c;		// I2C handle
 	const i2c_master_cfg_t	*ci2c;		// I2C config
 	ID			devid;		// Device ID
 	UINT			omode;		// Open mode
@@ -44,7 +44,7 @@ typedef struct {
 	ID			evtmbfid;	// MBF ID for event notification
 	UW			dmode;		// Device mode
 	UW			tadr;		// Target Address
-} T_HAL_I2C_DCB;
+} T_HAL_SCI_I2C_DCB;
 
 /* Interrupt detection flag */
 LOCAL ID	id_flgid;
@@ -54,17 +54,17 @@ LOCAL T_CFLG	id_flg	= {
 };
 
 #if TK_SUPPORT_MEMLIB
-LOCAL T_HAL_I2C_DCB	*dev_i2c_cb[DEV_HAL_I2C_UNITNM];
+LOCAL T_HAL_SCI_I2C_DCB	*dev_i2c_cb[DEV_HAL_I2C_UNITNM];
 #define		get_dcb_ptr(unit)	(dev_i2c_cb[unit])
 #else
-LOCAL T_HAL_I2C_DCB	dev_i2c_cb[DEV_HAL_I2C_UNITNM];
+LOCAL T_HAL_SCI_I2C_DCB	dev_i2c_cb[DEV_HAL_I2C_UNITNM];
 #define		get_dcb_ptr(unit)	(&dev_I2C_cb[unit])
 #endif
 
 /*---------------------------------------------------------------------*/
 /* Attribute data control
  */
-LOCAL ER read_atr(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
+LOCAL ER read_atr(T_HAL_SCI_I2C_DCB *p_dcb, T_DEVREQ *req)
 {
 	if((req->start >= TDN_HAL_I2C_MODE) && (req->start <= TDN_HAL_I2C_MAX)) return E_PAR;
 
@@ -86,7 +86,7 @@ LOCAL ER read_atr(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
 	return E_OK;
 }
 
-LOCAL ER write_atr(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
+LOCAL ER write_atr(T_HAL_SCI_I2C_DCB *p_dcb, T_DEVREQ *req)
 {
 	UW	data;
 
@@ -115,11 +115,11 @@ LOCAL ER write_atr(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
 /* HAL Callback functions */
 LOCAL void HAL_I2C_Callback(i2c_master_callback_args_t *p_args)
 {
-	T_HAL_I2C_DCB	*p_dcb;
+	T_HAL_SCI_I2C_DCB	*p_dcb;
 
 	ENTER_TASK_INDEPENDENT
 
-	p_dcb = (T_HAL_I2C_DCB*)p_args->p_context;
+	p_dcb = (T_HAL_SCI_I2C_DCB*)p_args->p_context;
 	tk_set_flg(id_flgid, 1<< p_dcb->unit);
 
 	switch(p_args->event) {
@@ -136,7 +136,7 @@ LOCAL void HAL_I2C_Callback(i2c_master_callback_args_t *p_args)
 }
 
 
-LOCAL ER read_data(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
+LOCAL ER read_data(T_HAL_SCI_I2C_DCB *p_dcb, T_DEVREQ *req)
 {
 	UINT		wflgptn, rflgptn;
 	ER		err;
@@ -165,7 +165,7 @@ LOCAL ER read_data(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
 	return err;
 }
 
-LOCAL ER write_data(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
+LOCAL ER write_data(T_HAL_SCI_I2C_DCB *p_dcb, T_DEVREQ *req)
 {	
 	UINT		wflgptn, rflgptn;
 	ER		err;
@@ -202,9 +202,9 @@ LOCAL ER write_data(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
  */
 LOCAL ER dev_i2c_openfn( ID devid, UINT omode, T_MSDI *msdi)
 {
-	T_HAL_I2C_DCB	*p_dcb;
+	T_HAL_SCI_I2C_DCB	*p_dcb;
 
-	p_dcb = (T_HAL_I2C_DCB*)(msdi->dmsdi.exinf);
+	p_dcb = (T_HAL_SCI_I2C_DCB*)(msdi->dmsdi.exinf);
 	if(p_dcb->hi2c == NULL) return E_IO;
 
 	p_dcb->omode = omode;
@@ -228,10 +228,10 @@ LOCAL ER dev_i2c_closefn( ID devid, UINT option, T_MSDI *msdi)
  */
 LOCAL ER dev_i2c_readfn( T_DEVREQ *req, T_MSDI *p_msdi)
 {
-	T_HAL_I2C_DCB	*p_dcb;
+	T_HAL_SCI_I2C_DCB	*p_dcb;
 	ER		err;
 
-	p_dcb = (T_HAL_I2C_DCB*)(p_msdi->dmsdi.exinf);
+	p_dcb = (T_HAL_SCI_I2C_DCB*)(p_msdi->dmsdi.exinf);
 
 	if(req->start >= 0) {
 		err = read_data( p_dcb, req);	// Device specific data
@@ -246,10 +246,10 @@ LOCAL ER dev_i2c_readfn( T_DEVREQ *req, T_MSDI *p_msdi)
  */
 LOCAL ER dev_i2c_writefn( T_DEVREQ *req, T_MSDI *p_msdi)
 {
-	T_HAL_I2C_DCB	*p_dcb;
+	T_HAL_SCI_I2C_DCB	*p_dcb;
 	ER		rtn;
 
-	p_dcb = (T_HAL_I2C_DCB*)(p_msdi->dmsdi.exinf);
+	p_dcb = (T_HAL_SCI_I2C_DCB*)(p_msdi->dmsdi.exinf);
 
 	if(req->start >= 0) {
 		rtn = write_data( p_dcb, req);	// Device specific data
@@ -270,10 +270,10 @@ LOCAL ER dev_i2c_eventfn( INT evttyp, void *evtinf, T_MSDI *msdi)
 /*----------------------------------------------------------------------
  * Device driver initialization and registration
  */
-EXPORT ER dev_init_hal_i2c( UW unit, sci_i2c_instance_ctrl_t *hi2c,
+EXPORT ER dev_init_hal_sci_i2c( UW unit, i2c_master_ctrl_t *hi2c,
 				const i2c_master_cfg_t *ci2c)
 {
-	T_HAL_I2C_DCB	*p_dcb;
+	T_HAL_SCI_I2C_DCB	*p_dcb;
 	T_IDEV		idev;
 	T_MSDI		*p_msdi;
 	T_DMSDI		dmsdi;
@@ -283,7 +283,7 @@ EXPORT ER dev_init_hal_i2c( UW unit, sci_i2c_instance_ctrl_t *hi2c,
 	if( unit >= DEV_HAL_I2C_UNITNM) return E_PAR;
 
 #if TK_SUPPORT_MEMLIB
-	p_dcb = (T_HAL_I2C_DCB*)Kmalloc(sizeof(T_HAL_I2C_DCB));
+	p_dcb = (T_HAL_SCI_I2C_DCB*)Kmalloc(sizeof(T_HAL_SCI_I2C_DCB));
 	if( p_dcb == NULL) return E_NOMEM;
 	dev_i2c_cb[unit]	= p_dcb;
 #else
@@ -333,10 +333,10 @@ err_1:
  * I2C register access support function
  */
 
-EXPORT ER i2c_read_reg(ID dd, UW sadr, UW radr, UB *data)
+EXPORT ER hal_sci_i2c_read_reg(ID dd, UW sadr, UW radr, UB *data)
 {
 	fsp_err_t		fsp_err;
-	T_HAL_I2C_DCB		*p_dcb;
+	T_HAL_SCI_I2C_DCB		*p_dcb;
 	ID			devid;
 	UINT			unit;
 	UINT			wflgptn, rflgptn;
@@ -369,10 +369,10 @@ EXPORT ER i2c_read_reg(ID dd, UW sadr, UW radr, UB *data)
 	return err;
 }
 
-EXPORT ER i2c_write_reg(ID dd, UW sadr, UW radr, UB data)
+EXPORT ER hal_sci_i2c_write_reg(ID dd, UW sadr, UW radr, UB data)
 {
 	fsp_err_t		fsp_err;
-	T_HAL_I2C_DCB		*p_dcb;
+	T_HAL_SCI_I2C_DCB		*p_dcb;
 	ID			devid;
 	UINT			unit;
 	UINT			wflgptn, rflgptn;

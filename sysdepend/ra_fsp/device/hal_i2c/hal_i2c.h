@@ -2,19 +2,19 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
 
-#ifndef	_DEV_HAL_SCI_I2C_H_
-#define	_DEV_HAL_SCI_I2C_H_
+#ifndef	_DEV_HAL_I2C_H_
+#define	_DEV_HAL_I2C_H_
 /*
- *	sci_i2c.h
+ *	hal_i2c.h
  *	I2C device driver (RA FSP)
 */
 /*----------------------------------------------------------------------
@@ -36,12 +36,12 @@
  * Device driver initialization and registration
  */
 
-IMPORT ER dev_init_hal_i2c( UW unit, sci_i2c_instance_ctrl_t *hi2c, const i2c_master_cfg_t *ci2c );
+IMPORT ER dev_init_hal_i2c( UW unit, i2c_master_ctrl_t *hi2c, const i2c_master_cfg_t *ci2c );
 
 /*----------------------------------------------------------------------
  * I2C register access support function
  */
-EXPORT ER i2c_read_reg(ID dd, UW sadr, UW radr, UB *data);
-EXPORT ER i2c_write_reg(ID dd, UW sadr, UW radr, UB data);
+EXPORT ER hal_i2c_read_reg(ID dd, UW sadr, UW radr, UB *data);
+EXPORT ER hal_i2c_write_reg(ID dd, UW sadr, UW radr, UB data);
 
-#endif	/* _DEV_HAL_SCI_I2C_H_ */
+#endif	/* _DEV_HAL_I2C_H_ */

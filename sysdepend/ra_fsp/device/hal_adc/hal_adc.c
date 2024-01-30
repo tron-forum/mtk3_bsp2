@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -24,10 +24,10 @@
 #include <sysdepend/ra_fsp/cpu_status.h>
 #include <mtkernel/kernel/knlinc/tstdlib.h>
 #include <mtkernel/device/common/drvif/msdrvif.h>
-#include "adc_cnf.h"
+#include "hal_adc_cnf.h"
 
 /*
- *	adc.c
+ *	hal_adc.c
  *	A/DC device driver (RA FSP)
 */
 
@@ -35,7 +35,7 @@
 /*A/DC Device driver Control block
  */
 typedef struct {
-	adc_instance_ctrl_t	*hadc;		// ADC handle
+	adc_ctrl_t		*hadc;		// ADC handle
 	const adc_cfg_t		*cadc;		// ADC config
 	const adc_channel_cfg_t	*cfadc;		// ADC channel config
 	ID			devid;		// Device ID
@@ -212,7 +212,7 @@ LOCAL ER dev_adc_eventfn( INT evttyp, void *evtinf, T_MSDI *p_msdi)
 /*----------------------------------------------------------------------
  * Device driver initialization and registration
  */
-EXPORT ER dev_init_hal_adc( UW unit, adc_instance_ctrl_t *hadc,
+EXPORT ER dev_init_hal_adc( UW unit, adc_ctrl_t *hadc,
 				const adc_cfg_t *cadc, const adc_channel_cfg_t *cfadc)
 {
 	T_HAL_ADC_DCB	*p_dcb;

@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -21,21 +21,21 @@
 #include <tk/tkernel.h>
 #include <tk/device.h>
 
-#include <sysdepend/stm32_cube/cpu_status.h>
+#include <sysdepend/ra_fsp/cpu_status.h>
 #include <mtkernel/kernel/knlinc/tstdlib.h>
 #include <mtkernel/device/common/drvif/msdrvif.h>
-#include "i2c_cnf.h"
+#include "hal_i2c_cnf.h"
 
 /*
- *	i2c.c
- *	I2C device driver (STM32Cube FW)
+ *	hal_i2c.c
+ *	I2C device driver (RA FSP)
 */
 
 /*---------------------------------------------------------------------*/
 /*I2C Device driver Control block
  */
 typedef struct {
-	iic_master_instance_ctrl_t	*hi2c;		// I2C handle
+	i2c_master_ctrl_t	*hi2c;		// I2C handle
 	const i2c_master_cfg_t		*ci2c;		// I2C config
 	ID				devid;		// Device ID
 	UINT				omode;		// Open mode
@@ -113,7 +113,7 @@ LOCAL ER write_atr(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
  */
 
 /* HAL Callback functions */
-LOCAL void HAL_I2C_Callback(i2c_master_callback_args_t *p_args)
+void HAL_I2C_Callback(i2c_master_callback_args_t *p_args)
 {
 	T_HAL_I2C_DCB	*p_dcb;
 
@@ -140,14 +140,17 @@ LOCAL ER read_data(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
 {
 	UINT		wflgptn, rflgptn;
 	ER		err;
+	fsp_err_t	fsp_err;
 
 	wflgptn = 1 << p_dcb->unit;
 	tk_clr_flg(id_flgid, ~wflgptn);
 
 	switch(p_dcb->dmode) {
 	case HAL_I2C_MODE_CNT:
-		R_IIC_MASTER_SlaveAddressSet( p_dcb->hi2c, req->start, I2C_MASTER_ADDR_MODE_7BIT);
-		R_IIC_MASTER_Read(p_dcb->hi2c, (UB*)req->buf, req->size, false);
+		fsp_err = R_IIC_MASTER_SlaveAddressSet( p_dcb->hi2c, req->start, I2C_MASTER_ADDR_MODE_7BIT);
+		if(fsp_err != FSP_SUCCESS) return E_IO;
+		fsp_err = R_IIC_MASTER_Read(p_dcb->hi2c, (UB*)req->buf, req->size, false);
+		if(fsp_err != FSP_SUCCESS) return E_IO;
 		break;
 
 	case HAL_I2C_MODE_TAR:
@@ -169,14 +172,17 @@ LOCAL ER write_data(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
 {	
 	UINT		wflgptn, rflgptn;
 	ER		err;
+	fsp_err_t	fsp_err;
 
 	wflgptn = 1 << p_dcb->unit;
 	tk_clr_flg(id_flgid, ~wflgptn);
 
 	switch(p_dcb->dmode) {
 	case HAL_I2C_MODE_CNT:
-		R_IIC_MASTER_SlaveAddressSet( p_dcb->hi2c, req->start, I2C_MASTER_ADDR_MODE_7BIT);
-		R_IIC_MASTER_Write(p_dcb->hi2c, (UB*)req->buf, req->size, false);
+		fsp_err = R_IIC_MASTER_SlaveAddressSet( p_dcb->hi2c, req->start, I2C_MASTER_ADDR_MODE_7BIT);
+		if(fsp_err != FSP_SUCCESS) return E_IO;
+		fsp_err = R_IIC_MASTER_Write(p_dcb->hi2c, (UB*)req->buf, req->size, false);
+		if(fsp_err != FSP_SUCCESS) return E_IO;
 		break;
 
 	case HAL_I2C_MODE_TAR:
@@ -203,14 +209,18 @@ LOCAL ER write_data(T_HAL_I2C_DCB *p_dcb, T_DEVREQ *req)
 LOCAL ER dev_i2c_openfn( ID devid, UINT omode, T_MSDI *msdi)
 {
 	T_HAL_I2C_DCB	*p_dcb;
+	fsp_err_t	fsp_err;
 
 	p_dcb = (T_HAL_I2C_DCB*)(msdi->dmsdi.exinf);
 	if(p_dcb->hi2c == NULL) return E_IO;
 
 	p_dcb->omode = omode;
 
-	R_IIC_MASTER_Open(p_dcb->hi2c, p_dcb->ci2c);
-	R_IIC_MASTER_CallbackSet(p_dcb->hi2c, HAL_I2C_Callback, p_dcb, NULL);
+	fsp_err = R_IIC_MASTER_Open(p_dcb->hi2c, p_dcb->ci2c);
+	if(fsp_err != FSP_SUCCESS) return E_IO;
+
+	fsp_err = R_IIC_MASTER_CallbackSet(p_dcb->hi2c, HAL_I2C_Callback, p_dcb, NULL);
+	if(fsp_err != FSP_SUCCESS) return E_IO;
 
 	return E_OK;
 }
@@ -270,7 +280,7 @@ LOCAL ER dev_i2c_eventfn( INT evttyp, void *evtinf, T_MSDI *msdi)
 /*----------------------------------------------------------------------
  * Device driver initialization and registration
  */
-EXPORT ER dev_init_hal_i2c( UW unit, iic_master_instance_ctrl_t *hi2c,
+EXPORT ER dev_init_hal_i2c( UW unit, i2c_master_ctrl_t *hi2c,
 				const i2c_master_cfg_t *ci2c)
 {
 	T_HAL_I2C_DCB	*p_dcb;
@@ -333,7 +343,7 @@ err_1:
  * I2C register access support function
  */
 
-EXPORT ER i2c_read_reg(ID dd, UW sadr, UW radr, UB *data)
+EXPORT ER hal_i2c_read_reg(ID dd, UW sadr, UW radr, UB *data)
 {
 	fsp_err_t		fsp_err;
 	T_HAL_I2C_DCB		*p_dcb;
@@ -369,7 +379,7 @@ EXPORT ER i2c_read_reg(ID dd, UW sadr, UW radr, UB *data)
 	return err;
 }
 
-EXPORT ER i2c_write_reg(ID dd, UW sadr, UW radr, UB data)
+EXPORT ER hal_i2c_write_reg(ID dd, UW sadr, UW radr, UB data)
 {
 	fsp_err_t		fsp_err;
 	T_HAL_I2C_DCB		*p_dcb;

@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -14,7 +14,7 @@
 #ifndef	_DEV_HAL_ADC_H_
 #define	_DEV_HAL_ADC_H_
 /*
- *	adc.h
+ *	hal_adc.h
  *	A/DC device driver (RA FSP)
 */
 
@@ -32,7 +32,7 @@
  * Device driver initialization and registration
  */
 
-IMPORT ER dev_init_hal_adc( UW unit, adc_instance_ctrl_t *hadc,
+IMPORT ER dev_init_hal_adc( UW unit, adc_ctrl_t *hadc,
 				const adc_cfg_t *cadc, const adc_channel_cfg_t *cfadc);
 
 #endif	/* _DEV_HAL_ADC_H_ */

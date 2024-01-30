@@ -11,10 +11,10 @@
   - [2.1 スタック監視機能](#21-スタック監視機能)
   - [2.2 デバッグ用シリアル出力](#22-デバッグ用シリアル出力)
   - [2.3 標準ヘッダファイルの使用](#23-標準ヘッダファイルの使用)
-  - [2.4 サンプル・デバイスドライバ(A/DC)](#24-サンプルデバイスドライバadc)
+  - [2.4 A/DCデバイスドライバ(サンプルプログラム)](#24-adcデバイスドライバサンプルプログラム)
     - [2.4.1 概要](#241-概要)
     - [2.4.2 デバイスドライバの使用方法](#242-デバイスドライバの使用方法)
-  - [2.5 サンプル・デバイスドライバ(I2C)](#25-サンプルデバイスドライバi2c)
+  - [2.5 I2Cデバイスドライバ(サンプルプログラム)](#25-i2cデバイスドライバサンプルプログラム)
     - [2.5.1 概要](#251-概要)
     - [2.5.2 デバイスドライバの使用方法](#252-デバイスドライバの使用方法)
 - [3. プログラムの作成手順](#3-プログラムの作成手順)
@@ -32,6 +32,7 @@
     - [3.4.2 デバッグの設定](#342-デバッグの設定)
     - [3.4.3 プログラムの実行](#343-プログラムの実行)
 - [変更履歴](#変更履歴)
+
 
 # 1. 概要
 本書はμT-Kernel 3.0 BSP2の使用法について説明します。  
@@ -133,10 +134,10 @@ C言語の標準ヘッダファイルの使用が可能です。また、μT-Ker
 #define USE_STDINC_STDINT	(1) /* Use <stdint.h> */
 ```
 
-## 2.4 サンプル・デバイスドライバ(A/DC)
+## 2.4 A/DCデバイスドライバ(サンプルプログラム)
 ### 2.4.1 概要
 A/Dコンバータのデバイスドライバです。マイコン内蔵のA/DコンバータADC12を使用します。    
-デバイスドライバは内部の処理でFSPの機能を利用しています。このデバイスドライバはFSPの使用方法を示すサンプルであり、デバイスの基本的な機能のみに対応しています。  
+デバイスドライバは内部の処理でFSPの機能を利用しています。このデバイスドライバはFSPの使用方法を示すサンプルプログラムであり、デバイスの基本的な機能のみに対応しています。  
 以下にデバイスドライバのソースコードがあります。  
 
 ```mtk3_bsp2/sysdepend/ra_fsp/device/adc```  
@@ -148,16 +149,43 @@ A/Dコンバータのデバイスドライバです。マイコン内蔵のA/D�
 /* Device usage settings
  *	1: Use   0: Do not use
  */
-#define DEVCNF_USE_HAL_ADC		0	// A/D conversion device
+#define DEVCNF_USE_HAL_ADC		1	// A/D conversion device
 ```
 
-このデバイスドライバは内部でFSPを呼び出しますので、使用する際にはまず対象デバイスのFAPの設定をおこなってください。FSPとデバイスドライバの紐づけは初期化関数 dev_init_hal_adc()にて行います。詳しくは次項で説明します。
-
+このデバイスドライバは内部でFSPを呼び出しますので、使用する際にはまず対象デバイスのFSPの設定をおこなってください。FSPとデバイスドライバの紐づけは初期化関数 `dev_init_hal_adc()` にて行います。詳しくは次項で説明します。
 
 ### 2.4.2 デバイスドライバの使用方法
+(1) FSPのコンフィギュレーション  
+デバイスドライバから使用するA/Dコンバータについて、e2studioでFSPの設定、コード生成を行います。  
+`Pin Configuration`で使用する端子の`Mode`を`Analog mode`に設定します。  
 
-(1) デバイスドライバの初期化
-デバイスドライバを使用するにあたり、最初に1回のみ dev_init_hal_adc関数で初期化を行います。本関数は以下のように定義されます。    
+(参考) 各ボードのArduino互換インタフェースのアナログ入力(A0～A5)と、A/Dコンバータの入力の対応は以下の通りです。  
+
+|Arduinoアナログ入力|EK-RA6M3|Arduino UNO R4|
+|-|-|-|
+|A0| P000/AN000 | P014/AN009 |
+|A1| P001/AN001 | P000/AN000 |
+|A2| P002/AN002 | P001/AN001 |
+|A3| P507/AN119 | P002/AN002 |
+|A4| P508/AN020 | P101/AN021 |
+|A5| P014/AN005 | P100/AN022 |
+
+続いて`Stacks Configuration`で、`New Stack`` → `Analog`` → `ADC(r_adc)`を選択し、プロパティの`Module g_adc0 ADC(r_adc)`の各項目を以下のように設定します。  
+
+| 分類 | 項目 | 設定 |
+|-|-|-|
+| General |Name|g_adc0 (任意の名称に変更可能)|
+|  |Unit|使用するA/Dコンバータのユニット番号|
+|  | その他 | 初期値のまま |
+| Input |Channel Scan Mask| 使用するチャンネルにチェック |
+|  | その他 | 初期値のまま |
+| Interrupt | Scan End Interrupt Priority | 任意の割込み優先度 |
+|  | その他 | 初期値のまま |
+
+設定後に`Genetate Project Content`を押下するとFSPのコードが生成されます。  
+
+(2) デバイスドライバの初期化  
+デバイスドライバを使用するにあたり、最初に1回のみ dev_init_hal_adc関数で初期化を行います。これにより、デバイスドライバとFSPのA/Dコンバータを紐付けます。本関数は以下のように定義されます。  
 
 ```C
 ER dev_init_hal_adc(
@@ -170,7 +198,7 @@ ER dev_init_hal_adc(
 
 パラメータunitは0から順番に指定します。数字を飛ばすことはできません。  
 パラメータhadc, cadc, cfadcは、FSPを設定すると自動的に生成されるADCの情報です。  
-初期化に成功するとデバイス名`hladc*`のデバイスドライバが生成されます。デバイス名の`*`には`a`から順番に英文字が与えられます。ユニット番号0のデバイス名は`hladca`、ユニット番号1のデバイス名は`hladcb`、となります。
+初期化に成功するとデバイス名`hadc*`のデバイスドライバが生成されます。デバイス名の`*`には`a`から順番に英文字が与えられます。ユニット番号0のデバイス名は`hadca`、ユニット番号1のデバイス名は`hadcb`、となります。  
 
 μT-Kernel 3.0 BSP2の起動処理のknl_start_device関数にてデバイスドライバの初期化を行っています。knl_start_device関数は以下のファイルに記述されています。  
 
@@ -193,14 +221,14 @@ EXPORT ER knl_start_device( void )
 }
 ```
 
-(2) デバイスドライバの操作  
+(3) デバイスドライバの操作  
 μT-Kernel 3.0のデバイス管理APIにより、デバイスドライバを操作できます。APIの詳細はμT-Kernel 3.0仕様書を参照してください。    
 最初にオープンAPI tk_opn_devにて対象とするデバイス名を指定しデバイスをオープンします。  
-オープン後はリード同期リードAPI tk_srea_devによりデータを取得することができます。パラメータのデータ開始位置にA/DCのチャンネルを指定します。  
+オープン後はリード同期リードAPI tk_srea_devによりデータを取得することができます。パラメータのデータ開始位置にA/Dコンバータのチャンネルを指定します。  
 本デバイスドライバでは、一度のアクセスで一つのチャンネルから1データのみを取得できます。  
 
 以下にA/DCデバイスドライバを使用したサンプル・プログラムを示します。  
-このプログラムは500ms間隔でA/DCのチャンネル9とチャンネル0からデータを取得し、その値をデバッグ用シリアル出力に送信するタスクの実行関数です。  
+このプログラムは500ms間隔でA/Dコンバータのチャンネル0とチャンネル1からデータを取得し、その値をデバッグ用シリアル出力に送信するタスクの実行関数です。  
 
 ```C
 LOCAL void task_1(INT stacd, void *exinf)
@@ -209,10 +237,10 @@ LOCAL void task_1(INT stacd, void *exinf)
 	ID	dd;     // デバイスディスクリプタ
 	ER	err;    // エラーコード
 
-	dd = tk_opn_dev((UB*)"hladca", TD_UPDATE);    // デバイスのオープン
+	dd = tk_opn_dev((UB*)"hadca", TD_UPDATE);    // デバイスのオープン
 	while(1) {
-		err = tk_srea_dev(dd, 9, &adc_val1, 1, NULL);   // A/DC チャンネル9からデータを取得
-		err = tk_srea_dev(dd, 0, &adc_val2, 1, NULL);   // A/DC チャンネル0からデータを取得
+		err = tk_srea_dev(dd, 0, &adc_val1, 1, NULL);   // A/DC チャンネル0からデータを取得
+		err = tk_srea_dev(dd, 1, &adc_val2, 1, NULL);   // A/DC チャンネル1からデータを取得
 		tm_printf((UB*)"A/DC A0 =%06d A/DC A1 =%06d\n", adc_val1, adc_val2);    // デバッグ出力
 		tk_dly_tsk(500);       // 500ms待ち
 	}
@@ -220,17 +248,23 @@ LOCAL void task_1(INT stacd, void *exinf)
 ```
 
 
-## 2.5 サンプル・デバイスドライバ(I2C)
+## 2.5 I2Cデバイスドライバ(サンプルプログラム)
 ### 2.5.1 概要
-I2C通信のデバイスドライバです。マイコン内蔵のI2CバスインタフェースIICを使用するデバイスドライバI2Cと、シリアルコミュニケーションインタフェースSCIの簡易IICモードを使用したデバイスドライバSCI_I2Cの二種類があります。ただし、この二つのデバイスドライバは同時に使用することはできません。  
-デバイスドライバは内部の処理でFSPの機能を利用しています。このデバイスドライバはFSPの使用方法を示すサンプルであり、デバイスの基本的な機能のみに対応しています。  
+I2C通信のデバイスドライバです。I2C通信を行うマイコン内蔵ペリフェラルはいくつかの種類があります。本BSPでは以下のペリフェラルに対応したデバイスドライバがあります。  
+
+|ペリフェラル名|BSPのデバイス名|説明|
+|-|-|-|
+|IIC|hiic|IICバスインタフェース
+|SCI|hsiic|シリアルコミュニケーションインタフェースSCIの簡易IICモード
+  
+デバイスドライバは内部の処理でFSPの機能を利用しています。このデバイスドライバはFSPの使用方法を示すサンプルプログラムであり、デバイスの基本的な機能のみに対応しています。  
 以下にデバイスドライバのソースコードがあります。  
 
 - I2C(IICを使用)  
-```mtk3_bsp2/sysdepend/ra_fsp/device/i2c```
+```mtk3_bsp2/sysdepend/ra_fsp/device/hal_i2c```
 
 - SCI_I2C(SCIを使用)  
-```mtk3_bsp2/sysdepend/ra_fsp/device/sci_i2c```
+```mtk3_bsp2/sysdepend/ra_fsp/device/hal_sci_i2c```
 
 このデバイスドライバはBSPコンフィギュレーションファイル (config/config_bsp/ra_fsp/config_bsp.h) の以下を変更しビルドすることにより、使用・不使用を切り替えられます。  
 
@@ -239,40 +273,78 @@ I2C通信のデバイスドライバです。マイコン内蔵のI2Cバスイ�
 /* Device usage settings
  *	1: Use   0: Do not use
  */
-#define DEVCNF_USE_HAL_IIC		0	// I2C communication device (Use IIC )
-#define DEVCNF_USE_HAL_SCI_IIC		0	// I2C communication device (Use SCI )
+#define DEVCNF_USE_HAL_IIC      1	// I2C communication device (Use IIC )
+#define DEVCNF_USE_HAL_SCI_IIC  1	// I2C communication device (Use SCI )
 ```
 
-このデバイスドライバは内部でFSPを呼び出しますので、使用する際にはまず対象デバイスのFSPの設定をおこなってください。HALとデバイスドライバの紐づけは初期化関数 dev_init_hal_i2c()にて行います。詳しくは次項で説明します。
+このデバイスドライバは内部でFSPを呼び出しますので、使用する際にはまず対象デバイスのFSPの設定をおこなってください。HALとデバイスドライバの紐づけは初期化関数にて行います。詳しくは次項で説明します。
 
 
 ### 2.5.2 デバイスドライバの使用方法
+(1) FSPのコンフィギュレーション  
+デバイスドライバから使用するA/Dコンバータについて、e2studioでFSPの設定、コード生成を行います。  
+`Pin Configuration`で使用する端子のModeを`Peripheral mode`に設定します。  
 
-(1) デバイスドライバの初期化
-デバイスドライバを使用するにあたり、最初に1回のみ dev_init_hal_i2c関数で初期化を行います。本関数は以下のように定義されます。  
+(参考) 各ボードのI2C信号と、マイコンのI2C端子の対応は以下の通りです。  
+
+|ボードのアナログ入力|EK-RA6M3|Arduino UNO R4|
+|-|-|-|
+|Grove-1 I2C SDA|P409/SCI3_SDA| - |
+|Grove-1 I2C SCL|P408/SCI3_SCL| - |
+|Grove-2 I2C SDA|P409/SCI3_SDA| - |
+|Grove-2 I2C SCL|P408/SCI3_SCL| - |
+|Arduino I2C SDA| P511/SDA2 | P101/SDA1 |
+|Arduino I2C SCL| P512/SCL2 | P100/SCL1 |
+
+続いて`Stacks Configuration`で、`New Stack` → `Connectivity`から対象のI2Cペリフェラルを選択します。
+
+- I2C(IICを使用) の場合  
+I2C Master(r_iic_master)を選択し、プロパティの`Module g_i2c_master0`の各項目を以下のように設定します。  
+
+| 項目 | 設定 |
+|-|-|
+|Name|g_i2c_master0 (任意の名称に変更可能)|
+|Unit|使用するI2Cのチャンネル番号|
+| Interrupt Priority | 任意の割込み優先度 |
+| その他 | 初期値のまま |
+
+- SCI_I2C(SCIを使用)  
+
+| 項目 | 設定 |
+|-|-|
+|Name|g_i2c0 (任意の名称に変更可能)|
+|Unit|使用するI2Cのチャンネル番号|
+| Interrupt Priority | 任意の割込み優先度 |
+| その他 | 初期値のまま |
+
+
+設定後に`Genetate Project Content`を押下するとFSPのコードが生成されます。  
+
+(2) デバイスドライバの初期化  
+デバイスドライバを使用するにあたり、最初に1回のみ初期化関数で初期化を行います。本関数は以下のように定義されます。  
 
 - I2C(IICを使用) の場合
 ```C
 ER dev_init_hal_i2c(
-        UW unit,         // デバイスのユニット番号(0～DEV_HAL_ADC_UNITNM)
-        iic_master_instance_ctrl_t *hi2c,       // I2C制御構造体
-        const i2c_master_cfg_t *ci2c            // I2Cコンフィギュレーション構造体
+      UW unit,         // デバイスのユニット番号(0～DEV_HAL_ADC_UNITNM)
+      i2c_master_ctrl_t       *hi2c,       // I2C制御構造体
+    const i2c_master_cfg_t    *ci2c        // I2Cコンフィギュレーション構造体
 );
 ```
 
 - SCI_I2C(SCIを使用)  
 ```C
-ER dev_init_hal_i2c(
-        UW unit,         // デバイスのユニット番号(0～DEV_HAL_ADC_UNITNM)
-        sci_i2c_instance_ctrl_t *hi2c,          // SCI_I2C制御構造体
-        const i2c_master_cfg_t *ci2c            // I2Cコンフィギュレーション構造体
+ER dev_init_hal_sci_i2c(
+      UW unit,         // デバイスのユニット番号(0～DEV_HAL_ADC_UNITNM)
+      i2c_master_ctrl_t       *hi2c,        // SCI_I2C制御構造体
+      const i2c_master_cfg_t  *ci2c         // I2Cコンフィギュレーション構造体
 );
 ```
 
 パラメータunitは0から順番に指定します。数字を飛ばすことはできません。  
 パラメータhai2c, ci2cは、FSPを設定すると自動的に生成されるI2Cの情報です。 
-初期化に成功するとデバイス名`hliic*`(IICを使用の場合)または`hlsiic*`(SCIを使用の場合)のデバイスドライバが生成されます。  
-デバイス名の`*`には`a`から順番に英文字が与えられます。ユニット番号0のデバイス名は`hliica`または`hlsiica`、ユニット番号1のデバイス名は`hliicb`または`hlsiicb`となります。
+初期化に成功するとデバイス名`hiic*`(IICを使用の場合)または`hsiic*`(SCIを使用の場合)のデバイスドライバが生成されます。  
+デバイス名の`*`には`a`から順番に英文字が与えられます。ユニット番号0のデバイス名は`hiica`または`hsiica`、ユニット番号1のデバイス名は`hiicb`または`hsiicb`となります。
 
 μT-Kernel 3.0 BSP2の起動処理のknl_start_device関数にてデバイスドライバの初期化を行っています。knl_start_device関数は以下のファイルに記述されています。  
 
@@ -291,25 +363,25 @@ ER knl_start_device( void )
 #endif
 
 #if DEVCNF_USE_HAL_SCI_IIC
-	err = dev_init_hal_i2c(0, &g_i2c0_ctrl, &g_i2c0_cfg);
+	err = dev_init_hal_sci_i2c(0, &g_i2c0_ctrl, &g_i2c0_cfg);
 	if(err < E_OK) return err;
 #endif
         // 以下省略
 }
 ```
 
-(2) デバイスドライバの操作  
+(3) デバイスドライバの操作  
 μT-Kernel 3.0のデバイス管理APIにより、デバイスドライバを操作できます。APIの詳細はμT-Kernel 3.0仕様書を参照してください。    
 本デバイスドライバは、I2Cのコントローラ(マスター)モードにのみ対応します。  
 最初にオープンAPI tk_opn_devにて対象とするデバイス名を指定しデバイスをオープンします。  
 オープン後はリード同期リードAPI tk_srea_devによりデータの受信、リード同期リードAPI tk_swri_devによりデータの送信を行うことができます。パラメータのデータ開始位置に対象のターゲット(スレーブ)アドレスを指定します。  
 
-(3) デバイスのレジスタアクセス  
+(4) デバイスのレジスタアクセス  
 I2Cで接続されたターゲットデバイス内のレジスタをアクセスするための以下の関数が用意されています。これは比較的によく使用されるデバイス内のレジスタアクセス手順に対応しています。ただし、すべてのデバイスに使用できるわけではありませんので注意してください。
 
 ```C
 /* レジスタリード関数 */
-ER i2c_read_reg(
+ER hal_i2c_read_reg(    // SCI_I2Cの場合はhal_sci_i2c_read_reg
     ID dd,    // デバイスディスクリプタ
     UW sadr,  // ターゲットアドレス
     UW radr,  // レジスタアドレス (下位8bitのみ有効)
@@ -321,7 +393,7 @@ ER i2c_read_reg(
 
 ```C
 /* レジスタライト関数 */
-ER i2c_write_reg(
+ER hal_i2c_write_reg(    // SCI_I2Cの場合はhal_sci_i2c_write_reg
     ID dd,    // デバイスディスクリプタ
     UW sadr,  // ターゲットアドレス
     UW radr,  // レジスタアドレス (下位8bitのみ有効)
@@ -518,4 +590,5 @@ EXPORT INT usermain(void)
 
 | 版数      | 日付         | 内容   |
 | ------- | ---------- | ---- |
+| 1.00.B1 | 2024.01.xx | (更新中)</br>- 対応ボードにEK-RA8M1を追加。関連情報の記載</br>- デバイスドライバの内容を更新 |
 | 1.00.B0 | 2023.12.15 | 新規作成 |
