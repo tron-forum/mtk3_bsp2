@@ -19,6 +19,11 @@
 #ifndef _MTKBSP_SYSDEPEND_CPUTASK_
 #define _MTKBSP_SYSDEPEND_CPUTASK_
 
+#if MTKBSP_CPU_CORE_ARMV7M
 #include <sysdepend/ra_fsp/cpu/core/armv7m/cpu_task.h>
+
+#elif MTKBSP_CPU_CORE_ARMV8M
+#include <sysdepend/ra_fsp/cpu/core/armv8m/cpu_task.h>
+#endif
 
 #endif /* _MTKBSP_SYSDEPEND_CPUTASK_ */

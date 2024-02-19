@@ -19,6 +19,11 @@
 #ifndef _MTKBSP_SYSDEPEND_SYSDEPEND_
 #define _MTKBSP_SYSDEPEND_SYSDEPEND_
 
+#if MTKBSP_CPU_CORE_ARMV7M
 #include <sysdepend/ra_fsp/cpu/core/armv7m/sysdepend.h>
+
+#elif MTKBSP_CPU_CORE_ARMV8M
+#include <sysdepend/ra_fsp/cpu/core/armv8m/sysdepend.h>
+#endif
 
 #endif /* _MTKBSP_SYSDEPEND_SYSDEPEND_ */

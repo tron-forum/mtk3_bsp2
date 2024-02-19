@@ -54,6 +54,9 @@
 #elif defined(_RAFSP_EK_RA6M3_)
 #include <sys/sysdepend/ra_fsp/ek_ra6m3/machine.h>
 
+#elif defined(_RAFSP_EK_RA8M1_)
+#include <sys/sysdepend/ra_fsp/ek_ra8m1/machine.h>
+
 #elif defined(_RAFSP_ARDUINO_UNOR4_)
 #include <sys/sysdepend/ra_fsp/arduino_unor4/machine.h>
 

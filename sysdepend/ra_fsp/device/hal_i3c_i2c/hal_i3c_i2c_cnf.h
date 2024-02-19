@@ -12,18 +12,16 @@
  */
 
 /*
- *	cpu_status.h
- *	CPU-Dependent Task Start Processing
+ *	hal_i3c_i2c_cnf.h 
+ *	I3C device driver (RA FSP)
+ *		Device configuration file
  */
+#ifndef	_DEV_HAL_I3C_I2C_CNF_H_
+#define	_DEV_HAL_I3C_I2C_CNF_H_
 
-#ifndef _MTKBSP_SYSDEPEND_CPUSTATUS_
-#define _MTKBSP_SYSDEPEND_CPUSTATUS_
+#define DEVNAME_HAL_I3C_I2C	"htiic"
+#define DEV_HAL_I3C_I2C_TMOUT	(500)
 
-#if MTKBSP_CPU_CORE_ARMV7M
-#include <sysdepend/ra_fsp/cpu/core/armv7m/cpu_status.h>
+#define DEV_HAL_I3C_I2C_UNITNM	(3)	// Number of I3C units (max 26)
 
-#elif MTKBSP_CPU_CORE_ARMV8M
-#include <sysdepend/ra_fsp/cpu/core/armv8m/cpu_status.h>
-#endif
-
-#endif /* _MTKBSP_SYSDEPEND_CPUSTATUS_ */
+#endif	/* _DEV_HAL_I3C_I2C_CNF_H_ */

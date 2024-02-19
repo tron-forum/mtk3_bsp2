@@ -2,7 +2,7 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2023-2024 by Ken Sakamura.
+ *    Copyright (C) 2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
@@ -12,7 +12,7 @@
  */
 
 /*
- *	cpu_task.h (ARMv7-M)
+ *	cpu_task.h (ARMv8-M)
  *	CPU-Dependent Task Start Processing
  */
 
