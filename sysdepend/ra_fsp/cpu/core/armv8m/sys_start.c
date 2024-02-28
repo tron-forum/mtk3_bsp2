@@ -75,7 +75,7 @@ EXPORT void knl_start_mtkernel(void)
 	out_w(SCB_SHCSR, SHCSR_USGFAULTENA | SHCSR_BUSFAULTENA | SHCSR_MEMFAULTENA);
 
 	out_w(SCB_SHPR2, SCB_SHPR2_VAL);			// SVC pri = 0
-	out_w(SCB_SHPR3, SCB_SHPR3_VAL);			// SysTick = 1 , PendSV = 7
+	out_w(SCB_SHPR3, SCB_SHPR3_VAL);			// SysTick = 1 , PendSV = 15
 
 #if USE_IMALLOC
 #if USE_STATIC_SYS_MEM

@@ -60,6 +60,12 @@
 #elif defined(_RAFSP_ARDUINO_UNOR4_)
 #include <sys/sysdepend/ra_fsp/arduino_unor4/machine.h>
 
+#elif defined(_NXPMCUX_EVK_LPC55S69_)
+#include <sys/sysdepend/nxp_mcux/evk_lpc55s69/machine.h>
+
+#elif defined(_NXPMCUX_FRDM_MCXN947_)
+#include <sys/sysdepend/nxp_mcux/frdm_mcxn947/machine.h>
+
 #endif
 
 /* ===== C compiler dependencies definitions ============================= */

@@ -12,7 +12,7 @@
  */
 
 #include <sys/machine.h>
-#if defined(MTKBSP_RAFSP) && defined(MTKBSP_CPU_CORE_ARMV8M)
+#if defined(MTKBSP_MPCXPRESSO) && defined(MTKBSP_CPU_CORE_ARMV8M)
 /*
  *	dispatch.S (ARMv8-M)
  *	Dispatcher
@@ -198,4 +198,4 @@ l_dispatch_200:			//  End of FPU register restore process
 
 	bx	lr
 
-#endif	/* defined(MTKBSP_RAFSP) && defined(MTKBSP_CPU_CORE_ARMV8M) */
+#endif	/* defined(MTKBSP_MPCXPRESSO) && defined(MTKBSP_CPU_CORE_ARMV8M) */
