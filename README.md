@@ -6,7 +6,7 @@ By using μT-Kernel 3.0 BSP2, you can use the real-time OS μT-Kernel 3.0 on the
 μT-Kernel 3.0 BSP2は、各種開発ボードに向けたBSP (Board Support Package)です。  
 μT-Kernel 3.0 BSP2を使用することにより、マイコンメーカが提供する開発環境やファームウェアの上で、リアルタイムOS μT-Kernel 3.0を使用することができます。  
 
-## ドキュメント Documants
+## ドキュメント Documents
 - [BSP2ユーザーズマニュアル STM32Cude編](doc/bsp2_stm32%20cube_jp.md)
 - [BSP2ユーザーズマニュアル RA FSP編](doc/bsp2_ra_fsp_jp.md)
 - [BSP2ユーザーズマニュアル NXP MCUXpresso編](doc/bsp2_nxp_mcux_jp.md)

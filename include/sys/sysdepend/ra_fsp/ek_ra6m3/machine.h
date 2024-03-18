@@ -44,7 +44,7 @@
 #define	TARGET_CPU_DIR	ra6m3		/* Sysdepend-CPU-Directory name */
 
 /*
- **** CPU Core depeneded profile (ARMv7M)
+ **** CPU Core depended profile (ARMv7M)
  */
 #include <sys/sysdepend/ra_fsp/cpu/core/armv7m/machine.h>
 

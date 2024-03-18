@@ -24,20 +24,20 @@
  * Static allocation of system memory
  *     Enabling this setting statically allocates system memory space as variables.
  */
-#define USE_STATIC_SYS_MEM	(0)		// 1:Vaild   0:invalid
+#define USE_STATIC_SYS_MEM	(0)		// 1:Valid   0:invalid
 #define SYSTEM_MEM_SIZE		(15*1024)	// Memory size to statically allocate.
 
 /* ------------------------------------------------------------------------ */
 /*
  *  System memory area information (For debugging)
  */
-#define USE_DEBUG_SYSMEMINFO   (1)		// 1:Vaild   0:invalid
+#define USE_DEBUG_SYSMEMINFO   (1)		// 1:Valid   0:invalid
 
 /* ------------------------------------------------------------------------ */
 /*
  *  Stack pointer monitoring function
  */
-#define USE_SPMON		(1)		// 1:Vaild   0:invalid
+#define USE_SPMON		(1)		// 1:Valid   0:invalid
 
 /* ------------------------------------------------------------------------ */
 /* Device usage settings

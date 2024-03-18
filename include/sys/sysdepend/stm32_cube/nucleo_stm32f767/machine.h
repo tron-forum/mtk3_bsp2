@@ -44,7 +44,7 @@
 #define	TARGET_CPU_DIR	stm32f7				/* Sysdepend-CPU-Directory name */
 
 /*
- **** CPU Core depeneded profile (ARMv7M)
+ **** CPU Core depended profile (ARMv7M)
  */
 #include <sys/sysdepend/stm32_cube/cpu/core/armv7m/machine.h>
 

@@ -22,7 +22,7 @@
 
 /* ------------------------------------------------------------------------ */
 /*
- * System dependencies  (CPU Intrrupt contrl , I/O port access)
+ * System dependencies  (CPU Interrupt control , I/O port access)
  */
 #define CPUDEF_PATH_(a)		#a
 #define CPUDEF_PATH(a)		CPUDEF_PATH_(a)
