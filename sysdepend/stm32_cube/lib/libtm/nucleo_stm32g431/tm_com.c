@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
@@ -45,7 +45,7 @@
 #define ISR_RXNE		(1<<5)				/* Read data register not empty */
 
 /* Communication speed */
-#define UART_BAUD	(115200)			/* 115200 bps */
+#define BRR_115200	(0x5C3B2)			/* Communication speed 115200 bps */
 
 EXPORT	void	tm_snd_dat( const UB* buf, INT size )
 {
@@ -74,7 +74,7 @@ EXPORT	void	tm_com_init(void)
 	UART_CR3 = 0;		/* No hard flow control (Reset value) */
 
 	/* Set baud rate */
-	UART_BRR = 0x5C3B2;
+	UART_BRR = BRR_115200;
 
 	UART_CR1 = CR1_UE | CR1_RE |CR1_TE;	/* Start UART */
 }
