@@ -6,20 +6,20 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
 
 /*
- *	adc_cnf.h 
+ *	hal_adc_cnf.h 
  *	A/DC device driver  (STM32Cube FW)
  *		Device configuration file
  */
 #ifndef	_DEV_HAL_ADC_CNF_H_
 #define	_DEV_HAL_ADC_CNF_H_
 
-#define DEVNAME_HAL_ADC		"hladc"
+#define DEVNAME_HAL_ADC		"hadc"
 #define DEV_HAL_ADC_TMOUT	(500)
 
 #define DEV_HAL_ADC_UNITNM	(3)	// Number of A/DC units (max 26)

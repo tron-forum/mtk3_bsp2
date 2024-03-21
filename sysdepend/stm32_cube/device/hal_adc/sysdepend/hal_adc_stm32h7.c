@@ -6,14 +6,14 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
 #include <sys/machine.h>
 #include <config_bsp/stm32_cube/config_bsp.h>
 
-#ifdef MTKBSP_CPU_STM32G4
+#ifdef MTKBSP_CPU_STM32H7
 #if DEVCNF_USE_HAL_ADC
 
 #include <stdlib.h>
@@ -24,16 +24,17 @@
 #include <sysdepend/stm32_cube/cpu_status.h>
 #include <mtkernel/kernel/knlinc/tstdlib.h>
 #include <mtkernel/device/common/drvif/msdrvif.h>
-#include "../adc_cnf.h"
+#include "../hal_adc_cnf.h"
 
 /*
- *	adc_stm32g4.c
- *	A/DC device driver (STM32G4)
+ *	hal_adc_stm32h7.c
+ *	A/DC device driver (STM32H7)
 */
 LOCAL const UW adc_cfg_ch[] = {
 	ADC_CHANNEL_0, ADC_CHANNEL_1, ADC_CHANNEL_2, ADC_CHANNEL_3, ADC_CHANNEL_4, ADC_CHANNEL_5,
 	ADC_CHANNEL_6, ADC_CHANNEL_7, ADC_CHANNEL_8, ADC_CHANNEL_9, ADC_CHANNEL_10, ADC_CHANNEL_11,
-	ADC_CHANNEL_12, ADC_CHANNEL_13, ADC_CHANNEL_14, ADC_CHANNEL_15, ADC_CHANNEL_16, ADC_CHANNEL_17, 
+	ADC_CHANNEL_12, ADC_CHANNEL_13, ADC_CHANNEL_14, ADC_CHANNEL_15, ADC_CHANNEL_16, ADC_CHANNEL_17,	
+	ADC_CHANNEL_18, ADC_CHANNEL_19
 };
 
 EXPORT ER dev_adc_setch(ADC_HandleTypeDef *hadc, UW unit, W start)
@@ -46,16 +47,18 @@ EXPORT ER dev_adc_setch(ADC_HandleTypeDef *hadc, UW unit, W start)
 	sConfig.Channel = adc_cfg_ch[start];
 	if(unit == 0) {		// ADC1
 		sConfig.Rank = ADC_REGULAR_RANK_1;
-		sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+		sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
 		sConfig.SingleDiff = ADC_SINGLE_ENDED;
 		sConfig.OffsetNumber = ADC_OFFSET_NONE;
 		sConfig.Offset = 0;
-	}else if(unit == 1) {	// ADC2
+		sConfig.OffsetSignedSaturation = DISABLE;
+	} else if(unit == 2) {		// ADC3
 		sConfig.Rank = ADC_REGULAR_RANK_1;
-		sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+		sConfig.SamplingTime = ADC3_SAMPLETIME_2CYCLES_5;
 		sConfig.SingleDiff = ADC_SINGLE_ENDED;
 		sConfig.OffsetNumber = ADC_OFFSET_NONE;
 		sConfig.Offset = 0;
+		sConfig.OffsetSign = ADC3_OFFSET_SIGN_NEGATIVE;
 	} else {
 		return E_IO;
 	}
@@ -66,4 +69,4 @@ EXPORT ER dev_adc_setch(ADC_HandleTypeDef *hadc, UW unit, W start)
 }
 
 #endif		/* DEVCNF_USE_HAL_ADC */
-#endif		/* MTKBSP_CPU_STM32G4 */
+#endif		/* MTKBSP_CPU_STM32H7 */

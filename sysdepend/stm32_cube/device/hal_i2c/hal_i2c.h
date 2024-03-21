@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
@@ -14,7 +14,7 @@
 #ifndef	_DEV_HAL_I2C_H_
 #define	_DEV_HAL_I2C_H_
 /*
- *	i2c.h
+ *	hal_i2c.h
  *	I2C device driver (STM32Cube FW)
 */
 /*----------------------------------------------------------------------

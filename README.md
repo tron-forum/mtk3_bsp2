@@ -16,6 +16,7 @@ By using μT-Kernel 3.0 BSP2, you can use the real-time OS μT-Kernel 3.0 on the
 |Board| MCU | IDE | Manufacturer |
 |-|-|-|-|
 | NUCLEO-L476RG | STM32L476RG | STM32Cube IDE |STMicroelectronics |
+| NUCLEO-L4R5ZI | STM32L4R5ZI | STM32Cube IDE |STMicroelectronics |
 | NUCLEO-F401RE | STM32F401RE | STM32Cube IDE |STMicroelectronics |
 | NUCLEO-F411RE | STM32L411RE | STM32Cube IDE |STMicroelectronics |
 | NUCLEO-F446RE | STM32F446RE | STM32Cube IDE |STMicroelectronics |

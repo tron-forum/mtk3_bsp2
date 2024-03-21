@@ -24,10 +24,10 @@
 #include <sysdepend/stm32_cube/cpu_status.h>
 #include <mtkernel/kernel/knlinc/tstdlib.h>
 #include <mtkernel/device/common/drvif/msdrvif.h>
-#include "adc_cnf.h"
+#include "hal_adc_cnf.h"
 
 /*
- *	adc.c
+ *	hal_adc.c
  *	A/DC device driver (STM32Cube FW)
 */
 
@@ -232,7 +232,10 @@ EXPORT ER dev_init_hal_adc( UW unit, ADC_HandleTypeDef *hadc )
 #endif
 
 	id_flgid = tk_cre_flg(&id_flg);
-	if(id_flgid <= E_OK) goto err_1;
+	if(id_flgid <= E_OK) {
+		err = (ER)id_flgid;
+		goto err_1;
+	}
 
 	/* Device registration information */
 	dmsdi.exinf	= p_dcb;

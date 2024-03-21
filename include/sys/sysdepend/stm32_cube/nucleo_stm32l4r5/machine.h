@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
@@ -32,7 +32,7 @@
 
 #define MTKBSP_CPU_STM32		1	/* Target CPU type : STM32 group */
 #define MTKBSP_CPU_STM32L4		1	/* Target CPU type : STM32L4 series */
-#define MTKBSP_CPU_STM32L4R5		1	/* Target CPU      : STM32L4R% */
+#define MTKBSP_CPU_STM32L4R5		1	/* Target CPU      : STM32L4R5 */
 
 #define MTKBSP_CPU_CORE_ARMV7M		1	/* Target CPU-Core type : ARMv7-M */
 #define MTKBSP_CPU_CORE_ACM4F		1	/* Target CPU-Core      : ARM Cortex-M4F */

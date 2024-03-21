@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
@@ -36,11 +36,11 @@
 #include <config_bsp/stm32_cube/config_bsp.h>
 
 #if DEVCNF_USE_HAL_IIC
-#include <sysdepend/stm32_cube/device/i2c/i2c.h>
+#include <sysdepend/stm32_cube/device/hal_i2c/hal_i2c.h>
 #endif
 
 #if DEVCNF_USE_HAL_ADC
-#include <sysdepend/stm32_cube/device/adc/adc.h>
+#include <sysdepend/stm32_cube/device/hal_adc/hal_adc.h>
 #endif
 
 #endif	/* _DEV_HAL_DEVICE_H_ */

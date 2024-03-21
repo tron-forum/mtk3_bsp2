@@ -24,10 +24,10 @@
 #include <sysdepend/stm32_cube/cpu_status.h>
 #include <mtkernel/kernel/knlinc/tstdlib.h>
 #include <mtkernel/device/common/drvif/msdrvif.h>
-#include "i2c_cnf.h"
+#include "hal_i2c_cnf.h"
 
 /*
- *	i2c.c
+ *	hal_i2c.c
  *	I2C device driver (STM32Cube FW)
 */
 
@@ -339,7 +339,10 @@ EXPORT ER dev_init_hal_i2c( UW unit, I2C_HandleTypeDef *hi2c )
 #endif
 
 	id_flgid = tk_cre_flg(&id_flg);
-	if(id_flgid <= E_OK) goto err_1;
+	if(id_flgid <= E_OK) {
+		err = (ER)id_flgid;
+		goto err_1;
+	}
 
 	/* Device registration information */
 	dmsdi.exinf	= p_dcb;

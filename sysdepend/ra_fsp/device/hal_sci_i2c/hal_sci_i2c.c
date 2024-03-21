@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
@@ -291,7 +291,10 @@ EXPORT ER dev_init_hal_sci_i2c( UW unit, i2c_master_ctrl_t *hi2c,
 #endif
 
 	id_flgid = tk_cre_flg(&id_flg);
-	if(id_flgid <= E_OK) goto err_1;
+	if(id_flgid <= E_OK) {
+		err = (ER)id_flgid;
+		goto err_1;
+	}
 
 	/* Device registration information */
 	dmsdi.exinf	= p_dcb;

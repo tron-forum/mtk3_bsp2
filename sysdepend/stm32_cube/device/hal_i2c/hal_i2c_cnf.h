@@ -6,20 +6,20 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
 
 /*
- *	i2c_cnf.h 
+ *	hal_i2c_cnf.h 
  *	I2C device driver (STM32Cube FW)
  *		Device configuration file
  */
 #ifndef	_DEV_HAL_I2C_CNF_H_
 #define	_DEV_HAL_I2C_CNF_H_
 
-#define DEVNAME_HAL_I2C		"hliic"
+#define DEVNAME_HAL_I2C		"hiic"
 #define DEV_HAL_I2C_TMOUT	(500)
 
 #define DEV_HAL_I2C_UNITNM	(5)
