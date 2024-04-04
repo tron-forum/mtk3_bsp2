@@ -112,7 +112,7 @@
 #define MTK_PORTA_BASE		(0x40400140)
 #define MTK_PORTB_BASE		(0x40400160)
 
-#define PORT_PODR(n)		(MTK_PORT##n##_BASE + 0x00)	/* Port output data register */
+#define PORT_PODR(n)		(MTK_PORT##n##_BASE + 0x02)	/* Port output data register */
 #define PORT_PIDR(n)		(MTK_PORT##n##_BASE + 0x06)	/* Port input data register */
 
 /* ------------------------------------------------------------------------ */

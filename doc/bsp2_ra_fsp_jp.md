@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル <!-- omit in toc -->
 ## RA FSP編 <!-- omit in toc -->
-## Version 01.00.B2 <!-- omit in toc -->
-## 2024.3.21 <!-- omit in toc -->
+## Version 01.00.B3 <!-- omit in toc -->
+## 2024.4.10 <!-- omit in toc -->
 
 - [1. 概要](#1-概要)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -323,6 +323,7 @@ I2Cデバイスドライバは、マイコン内蔵のI2C通信デバイスを�
 ```mtk3_bsp2/sysdepend/ra_fsp/device/hal_i3c_i2c```
 
 このデバイスドライバはBSPコンフィギュレーションファイル (config/config_bsp/ra_fsp/config_bsp.h) の以下を変更しビルドすることにより、使用・不使用を切り替えられます。  
+マイコンの種別により搭載されているI2C通信デバイスは異なります。搭載されていないI2C通信デバイスを使用する設定にしないでください。
 
 ```C
 /* ------------------------------------------------------------------------ */
@@ -331,7 +332,7 @@ I2Cデバイスドライバは、マイコン内蔵のI2C通信デバイスを�
  */
 #define DEVCNF_USE_HAL_IIC      1	// I2C communication device (Use IIC )
 #define DEVCNF_USE_HAL_SCI_IIC  1	// I2C communication device (Use SCI )
-#define DEVCNF_USE_HAL_I3C_IIC		1	// I2C communication device (Use I3C )
+#define DEVCNF_USE_HAL_I3C_IIC  1	// I2C communication device (Use I3C )
 ```
 
 I2CデバイスドライバはFPSのHALを使用していますので、I2CのHALを使用可能にしてください。HALと本デバイスドライバの関連付けは次項で説明します。  
@@ -352,7 +353,7 @@ I2Cデバイスドライバから使用するI2Cの設定をe2studioで行いま
 | Arduino I2C SDA | P511/SDA2     | P401/I3C_SDA0 | P101/SDA1      |
 | Arduino I2C SCL | P512/SCL2     | P400/I3C_SCL0 | P100/SCL1      |
 
-**注意**  EK-RA8M1ボードではGrove-1およびArduinoのI3CインタフェースをI2Cとして使用する場合は、以下の端子の設定を行ってください。  
+**注意**  EK-RA8M1ボードではGrove-1およびArduinoのI2CインタフェースをI2Cとして使用する場合は、以下の端子の設定を行ってください。  
 
 | 端子   | 設定                         |
 | ---- | -------------------------- |
@@ -366,32 +367,32 @@ I2Cデバイスドライバから使用するI2Cの設定をe2studioで行いま
 - I2C(IICを使用) の場合  
 I2C Master(r_iic_master)を選択し、プロパティの`Module g_i2c_master0`の各項目を以下のように設定します。  
 
-| 項目                 | 設定                         |
+| 項目                | 設定                         |
 | ------------------ | -------------------------- |
 | Name               | g_i2c_master0 (任意の名称に変更可能) |
 | Unit               | 使用するI2Cのチャンネル番号            |
 | Interrupt Priority | 任意の割込み優先度                  |
-| その他                | 初期値のまま                     |
+| その他              | 初期値のまま                     |
 
 - SCI_I2C(SCIを使用)  
 I2C Master(r_sci_i2c)を選択し、プロパティの`Module g_i2c0`の各項目を以下のように設定します。  
 
-| 項目                 | 設定                  |
+| 項目                | 設定                  |
 | ------------------ | ------------------- |
 | Name               | g_i2c0 (任意の名称に変更可能) |
 | Unit               | 使用するI2Cのチャンネル番号     |
 | Interrupt Priority | 任意の割込み優先度           |
-| その他                | 初期値のまま              |
+| その他              | 初期値のまま              |
 
 - I3C_I2C(I3Cを使用)  
 I3C (r_i3c)を選択し、プロパティの`Module g_i3c`の各項目を以下のように設定します。  
 
-| 項目                 | 設定                   |
+| 項目                | 設定                   |
 | ------------------ | -------------------- |
 | Name               | g_i3c0  (任意の名称に変更可能) |
 | Device Type        | Main Master          |
 | Interrupt Priority | 任意の割込み優先度            |
-| その他                | 初期値のまま               |
+| その他              | 初期値のまま               |
 
 複数のI2Cを使用する場合は、必要な数だけ上記を繰り返します。  
 設定後に`Genetate Project Content`を押下するとFSP(HAL)のコードが生成されます。  
@@ -697,6 +698,7 @@ EXPORT INT usermain(void)
 
 | 版数      | 日付         | 内容   |
 | ------- | ---------- | ---- |
-|1.00.B2| 2024.03.21| 誤記修正 |
+|1.00.B3  | 2024.04.10 | I2Cデバイスの説明を補足 |
+|1.00.B2  | 2024.03.21 | 誤記修正 |
 | 1.00.B1 | 2024.02.29 | </br>- 対応ボードにEK-RA8M1を追加。関連情報の記載</br>- デバイスドライバなどの内容を更新 |
 | 1.00.B0 | 2023.12.15 | 新規作成 |
