@@ -43,7 +43,7 @@
 /* Device usage settings
  *	1: Use   0: Do not use
  */
-#define DEVCNF_USE_HAL_LPI2C		1	// I2C communication device (Use LP_FLEXCOMM )
-#define DEVCNF_USE_HAL_ADC		1	// A/D conversion device
+#define DEVCNF_USE_HAL_LPI2C		0	// I2C communication device (Use LP_FLEXCOMM )
+#define DEVCNF_USE_HAL_ADC		0	// A/D conversion device
 
 #endif	/* _MTKBSP_BSP_CONFIG_DEVENV_H_ */

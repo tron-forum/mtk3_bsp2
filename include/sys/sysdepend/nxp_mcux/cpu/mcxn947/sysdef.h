@@ -91,6 +91,23 @@
 
 /* ------------------------------------------------------------------------ */
 /*
+ * GPIO
+ */
+#define	MTK_GPIO0_BASE	0x40096000
+#define	MTK_GPIO1_BASE	0x40098000
+#define	MTK_GPIO2_BASE	0x4009A000
+#define	MTK_GPIO3_BASE	0x4009C000
+#define	MTK_GPIO4_BASE	0x4009E000
+#define	MTK_GPIO5_BASE	0x40040000
+
+#define	GPIO_PDOR(n)	(MTK_GPIO##n##_BASE + 0x40)
+#define	GPIO_PSOR(n)	(MTK_GPIO##n##_BASE + 0x44)
+#define	GPIO_PCOR(n)	(MTK_GPIO##n##_BASE + 0x48)
+#define	GPIO_PTOR(n)	(MTK_GPIO##n##_BASE + 0x4C)
+#define	GPIO_PDIR(n)	(MTK_GPIO##n##_BASE + 0x50)
+
+/* ------------------------------------------------------------------------ */
+/*
  * Physical timer (for MCX N947)
  */
 #define	CPU_HAS_PTMR	0
