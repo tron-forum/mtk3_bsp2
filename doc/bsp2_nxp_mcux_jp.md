@@ -326,7 +326,7 @@ I2Cデバイスドライバから使用するLPI2Cの設定をMCUXpresso IDEで�
 | LPI2C mode                     | Master mode                                                |
 | Master interrupt sources       | Trinsmit data, Receive data, Stop detect, NACK detectにチェック |
 | Enable interrupt vector        | チェック                                                       |
-| Interrupt ewquest              | No initialized                                             |
+| Interrupt request              | No initialized                                             |
 | Enable priority initialization | チェック                                                       |
 | Priority                       | 2～6                                                        |
 | その他                            | 初期値（必要に応じて設定）                                              |
@@ -602,6 +602,6 @@ EXPORT INT usermain(void)
 
 | 版数      | 日付         | 内容   |
 | ------- | ---------- | ---- |
-| 1.00.B2 | 2024.04.05 | 「4.2.2. ビルド設定」　変更
+| 1.00.B2 | 2024.04.12 | 「4.2.2. ビルド設定」　変更、誤字修正 |
 | 1.00.B1 | 2024.03.21 | 誤記修正 |
 | 1.00.B0 | 2024.02.29 | 新規作成 |
