@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -101,7 +101,7 @@ Inline UW knl_get_hw_timer_nsec( void )
 	}
 	EI(imsk);
 	ofs = max - ofs;			/* Elapsed count */
-	if ( unf != 0 ) ofs += max + 1;	/* Reload occured, Adjust */
+	if ( unf != 0 ) ofs += max + 1;	/* Reload occurred, Adjust */
 
 	return  (UW) ( ( (D)ofs * 1000000 ) / TMCLK_KHz );
 }

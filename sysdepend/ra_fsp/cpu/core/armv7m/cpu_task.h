@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -37,7 +37,7 @@ typedef struct {
  * Size of system stack area destroyed by 'make_dormant()'
  * In other words, the size of area required to write by 'knl_setup_context().'
  */
-#define DORMANT_STACK_SIZE	( sizeof(VW) * 7 ) /* To 'R4' position */
+#define	DORMANT_STACK_SIZE	(sizeof(SStackFrame))
 
 #if USE_FPU
 typedef struct {

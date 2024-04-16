@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -44,7 +44,7 @@
 #define	TARGET_CPU_DIR	ra6m3		/* Sysdepend-CPU-Directory name */
 
 /*
- **** CPU Core depeneded profile (ARMv7M)
+ **** CPU Core depended profile (ARMv7M)
  */
 #include <sys/sysdepend/ra_fsp/cpu/core/armv7m/machine.h>
 

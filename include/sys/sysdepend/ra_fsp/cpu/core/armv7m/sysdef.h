@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -87,13 +87,13 @@
 /*
  * The number of the implemented bit width for priority value fields.
  * The LSB of (8-INTPRI_BITWIDTH) bits priority value is ignored, 
- * Bacause each priory bits is INTPRI_BITWIDTH bits.
+ * Because each priory bits is INTPRI_BITWIDTH bits.
  */
 #define INTPRI_VAL(x)	((x) << (8-INTPRI_BITWIDTH))
 
 
 /* SHPR: System Handler Priority Register
- *   SHRP1    (ReV)     Usage     Bus       Memmory
+ *   SHRP1    (ReV)     Usage     Bus       Memory
  *   SHRP2    SVCall    (Rev)     (Rev)     (Rev)
  *   SHPR3    SysTick   PendSV    (Rsv)     DebugMon-
  */

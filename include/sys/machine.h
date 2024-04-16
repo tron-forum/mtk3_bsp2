@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -54,8 +54,17 @@
 #elif defined(_RAFSP_EK_RA6M3_)
 #include <sys/sysdepend/ra_fsp/ek_ra6m3/machine.h>
 
+#elif defined(_RAFSP_EK_RA8M1_)
+#include <sys/sysdepend/ra_fsp/ek_ra8m1/machine.h>
+
 #elif defined(_RAFSP_ARDUINO_UNOR4_)
 #include <sys/sysdepend/ra_fsp/arduino_unor4/machine.h>
+
+#elif defined(_NXPMCUX_EVK_LPC55S69_)
+#include <sys/sysdepend/nxp_mcux/evk_lpc55s69/machine.h>
+
+#elif defined(_NXPMCUX_FRDM_MCXN947_)
+#include <sys/sysdepend/nxp_mcux/frdm_mcxn947/machine.h>
 
 #endif
 

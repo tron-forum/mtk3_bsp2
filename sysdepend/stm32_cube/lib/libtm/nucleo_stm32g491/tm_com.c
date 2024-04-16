@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
@@ -35,6 +35,7 @@
 #define UART_ISR	(*(_UW*)(UART_BASE+0x001C))	/* Status register */
 #define UART_RDR	(*(_UW*)(UART_BASE+0x0024))	/* Receiver Data register */
 #define UART_TDR	(*(_UW*)(UART_BASE+0x0028))	/* Transmitter Data register */
+#define UART_PRESC	(*(_UW*)(UART_BASE+0x002C))	/* PRESCALER register */
 
 #define CR1_UE		(1<<0)				/* UART enable */
 #define CR1_RE		(1<<2)				/* Receiver enable */
@@ -42,7 +43,7 @@
 
 #define ISR_TXE		(1<<7)				/* Transmit data register empty */
 #define ISR_TC		(1<<6)				/* Transmission complete */
-#define ISR_RXNE		(1<<5)				/* Read data register not empty */
+#define ISR_RXNE	(1<<5)				/* Read data register not empty */
 
 /* Communication speed */
 #define UART_BAUD	(115200)			/* 115200 bps */
@@ -68,13 +69,18 @@ EXPORT	void	tm_rcv_dat( UB* buf, INT size )
 
 EXPORT	void	tm_com_init(void)
 {
+	const	UW presc[] = { 1, 2, 4, 6, 8, 10, 12, 16, 32, 64, 128, 256 };
+	UD	brr;
+
 	/* Initialize serial communication. Disable all interrupt. */
 	UART_CR1 = 0;		/* 8bit, Non parity (Reset value) */
 	UART_CR2 = 0;		/* Stop bit 1 (Reset value) */
 	UART_CR3 = 0;		/* No hard flow control (Reset value) */
 
 	/* Set baud rate */
-	UART_BRR = 0x5C3B2;
+	brr = (UD)(halif_get_pclk1()/presc[UART_PRESC&0x0F]);
+	brr = (brr*256 + UART_BAUD/2)/UART_BAUD;
+	UART_BRR = (UW)brr;
 
 	UART_CR1 = CR1_UE | CR1_RE |CR1_TE;	/* Start UART */
 }

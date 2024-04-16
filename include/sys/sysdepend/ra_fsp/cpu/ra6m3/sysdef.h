@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -132,8 +132,8 @@
 #define MTK_PORTA_BASE		(0x40040140)
 #define MTK_PORTB_BASE		(0x40040160)
 
-#define PORT_PODR(n)		(MTK_PORT##n##_BASE + 0x00)	/* Port output data register */
-#define PORT_PIDR(n)		(MTK_PORT##n##_BASE + 0x06)	/* Port input data register */
+#define PORT_PODR(n)		(MTK_PORT##n##_BASE + 0x02)	/* Port output data register */
+#define PORT_PIDR(n)		(MTK_PORT##n##_BASE + 0x04)	/* Port input data register */
 
 /* ------------------------------------------------------------------------ */
 /*

@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -62,7 +62,7 @@ LOCAL void ptmr_int_main( UINT intno, T_PTMRCB *p_cb)
 	}
 
 	if( p_cb->mode == TA_ALM_PTMR)  {
-		DisableInt( intno);			// Stop Pysical timer
+		DisableInt( intno);			// Stop Physical timer
 	}
 }
 

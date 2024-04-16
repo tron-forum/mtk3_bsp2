@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
@@ -28,17 +28,6 @@
 
 /* ------------------------------------------------------------------------ */
 /*
- * Internal Memorie (Main RAM)
- */
-
-/* STM32L476 Internal SRAM1   0x20000000 - 0x20017FFF  (Size 96KB) */
-#define INTERNAL_RAM_START      0x20000000
-#define INTERNAL_RAM_SIZE       0x00018000
-
-#define INTERNAL_RAM_END        (INTERNAL_RAM_START+INTERNAL_RAM_SIZE)
-
-/* ------------------------------------------------------------------------ */
-/*
  * System Timer clock
  */
 
@@ -46,17 +35,16 @@
 #define MIN_TIMER_PERIOD	1
 #define MAX_TIMER_PERIOD	50
 
-/* ------------------------------------------------------------------------ */
-/*
- * Number of Interrupt vectors
- */
-#define	N_SYSVEC		16	/* Number of System Exceptions */
-#define N_INTVEC		82	/* Number of Interrupt vectors */
-
 /*
  * The number of the implemented bit width for priority value fields.
  */
 #define INTPRI_BITWIDTH		4
+
+/* ------------------------------------------------------------------------ */
+/*
+ * Number of Exceptions vectors
+ */
+#define	N_SYSVEC		16	/* Number of System Exceptions */
 
 /*
  * Interrupt Priority Levels
@@ -75,8 +63,6 @@
 /*
  * EXTI (Extended interrupt controller)
  */
-#define	N_EXTIEVT		40	/*  Number of EXTI event input */
-
 #define MTK_EXTI_BASE	0x40010400
 
 #define	EXTI_IMR1	(MTK_EXTI_BASE + 0x00)

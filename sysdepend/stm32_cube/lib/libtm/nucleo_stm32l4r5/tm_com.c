@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
@@ -20,6 +20,7 @@
 
 #if USE_TMONITOR
 #include <mtkernel/lib/libtm/libtm.h>
+#include <sysdepend/stm32_cube/halif.h>
 
 #ifdef MTKBSP_NUCLEO_STM32L4R5
 #if TM_COM_SERIAL_DEV
@@ -36,6 +37,7 @@
 #define UART_ICR	(*(_UW*)(UART_BASE+0x0020))	/* INTERRUPT FLAG CLEAR register */
 #define UART_RDR	(*(_UW*)(UART_BASE+0x0024))	/* RECEIVE DATA register */
 #define UART_TDR	(*(_UW*)(UART_BASE+0x0028))	/* TRANSMIT DATA register */
+#define UART_PRESC	(*(_UW*)(UART_BASE+0x002C))	/* PRESCALER register */
 
 #define CR1_UE		(0x00000001)			/* Enable UART */
 #define CR1_RE		(0x00000004)			/* Enable reception */
@@ -45,7 +47,8 @@
 #define ISR_TC		(0x00000040)			/* Transmission complete */
 #define ISR_RXNE	(0x00000020)			/* Read data register not empty */
 
-#define BRR_115200	(0x115C7)			/* Communication speed 115200 bps */
+/* Communication speed */
+#define UART_BAUD	(115200)			/* 115200 bps */
 
 EXPORT	void	tm_snd_dat( const UB* buf, INT size )
 {
@@ -70,13 +73,18 @@ EXPORT	void	tm_rcv_dat( UB* buf, INT size )
 
 EXPORT	void	tm_com_init(void)
 {
+	const	UW presc[] = { 1, 2, 4, 6, 8, 10, 12, 16, 32, 64, 128, 256 };
+	UD	brr;
+
 	/* Initialize serial communication. Disable all interrupt. */
 	UART_CR1 = 0;		/* 8bit, Non parity (Reset value) */
 	UART_CR2 = 0;		/* Stop bit 1 (Reset value) */
 	UART_CR3 = 0;		/* No hard flow control (Reset value) */
 
 	/* Set baud rate */
-	UART_BRR = BRR_115200;
+	brr = (UD)(halif_get_pclk1()/presc[UART_PRESC&0x0F]);
+	brr = (brr*256 + UART_BAUD/2)/UART_BAUD;
+	UART_BRR = (UW)brr;
 
 	UART_CR1 = CR1_UE | CR1_RE |CR1_TE;	/* Start UART */
 }

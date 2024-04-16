@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -27,7 +27,7 @@
 /*
  * CPU interrupt control for ARMv7-M.
  *	As armv7-m architecture does not support disable interrupt in
- *	xpsr register, we have to raise the excution priority to 
+ *	xpsr register, we have to raise the exception priority to 
  *	that the interrupt group have. Write the BASEPRI to implement 
  *	disint.
  */
@@ -47,7 +47,7 @@ IMPORT UW disint(void);			/* Disable interrupt */
 /*
  * Interrupt priority grouping
  *
- *	PRIGROUP in the AIRCR register determins the split of group
+ *	PRIGROUP in the AIRCR register determines the split of group
  *	priority from subpriority. PRIGROUP is initialized to 3
  *	(pri:subpri = 4:4)) in the boot sequence.
  */

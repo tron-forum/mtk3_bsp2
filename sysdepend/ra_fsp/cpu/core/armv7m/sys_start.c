@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -66,7 +66,7 @@ EXPORT void knl_start_mtkernel(void)
 	*(_UW*)SCB_AIRCR = (reg & 0x0000FFFF) | AIRCR_VECTKEY;
 
 	out_w(SCB_SHPR2, SCB_SHPR2_VAL);			// SVC pri = 0
-	out_w(SCB_SHPR3, SCB_SHPR3_VAL);			// SysTick = 1 , PendSV = 7
+	out_w(SCB_SHPR3, SCB_SHPR3_VAL);			// SysTick = 1 , PendSV = 15
 
 #if USE_IMALLOC
 #if USE_STATIC_SYS_MEM
@@ -100,11 +100,10 @@ EXPORT void knl_start_mtkernel(void)
 	/* Unprotect */
 	out_h(SPMON_MSPMPUPT, 0xA500);		// Main stack
 	out_h(SPMON_PSPMPUPT, 0xA500);		// Process stack
-#if !USE_SPMON
+
 	/* Disable SPMON */
-	out_h(SPMON_MSPMPUCTL, 0);		// Main stack)
+	out_h(SPMON_MSPMPUCTL, 0);		// Main stack
 	out_h(SPMON_PSPMPUCTL, 0);		// Process stack
-#endif
 
 	/* Startup Kernel */
 	knl_main();		// *** No return ****/

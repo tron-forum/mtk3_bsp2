@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -24,14 +24,14 @@
  * Static allocation of system memory
  *     Enabling this setting statically allocates system memory space as variables.
  */
-#define USE_STATIC_SYS_MEM	(0)		// 1:Vaild   0:invalid
+#define USE_STATIC_SYS_MEM	(0)		// 1:Valid   0:invalid
 #define SYSTEM_MEM_SIZE		(10*1024)	// Memory size to statically allocate.
 
 /* ------------------------------------------------------------------------ */
 /*
  *  System memory area information (For debugging)
  */
-#define USE_DEBUG_SYSMEMINFO   (1)		// 1:Vaild   0:invalid
+#define USE_DEBUG_SYSMEMINFO   (1)		// 1:Valid   0:invalid
 
 /* ------------------------------------------------------------------------ */
 /* Device usage settings

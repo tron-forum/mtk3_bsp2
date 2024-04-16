@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2013 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2023/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/03.
  *
  *----------------------------------------------------------------------
  */
@@ -32,7 +32,7 @@
 
 #define MTKBSP_CPU_STM32		1	/* Target CPU type : STM32 group */
 #define MTKBSP_CPU_STM32L4		1	/* Target CPU type : STM32L4 series */
-#define MTKBSP_CPU_STM32L4R5		1	/* Target CPU      : STM32L4R% */
+#define MTKBSP_CPU_STM32L4R5		1	/* Target CPU      : STM32L4R5 */
 
 #define MTKBSP_CPU_CORE_ARMV7M		1	/* Target CPU-Core type : ARMv7-M */
 #define MTKBSP_CPU_CORE_ACM4F		1	/* Target CPU-Core      : ARM Cortex-M4F */
@@ -44,7 +44,7 @@
 #define	TARGET_CPU_DIR	stm32l4				/* Sysdepend-CPU-Directory name */
 
 /*
- **** CPU Core depeneded profile (ARMv7M)
+ **** CPU Core depended profile (ARMv7M)
  */
 #include <sys/sysdepend/stm32_cube/cpu/core/armv7m/machine.h>
 
