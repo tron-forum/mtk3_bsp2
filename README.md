@@ -7,9 +7,10 @@ By using μT-Kernel 3.0 BSP2, you can use the real-time OS μT-Kernel 3.0 on the
 μT-Kernel 3.0 BSP2を使用することにより、マイコンメーカが提供する開発環境やファームウェアの上で、リアルタイムOS μT-Kernel 3.0を使用することができます。  
 
 ## ドキュメント Documents
-- [BSP2ユーザーズマニュアル STM32Cude編](doc/bsp2_stm32_cube_jp.md)
+- [BSP2ユーザーズマニュアル STM32Cude編](doc/bsp2_stm32%20cube_jp.md)
 - [BSP2ユーザーズマニュアル RA FSP編](doc/bsp2_ra_fsp_jp.md)
 - [BSP2ユーザーズマニュアル NXP MCUXpresso編](doc/bsp2_nxp_mcux_jp.md)
+- [BSP2ユーザーズマニュアル ModusToolbox編](doc/bsp2_xmc_mtb_jp.md)
 
 ## 対応ボード Supported boards
 
@@ -29,6 +30,7 @@ By using μT-Kernel 3.0 BSP2, you can use the real-time OS μT-Kernel 3.0 on the
 | Arduino UNO R4| RA4M1       | e2studio      |Renesas            |
 | FRDM-MCXN947  | MCX N947    | MCUXpresso IDE|NXP                |
 | LPC55S69-EVK  | LPC55S69    | MCUXpresso IDE|NXP                |
+| EVK-XMC7200   | XMC7200     | ModusToolbox  |Infineon Technologies AG    |
 
 
 μT-Kernel3.0 BSP2 is developed by TRON Forum. Its source code is released as open source under the condition of T-License2.2.

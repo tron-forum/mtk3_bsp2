@@ -66,6 +66,9 @@
 #elif defined(_NXPMCUX_FRDM_MCXN947_)
 #include <sys/sysdepend/nxp_mcux/frdm_mcxn947/machine.h>
 
+#elif defined(_XMCMTB_EVK_XMC7200_)
+#include <sys/sysdepend/xmc_mtb/evk_xmc7200/machine.h>
+
 #endif
 
 /* ===== C compiler dependencies definitions ============================= */
