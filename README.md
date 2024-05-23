@@ -30,5 +30,13 @@ By using μT-Kernel 3.0 BSP2, you can use the real-time OS μT-Kernel 3.0 on the
 | FRDM-MCXN947  | MCX N947    | MCUXpresso IDE|NXP                |
 | LPC55S69-EVK  | LPC55S69    | MCUXpresso IDE|NXP                |
 
+
+μT-Kernel3.0 BSP2 is developed by TRON Forum. Its source code is released as open source under the condition of T-License2.2.
+
+μT-Kernel 3.0 BSP2はトロンフォーラムが開発しています。 μT-Kernel 3.0のソースコードはT-License2.2に基づきオープンソースとして公開されています。
+
+See below for T-License 2.2.  T-License2.2の内容は以下をご覧ください。  
+[T-License 2.2 プログラムおよび著作物のライセンス契約](https://www.tron.org/download/index.php?route=information/information&information_id=79)
+
 For inquiries, please visit the following website [TRON Forum  (https://www.tron.org)](https://www.tron.org)  
 お問い合わせは次ののWebサイトへ [トロンフォーラム  (https://www.tron.org)](https://www.tron.org)
