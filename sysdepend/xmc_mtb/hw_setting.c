@@ -69,9 +69,6 @@ EXPORT void knl_startup_hw(void)
 {
 	/* Enable IRQ Register */
 	enable_irq();
-	
-	/* Initialize the device and board peripherals */
-	cybsp_init();
 }
 
 #if USE_SHUTDOWN

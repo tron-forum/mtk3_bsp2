@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル  <!-- omit in toc -->
 ## ModusToolBox編  <!-- omit in toc -->
-## Version 01.00.B1 <!-- omit in toc -->
-## 2024.5.20  <!-- omit in toc -->
+## Version 01.00.B0 <!-- omit in toc -->
+## 2024.5.24  <!-- omit in toc -->
 
 - [1. はじめに](#1-はじめに)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -400,11 +400,10 @@ gitのコマンドを使用する場合は、プロジェクトのディレク�
 ### 4.2.2. ビルド設定の追加
 ModusToolboxのプロジェクトの設定ファイルに、μT-Kernel 3.0 BSP2のスースコードをビルドするための設定を追加します。  
 
-(1) Makefileに以下の定義を追加します。
+(1) Makefileに対象マイコンボードのターゲット名の定義を追加します。
 
 ```
 DEFINES=_XMCMTB_EVK_XMC7200_
-DEFINES+=__PROGRAM_START=knl_start_mtkernel
 ```
 
 対象マイコンボードとターゲット名の対応は以下の通りです。
@@ -412,7 +411,42 @@ DEFINES+=__PROGRAM_START=knl_start_mtkernel
 |-|-|
 | EVK-XMC7200 | \_XMCMTB_EVK_XMC7200_ |
 
+### 4.2.3. OS起動処理の呼び出し
+生成されたプロジェクトは、ハードウェアの初期化処理などのあと、main関数を実行します。  
+main関数からμT-Kernel 3.0の起動処理knl_start_mtkernel関数を実行するようにコードを追加します。
+main関数は以下のファイルの記述されています。
 
+`<プロジェクトのディレクトリ>/main.c`
+
+main関数に以下のようにknl_start_mtkernel関数を記述します。
+
+```C
+int main(void)
+{
+    cy_rslt_t result;
+
+    /* 一部省略 */
+
+    /* Initialize the device and board peripherals */
+    result = cybsp_init();
+
+    /* Board init failed. Stop program execution */
+    if (result != CY_RSLT_SUCCESS)
+    {
+        CY_ASSERT(0);
+    }
+
+    /* Enable global interrupts */
+    __enable_irq();
+
+    void knl_start_mtkernel(void);
+    knl_start_mtkernel();
+
+    for (;;)
+    {
+    }
+}
+```
 
 ## 4.3. ユーザプログラム
 ### 4.3.1. ユーザプログラムの作成
@@ -516,5 +550,4 @@ EVK-XMC7200ボードではデバッガはボード上に搭載されています
 
 | 版数      | 日付         | 内容   |
 | ------- | ---------- | ---- |
-| 1.00.B1 | 2024.5.20 | - 起動処理をModusToolboxの起動ルーチンを利用する方式に修正</br>- ModusToolboxのDevice Configuratorによって任意のクロック設定可能なように修正</br>- 割込み処理の一部がModusToolboxのソースコードと衝突する問題を解消</br>- DEVCNF_USE_HAL_IICとDEVCNF_USE_HAL_ADCによるデバイスドライバの有効／無効の設定ができない不具合を修正 |
-| 1.00.B0 | 2024.5.1 | 新規作成 |
+| 1.00.B0 | 2024.05.24 | 新規作成 |
