@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/01.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/05.
  *
  *----------------------------------------------------------------------
  */
@@ -23,12 +23,17 @@
 #ifdef MTKBSP_FRDM_MCXN947
 #if TM_COM_SERIAL_DEV
 
+#include "fsl_debug_console.h"
+
 /* 
+	Use MCUXpresso Debug function
  */
-/* register definition */
 
 EXPORT	void	tm_snd_dat( const UB* buf, INT size )
 {
+	while(size--) {
+		PRINTF("%c", *buf++);
+	}
 }
 
 EXPORT	void	tm_rcv_dat( UB* buf, INT size )
