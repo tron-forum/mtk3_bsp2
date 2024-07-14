@@ -24,11 +24,12 @@
 
 #if USE_TMONITOR
 #include <mtkernel/lib/libtm/libtm.h>
-#include <cy_sysclk.h>
-#include <cy_gpio.h>
 
 #ifdef MTKBSP_EVK_XMC7200
 #if TM_COM_SERIAL_DEV
+#include <cy_sysclk.h>
+#include <cy_gpio.h>
+
 #define UART_CH3	(3)
 #define TERM_PORT	(UART_CH3)
 #define MAX_UART_NO	(11)		/* = 1 - 11 : Number of UART ports */
