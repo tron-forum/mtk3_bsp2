@@ -27,6 +27,7 @@
 
 #ifdef MTKBSP_EVK_XMC7200
 #if TM_COM_SERIAL_DEV
+
 #include <cy_sysclk.h>
 #include <cy_gpio.h>
 
