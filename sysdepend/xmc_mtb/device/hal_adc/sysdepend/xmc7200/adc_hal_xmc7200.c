@@ -20,13 +20,13 @@
 #include <sys/machine.h>
 #include <config_bsp/xmc_mtb/config_bsp.h>
 
+#ifdef MTKBSP_MODUSTOOLBOX
+#if DEVCNF_USE_HAL_ADC
+
 #include <cyhal.h>
 #include <cybsp.h>
 #include <cy_sysclk.h>
 #include "adc_cnf_sysdep.h"
-
-#ifdef MTKBSP_MODUSTOOLBOX
-#if DEVCNF_USE_HAL_ADC
 
 #define CH_VBG		(16U)
 #define CH_CAL		(17U)
