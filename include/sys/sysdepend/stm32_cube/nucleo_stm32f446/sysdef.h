@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/08.
  *
  *----------------------------------------------------------------------
  */
@@ -14,7 +14,7 @@
 /*
  *	sysdef.h
  *
- *	System dependencies definition (STM32Cule NUCLEO STM32F411)
+ *	System dependencies definition (STM32Cule NUCLEO STM32F446)
  *	Included also from assembler program.
  */
 

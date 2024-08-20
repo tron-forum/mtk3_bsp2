@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2022/04.
+ *    Released by TRON Forum(http://www.tron.org) at 2022/08.
  *
  *----------------------------------------------------------------------
  */
@@ -99,19 +99,23 @@
 /*
  * Number of Interrupt vectors
  */
+#define	N_SYSVEC		16	/* Number of System Exceptions */
 #define N_INTVEC		575	/* Number of Interrupt vectors */
 							/* External Interrupt 567(0-566). Software Interrupt 8. */
 							/* 567- is assigned to Software Interrupt */
-#define	N_SYSVEC		16	/* Number of System Exceptions */
 
-#define	CORE_EXT_INTVEC	8	/* Externel Interrupt number is 0-7. */
+#define	CORE_EXT_INTVEC		8	/* Externel Interrupt number is 0-7. */
 #define	CORE_SOFT_INTVEC	8	/* Software Interrupt number is 8-15. */
+
+/*
+ * Exception vector table alignment
+*/
+#define	EXCTBL_ALIGN		4096
 
 /*
  * The number of the implemented bit width for priority value fields.
  */
 #define INTPRI_BITWIDTH		3
-
 
 /* ------------------------------------------------------------------------ */
 /*
