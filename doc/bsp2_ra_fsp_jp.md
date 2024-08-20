@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル <!-- omit in toc -->
 ## RA FSP編 <!-- omit in toc -->
-## Version 01.00.B4 <!-- omit in toc -->
-## 2024.05.24 <!-- omit in toc -->
+## Version 01.00.B5 <!-- omit in toc -->
+## 2024.09.05 <!-- omit in toc -->
 
 - [1. 概要](#1-概要)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -45,11 +45,12 @@
 ## 1.1. 対象マイコンボード
 μT-Kenrel 3.0 BSP2は以下のRAマイコンボードに対応しています。
 
-| マイコンボード        | マイコン                 | CPUコア         | 備考  |
-| -------------- | -------------------- | ------------- | --- |
-| EK-RA6M3       | RA6M3(R7FA6M3AH3CFC) | Arm Cortex-M4 |ルネサス エレクトロニクス RA6M3 MCUグループ評価キット     |
-| EK-RA8M1       | RA8M1(R7FA8M1AHECBD) | Arm Cortex-M85 |ルネサス エレクトロニクス RA8M1 MCUグループ評価キット     |
-| Arduino UNO R4 | RA4M1(R7FA4M1AB3CFM) | Arm Cortex-M4 |     |
+| マイコンボード        | マイコン                 | CPUコア          | 備考                               |
+| -------------- | -------------------- | -------------- | -------------------------------- |
+| EK-RA6M3       | RA6M3(R7FA6M3AH3CFC) | Arm Cortex-M4  | ルネサス エレクトロニクス RA6M3 MCUグループ評価キット |
+| EK-RA8M1       | RA8M1(R7FA8M1AHECBD) | Arm Cortex-M85 | ルネサス エレクトロニクス RA8M1 MCUグループ評価キット |
+| Arduino UNO R4 | RA4M1(R7FA4M1AB3CFM) | Arm Cortex-M4  |                                  |
+| RA4M1 Clicker  | RA4M1(R7FA4M1AB3CFM) | Arm Cortex-M4  | MikroElektronika                 |
 
 ## 1.2. 開発環境
 開発環境は、ルネサス エレクトロニクス株式会社の統合開発環境e2studioを使用します。  
@@ -142,6 +143,7 @@ ARMv8-Mの機能によりスタックポインタを監視しています。ス�
 | EK-RA6M3       | P613(TXD7) | P614(RXD7) |
 | EK-RA8M1       | P310(TXD3) | P309(RXD3) |
 | Arduino UNO R4 | P302(TXD2) | P301(RXD2) |
+| RA4M1 Clicker  | P411(TXD0) | P410(RXD0) |
 
 
 ## 2.3. 標準ヘッダファイルの使用
@@ -210,14 +212,15 @@ A/DCデバイスドライバから使用するA/Dコンバータの設定をe2st
 
 (参考) 各ボードのArduino互換インタフェースのアナログ入力(A0～A5)と、マイコンのA/Dコンバータの入力の対応は以下の通りです。  
 
-| Arduinoアナログ入力 | EK-RA6M3   | EK-RA8M1    | Arduino UNO R4 |
-| ------------- | ---------- | ----------- | -------------- |
-| A0            | P000/AN000 | P004(AN000) | P014/AN009     |
-| A1            | P001/AN001 | P003(AN104) | P000/AN000     |
-| A2            | P002/AN002 | P007(AN004) | P001/AN001     |
-| A3            | P507/AN119 | P001(AN101) | P002/AN002     |
-| A4            | P508/AN020 | P014(AN007) | P101/AN021     |
-| A5            | P014/AN005 | P015(AN105) | P100/AN022     |
+| アナログ入力      | EK-RA6M3   | EK-RA8M1   | Arduino UNO R4 | RA4M1 Clicker |
+| ----------- | ---------- | ---------- | -------------- | ------------- |
+| Arduino A0  | P000/AN000 | P004/AN000 | P014/AN009     | -             |
+| Arduino A1  | P001/AN001 | P003/AN104 | P000/AN000     | -             |
+| Arduino A2  | P002/AN002 | P007/AN004 | P001/AN001     | -             |
+| Arduino A3  | P507/AN119 | P001/AN101 | P002/AN002     | -             |
+| Arduino A4  | P508/AN020 | P014/AN007 | P101/AN021     | -             |
+| Arduino A5  | P014/AN005 | P015/AN105 | P100/AN022     | -             |
+| microBUS AN | P000/AN000 | P004/AN000 | -              | P000/AN000    |
 
 (2) HALの設定
 `Stacks Configuration`で、`New Stack` → `Analog` → `ADC(r_adc)`を選択し、プロパティの`Module g_adc0 ADC(r_adc)`の各項目を以下のように設定します。  
@@ -344,14 +347,16 @@ I2Cデバイスドライバから使用するI2Cの設定をe2studioで行いま
 
 (参考) 各ボードのI2C信号と、マイコンのI2C端子の対応は以下の通りです。  
 
-| ボードのI2C信号  | EK-RA6M3      | EK-RA8M1      | Arduino UNO R4 |
-| --------------- | ------------- | ------------- | -------------- |
-| Grove-1 I2C SDA | P409/SCI3_SDA | P401/I3C_SDA0 | -              |
-| Grove-1 I2C SCL | P408/SCI3_SCL | P400/I3C_SCL0 | -              |
-| Grove-2 I2C SDA | P409/SCI3_SDA | P511/SDA1     | -              |
-| Grove-2 I2C SCL | P408/SCI3_SCL | P512/SCL1     | -              |
-| Arduino I2C SDA | P511/SDA2     | P401/I3C_SDA0 | P101/SDA1      |
-| Arduino I2C SCL | P512/SCL2     | P400/I3C_SCL0 | P100/SCL1      |
+| ボードのI2C信号        | EK-RA6M3      | EK-RA8M1      | Arduino UNO R4 | RA4M1 Clicker |
+| ---------------- | ------------- | ------------- | -------------- | ------------- |
+| Grove-1 I2C SDA  | P409/SCI_SDA3 | P401/I3C_SDA0 | -              | -             |
+| Grove-1 I2C SCL  | P408/SCI_SCL3 | P400/I3C_SCL0 | -              | -             |
+| Grove-2 I2C SDA  | P409/SCI_SDA3 | P511/IIC_SDA1 | -              | -             |
+| Grove-2 I2C SCL  | P408/SCI_SCL3 | P512/IIC_SCL1 | -              | -             |
+| Arduino I2C SDA  | P511/IIC_SDA2 | P401/I3C_SDA0 | P101/SCI_SDA0  | -             |
+| Arduino I2C SCL  | P512/IIC_SCL2 | P400/I3C_SCL0 | P100/SCI_SCL0  | -             |
+| mikroBUS I2C SDA | P511/IIC_SDA2 | P401/I3C_SDA0 | -              | P206/IIC_SDA1 |
+| mikroBUS I2C SCL | P512/IIC_SCL2 | P400/I3C_SCL0 | -              | P205/IIC_SCL1 |
 
 **注意**  EK-RA8M1ボードではGrove-1およびArduinoのI2CインタフェースをI2Cとして使用する場合は、以下の端子の設定を行ってください。  
 
@@ -517,9 +522,11 @@ e2studioにはRAマイコン用のFSPがインストールされていること�
 
 (1) メニュー[ファイル]→[新規]→[Renesas C/C++ Project]→[Renesas RA]を選択します。   
 (2) [Renesas RA C/C++ Project] を選択します。  
-(3) 対象のマイコンボードを選択します。対象ボードが無い場合は`Custom User Board`を選択し、`Device`を指定します。  
-Arduino UNO R4はボードの選択できませんので以下のように設定してください。  
+(3) 対象のマイコンボードを選択します。対象ボードが無い場合は`Custom User Board`を選択し、`Device`を設定します。  
+(4) [Project Template Selection]は`Bare Metal - Minimal`を選択します。  
+(5) マイコンのピン設定やクロック、その他ハードウェアの設定を、開発するアプリケーションに応じて行ってください。  
 
+Arduino UNO R4の主な設定
 - Board : Custom User Board
 - Device : R7FA4M1AB3CFM
 - クロックの設定  
@@ -528,8 +535,16 @@ Arduino UNO R4はボードの選択できませんので以下のように設定
   - Clock src : HOCO
 - Subclock Populated: Not Populated
 
-(4) [Project Template Selection]は`Bare Metal - Minimal`を選択します。  
-(5) マイコンのピン設定やクロック、その他ハードウェアの設定を、開発するアプリケーションに応じて行ってください。  
+RA4M1 Clickerの主な設定
+- Board : Custom User Board
+- Device : R7FA4M1AB3CFM
+- クロックの設定  
+  - XTAL : 12MHz
+  - PLL Src : XTAL
+  - PLL : 48MHz
+  - Clock src : PLL
+- Subclock Populated: Populated
+
 
 ## 4.2. μT-Kernel 3.0 BSP2の組込み
 ### 4.2.1. ソースコードの組込み
@@ -559,6 +574,7 @@ gitのコマンドを使用する場合は、プロジェクトのディレク�
 | EK-RA6M3       | \_RAFSP_EK_RA6M3_      |
 | EK-RA8M1       | \_RAFSP_EK_RA8M1_      |
 | Arduino UNO R4 | \_RAFSP_ARDUINO_UNOR4_ |
+| RA4M1 Clicker  | \_RAFSP_CLICKER_RA4M1_ |
 
 
 (2) [GNU Arm Cross C Compiler]→[includes]  
@@ -696,10 +712,11 @@ EXPORT INT usermain(void)
 
 # 5. 変更履歴
 
-| 版数      | 日付         | 内容   |
-| ------- | ---------- | ---- |
-| 1.00.B4 | 2024.05.24 | 誤記修正 |
-| 1.00.B3 | 2024.04.10 | I2Cデバイスの説明を補足 |
-| 1.00.B2 | 2024.03.21 | 誤記修正 |
+| 版数      | 日付         | 内容                                                      |
+| ------- | ---------- | ------------------------------------------------------- |
+| 1.00.B5 | 2024.09.05 | 対応ボードにRA4M1 Clickerを追加。関連情報の記載                          |
+| 1.00.B4 | 2024.05.24 | 誤記修正                                                    |
+| 1.00.B3 | 2024.04.10 | I2Cデバイスの説明を補足                                           |
+| 1.00.B2 | 2024.03.21 | 誤記修正                                                    |
 | 1.00.B1 | 2024.02.29 | </br>- 対応ボードにEK-RA8M1を追加。関連情報の記載</br>- デバイスドライバなどの内容を更新 |
-| 1.00.B0 | 2023.12.15 | 新規作成 |
+| 1.00.B0 | 2023.12.15 | 新規作成                                                    |
