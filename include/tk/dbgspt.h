@@ -20,4 +20,6 @@
 #ifndef _MTKBSP_TK_DBGSPT_H_
 #define _MTKBSP_TK_DBGSPT_H_
 
+#include <mtkernel/include/tk/dbgspt.h>
+
 #endif /* _MTKBSP_TK_DBGSPT_H_ */
