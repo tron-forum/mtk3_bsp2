@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル  <!-- omit in toc -->
 ## ModusToolBox編  <!-- omit in toc -->
-## Version 01.00.B0 <!-- omit in toc -->
-## 2024.5.24  <!-- omit in toc -->
+## Version 01.00.B1 <!-- omit in toc -->
+## 2024.09.05  <!-- omit in toc -->
 
 - [1. はじめに](#1-はじめに)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -292,21 +292,39 @@ I2CデバイスドライバはMTB CAT1 Peripheral driver libraryを使用して�
 
 ### 3.2.2. デバイスドライバの使用方法
 (1) ModusToolboxの設定
-I2Cデバイスドライバから使用するSerial Communication Block(SCB)と端子の設定をModusToolboxで行います。  
-ModusToolboxでプロジェクトを右クリックして、メニューの中から`Device Configurator 4.20`を選び、`Peripherals`で使用するSCBデバイス、`Pins`で使用する端子を設定します。    
+I2Cデバイスドライバから使用するSerial Communication Block(SCB)と端子の設定をModusToolboxのDevice Configuratorを用いて調整します。
 
 (参考) 各ボードのArduino互換インタフェースのI2C信号と、マイコンのI2C端子の対応は以下の通りです。  
 
-| ボードのI2C信号       | マイコンのI2C端子   |
-| --------------- | ------------ |
-| Arduino I2C SCL | P15.2/SCB9_SCL |
-| Arduino I2C SDA | P15.1/SCB9_SDA |
+| ボードのI2C信号 | マイコンのI2C端子 |
+| --------------- | ----------------- |
+| Arduino I2C SCL | P15.2 / SCB9_SCL  |
+| Arduino I2C SDA | P15.1 / SCB9_SDA  |
 
-`Device Configurator`で`Peripherals`から使用するSCBを選択し設定を行います。  
-`Personality`にてSCBのモードを`I2C-4.0`に設定します。  
-`Serial Communication Block(SCB)9 - Parameters`で`General`の`Mode`を`Master`に、`Connections`の`Clock`を`16 bit Divider 1 clk`に、`SCL`を`P15[2] digital_inout(CYBSP_I2C_SCL)`、 `SDA`を`P15[1] digital_inout(CYBSP_I2C_SDA)`に設定します。
-`Pins`で`Port 15`の`P15[1]`と`P15[2]`を有効にし、それぞれの端子の`Parameters`で`General`の`Drive Mode`を`Open Drain, Drives High.Input buffer on`に、`Internal Connection`の`Digital InOut`を`Serial Communication Block(SCB)9 I2C.scl/sda`にします。その他の設定はデフォルトの設定値を前提としています。  
-設定後に保存をすると、ModusToolboxのビルドでソースコードが自動生成されます。  
+1. `Project Explorer`の中から、`μT-Kernel 3.0のプロジェクト`を選択します。
+1. `Quick Panel`の中から`Device Configurator X.XX`を選択します。
+   - `X.XX`はDevice Configuratorのバージョンです。
+1. `Device Configurator`の`Peripherals`タブを開きます。
+1. `Communication`を開き、使用する`SCB9`を選択します(チェックボックスにチェックを入れる)。
+1. `Personality`として`I2C-4.0`を選択します。
+1. `Serial Communication Block(SCB)9`を選択すると右側に`Parameters`が表示されるので、以下の設定にします。
+   - `General`の`Mode` : `Master`
+   - `Connections`の`Clock` : `16 bit Divider 1 clk`
+   - `Connections`の`SCL` : `P15[2] digital_inout(CYBSP_I2C_SCL)`
+   - `Connections`の`SDA` : `P15[1] digital_inout(CYBSP_I2C_SDA)`
+2. `Device Configurator`の`Pins`タブを開きます。
+2. `Port 15`の`P15[1]`と`P15[2]`を有効にします(チェックボックスにチェックを入れる)。
+2. `P15[1]`を選択すると、左側に`P15[1] (CYBSP_I2C_SDA) - Parameters`が表示されるので、以下の設定にします。
+   - `General`の`Drive Mode` : `Open Drain Drives Low. Input buffer on`
+   - `Internal Connection`の`Digital InOut` : `Serial Communication Block(SCB)9 I2C.sda`
+2. `P15[2]`を選択すると、左側に`P15[2] (CYBSP_I2C_SCL) - Parameters`が表示されるので、以下の設定にします。
+   - `General`の`Drive Mode` : `Open Drain Drives Low. Input buffer on`
+   - `Internal Connection`の`Digital InOut` : `Serial Communication Block(SCB)9 I2C.scl`
+3. 設定を保存してDevice Configuratorを終了します。
+
+他の項目はデフォルトのまま変更しません。
+
+ModusToolboxのビルド時に、上記の設定に合わせたソースコードが自動生成されます。  
 
 (2) デバイスドライバの初期化
 I2Cデバイスドライバを使用するにあたり、最初に`dev_init_hal_i2c`関数で初期化を行います。これにより、指定したHALが関連付けられたI2Cデバイスドライバが生成されます。本関数は以下のように定義されます。   
@@ -550,4 +568,5 @@ EVK-XMC7200ボードではデバッガはボード上に搭載されています
 
 | 版数      | 日付         | 内容   |
 | ------- | ---------- | ---- |
+| 1.00.B1 | 2024.09.05 | 「3.2.2. デバイスドライバの使用方法」記述変更 |
 | 1.00.B0 | 2024.05.24 | 新規作成 |
