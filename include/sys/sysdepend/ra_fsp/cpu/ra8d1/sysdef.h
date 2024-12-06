@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/08.
  *
  *----------------------------------------------------------------------
  */
@@ -14,7 +14,7 @@
 /*
  *	sysdef.h
  *
- *	System dependencies definition (RA8D1 depended)
+ *	System dependencies definition (RA8M1 depended)
  *	Included also from assembler program.
  */
 

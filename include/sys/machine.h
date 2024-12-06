@@ -57,6 +57,9 @@
 #elif defined(_RAFSP_EK_RA8M1_)
 #include <sys/sysdepend/ra_fsp/ek_ra8m1/machine.h>
 
+#elif defined(_RAFSP_EK_RA8D1_)
+#include <sys/sysdepend/ra_fsp/ek_ra8d1/machine.h>
+
 #elif defined(_RAFSP_CLICKER_RA4M1_)
 #include <sys/sysdepend/ra_fsp/clicker_ra4m1/machine.h>
 
