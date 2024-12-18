@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/12.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/02.
  *
  *----------------------------------------------------------------------
  */
@@ -14,7 +14,7 @@
 /*
  *	profile.h
  *
- *	Service Profile (EK-RA8D1)
+ *	Service Profile (EK-RA8M1)
  */
 
 #ifndef _MTKBSP_SYS_DEPEND_PROFILE_H_
@@ -26,7 +26,7 @@
 #include <sys/sysdepend/ra_fsp/cpu/core/armv8m/profile.h>
 
 /*
- **** Target-depeneded profile (RA FSP EK-RA8D1)
+ **** Target-depeneded profile (RA FSP EK-RA8M1)
  */
 
 /*

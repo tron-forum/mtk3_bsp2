@@ -27,8 +27,8 @@
 
 /* 
 	Use SCI3(Serial communication interface 3) 
-		P310: TXD
-		P309: RXD
+		P409: TXD
+		P408: RXD
  */
 /* register definition (SCI3) */
 #define SCI3_BASE	(0x40358300)

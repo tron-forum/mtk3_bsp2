@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル <!-- omit in toc -->
 ## RA FSP編 <!-- omit in toc -->
-## Version 01.00.B5 <!-- omit in toc -->
-## 2024.09.05 <!-- omit in toc -->
+## Version 01.00.B6 <!-- omit in toc -->
+## 2024.12.20 <!-- omit in toc -->
 
 - [1. 概要](#1-概要)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -49,6 +49,7 @@
 | -------------- | -------------------- | -------------- | -------------------------------- |
 | EK-RA6M3       | RA6M3(R7FA6M3AH3CFC) | Arm Cortex-M4  | ルネサス エレクトロニクス RA6M3 MCUグループ評価キット |
 | EK-RA8M1       | RA8M1(R7FA8M1AHECBD) | Arm Cortex-M85 | ルネサス エレクトロニクス RA8M1 MCUグループ評価キット |
+| EK-RA8D1       | RA8D1(R7FA8D1BHECBD) | Arm Cortex-M85 | ルネサス エレクトロニクス RA8D1 MCUグループ評価キット |
 | Arduino UNO R4 | RA4M1(R7FA4M1AB3CFM) | Arm Cortex-M4  |                                  |
 | RA4M1 Clicker  | RA4M1(R7FA4M1AB3CFM) | Arm Cortex-M4  | MikroElektronika                 |
 
@@ -57,8 +58,8 @@
 また、ファームウェアとして、FSP(Flexible Software Package )を使用します。  
 本書では以下のバージョンで動作を確認しています。  
 
-`Renesas e² studio Version: 2023-10 (23.10.0)`  
-`FSP version 5.1.0`  
+`Renesas e² studio Version: 2024-10 (24.10.0)`  
+`FSP version 5.6.0`  
 
 詳しくは以下のWebサイトをご覧ください。
 
@@ -72,7 +73,7 @@ https://www.renesas.com/jp/ja/software-tool/flexible-software-package-fsp
 μT-Kernel 3.0 BSP2は、リアルタイムOS μT-Kernel 3.0と、対象マイコンボード用の依存部プログラムおよびサンプルのデバイスドライバから構成されます。  
 μT-Kernel 3.0は以下のバージョンを使用しています。  
 
-- μT-Kernel 3.0 (v3.00.07.B0)
+- μT-Kernel 3.0 (v3.00.07)
 
 μT-Kernel 3.0 BSP2のファイル構成を以下に示します。
 
@@ -138,12 +139,13 @@ ARMv8-Mの機能によりスタックポインタを監視しています。ス�
 またペリフェラルへの供給クロックの設定を行ってください。低消費電力モードの解除は本機能の初期化で行いますので必要ありません。  
 以下にデバッグ用シリアル出力で使用するマイコンの端子を示します。  
 
-| マイコンボード        | TX端子       | RX端子       |
-| -------------- | ---------- | ---------- |
-| EK-RA6M3       | P613(TXD7) | P614(RXD7) |
-| EK-RA8M1       | P310(TXD3) | P309(RXD3) |
-| Arduino UNO R4 | P302(TXD2) | P301(RXD2) |
-| RA4M1 Clicker  | P411(TXD0) | P410(RXD0) |
+| マイコンボード        | TX端子       | RX端子       | 備考            |
+| -------------- | ---------- | ---------- | ------------- |
+| EK-RA6M3       | P613(TXD7) | P614(RXD7) | Arduino互換コネクタ |
+| EK-RA8M1       | P310(TXD3) | P309(RXD3) | Arduino互換コネクタ |
+| EK-RA8D1       | P409(TXD3) | P408(RXD3) | Arduino互換コネクタ |
+| Arduino UNO R4 | P302(TXD2) | P301(RXD2) | Arduinoコネクタ   |
+| RA4M1 Clicker  | P411(TXD0) | P410(RXD0) |               |
 
 
 ## 2.3. 標準ヘッダファイルの使用
@@ -212,15 +214,15 @@ A/DCデバイスドライバから使用するA/Dコンバータの設定をe2st
 
 (参考) 各ボードのArduino互換インタフェースのアナログ入力(A0～A5)と、マイコンのA/Dコンバータの入力の対応は以下の通りです。  
 
-| アナログ入力      | EK-RA6M3   | EK-RA8M1   | Arduino UNO R4 | RA4M1 Clicker |
-| ----------- | ---------- | ---------- | -------------- | ------------- |
-| Arduino A0  | P000/AN000 | P004/AN000 | P014/AN009     | -             |
-| Arduino A1  | P001/AN001 | P003/AN104 | P000/AN000     | -             |
-| Arduino A2  | P002/AN002 | P007/AN004 | P001/AN001     | -             |
-| Arduino A3  | P507/AN119 | P001/AN101 | P002/AN002     | -             |
-| Arduino A4  | P508/AN020 | P014/AN007 | P101/AN021     | -             |
-| Arduino A5  | P014/AN005 | P015/AN105 | P100/AN022     | -             |
-| microBUS AN | P000/AN000 | P004/AN000 | -              | P000/AN000    |
+| アナログ入力      | EK-RA6M3   | EK-RA8M1   | EK-RA8D1   | Arduino UNO R4 | RA4M1 Clicker |
+| ----------- | ---------- | ---------- | ---------- | -------------- | ------------- |
+| Arduino A0  | P000/AN000 | P004/AN000 | P004/AN000 | P014/AN009     | -             |
+| Arduino A1  | P001/AN001 | P003/AN104 | P003/AN104 | P000/AN000     | -             |
+| Arduino A2  | P002/AN002 | P007/AN004 | P007/AN004 | P001/AN001     | -             |
+| Arduino A3  | P507/AN119 | P001/AN101 | P011/AN106 | P002/AN002     | -             |
+| Arduino A4  | P508/AN020 | P014/AN007 | P014/AN007 | P101/AN021     | -             |
+| Arduino A5  | P014/AN005 | P015/AN105 | P015/AN105 | P100/AN022     | -             |
+| microBUS AN | P000/AN000 | P004/AN000 | P004/AN000 | -              | P000/AN000    |
 
 (2) HALの設定
 `Stacks Configuration`で、`New Stack` → `Analog` → `ADC(r_adc)`を選択し、プロパティの`Module g_adc0 ADC(r_adc)`の各項目を以下のように設定します。  

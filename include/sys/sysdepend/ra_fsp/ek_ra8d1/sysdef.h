@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/12.
  *
  *----------------------------------------------------------------------
  */
@@ -14,7 +14,7 @@
 /*
  *	sysdef.h
  *
- *	System dependencies definition (EK-RA8M1)
+ *	System dependencies definition (EK-RA8D1)
  *	Included also from assembler program.
  */
 
@@ -22,7 +22,7 @@
 #define _MTKBSP_SYS_SYSDEF_DEPEND_H_
 
 /* CPU-dependent definition */
-#include <sys/sysdepend/ra_fsp/cpu/ra8m1/sysdef.h>
+#include <sys/sysdepend/ra_fsp/cpu/ra8d1/sysdef.h>
 
 
 /* ------------------------------------------------------------------------ */
