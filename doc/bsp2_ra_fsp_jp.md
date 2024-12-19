@@ -135,18 +135,16 @@ ARMv8-Mの機能によりスタックポインタを監視しています。ス�
 | Stop Bit | 1bit      |
 | フロー制御    | 無し        |
 
-シリアル信号はボードのArduino互換コネクタのTXおよびRXを使用します。本機能を使用する場合は、FSPのコンフィギュレーションにより、これらの端子を`Peripheral mode`に設定します。
-またペリフェラルへの供給クロックの設定を行ってください。低消費電力モードの解除は本機能の初期化で行いますので必要ありません。  
-以下にデバッグ用シリアル出力で使用するマイコンの端子を示します。  
+マイコンボードのシリアル通信信号を使用します。本機能を使用する場合は、FSPのコンフィギュレーションにより、これらの端子を`Peripheral mode`とし使用するペリフェラルに設定します。  
+またペリフェラルへクロックを供給するように設定を行ってください。低消費電力モードの解除は本機能の初期化で行いますので必要ありません。  
+以下にデバッグ用シリアル出力で使用するマイコンボードの信号を示します。  
 
-| マイコンボード        | TX端子       | RX端子       | 備考            |
-| -------------- | ---------- | ---------- | ------------- |
-| EK-RA6M3       | P613(TXD7) | P614(RXD7) | Arduino互換コネクタ |
-| EK-RA8M1       | P310(TXD3) | P309(RXD3) | Arduino互換コネクタ |
-| EK-RA8D1       | P409(TXD3) | P408(RXD3) | Arduino互換コネクタ |
-| Arduino UNO R4 | P302(TXD2) | P301(RXD2) | Arduinoコネクタ   |
-| RA4M1 Clicker  | P411(TXD0) | P410(RXD0) |               |
-
+| 信号          | EK-RA6M3   | EK-RA8M1   | EK-RA8D1   | Arduino UNO R4 | RA4M1 Clicker |     |     |
+| ----------- | ---------- | ---------- | ---------- | -------------- | ------------- | --- | --- |
+| Arduino TX  | P613(TXD7) | P310(TXD3) | P409(TXD3) | P302(TXD2)     | -             |     |     |
+| Arduino RX  | P614(RXD7) | P309(RXD3) | P408(RXD3) | P301(RXD2)     | -             |     |     |
+| mikroBUS TX | -          | -          | -          | -              | P411(TXD0)    |     |     |
+| mikroBUS RX | -          | -          | -          | -              | P410(RXD0)    |     |     |
 
 ## 2.3. 標準ヘッダファイルの使用
 C言語の標準ヘッダファイルの使用が可能です。また、μT-Kernel 3.0のプログラムでも、<stddef.h>および<stdint.h>を使用しています。  
@@ -212,7 +210,7 @@ A/DCデバイスドライバはFSPのHALを使用していますので、A/DCの
 A/DCデバイスドライバから使用するA/Dコンバータの設定をe2studioで行います。  
 `Pin Configuration`で使用する端子の`Mode`を`Analog mode`に設定します。  
 
-(参考) 各ボードのArduino互換インタフェースのアナログ入力(A0～A5)と、マイコンのA/Dコンバータの入力の対応は以下の通りです。  
+(参考) 各ボードのアナログ入力信号と、マイコンのA/Dコンバータの入力の対応は以下の通りです。  
 
 | アナログ入力      | EK-RA6M3   | EK-RA8M1   | EK-RA8D1   | Arduino UNO R4 | RA4M1 Clicker |
 | ----------- | ---------- | ---------- | ---------- | -------------- | ------------- |
@@ -310,10 +308,10 @@ I2Cデバイスドライバは、マイコン内蔵のI2C通信デバイスを�
 本BSPでは以下のデバイスに対応したI2Cデバイスドライバがあります。 
 
 | デバイス名 | BSPのデバイス名 | 説明                               |
-| ------- | --------- | -------------------------------- |
-| IIC     | hiic      | IICバスインタフェース                     |
-| SCI     | hsiic     | シリアルコミュニケーションインタフェースSCIの簡易IICモード |
-| I3C | htiic | I3CバスインタフェースのI2Cバスインタフェース機能 |
+| ----- | --------- | -------------------------------- |
+| IIC   | hiic      | IICバスインタフェース                     |
+| SCI   | hsiic     | シリアルコミュニケーションインタフェースSCIの簡易IICモード |
+| I3C   | htiic     | I3CバスインタフェースのI2Cバスインタフェース機能      |
   
 デバイスドライバは内部の処理でFSPのHALを利用しています。本デバイスドライバはFSPのHALをμT-Kernel 3.0 で使用する方法を示すサンプルプログラムであり、デバイスの基本的な機能のみに対応しています。  
 以下にI2Cデバイスドライバのソースコードがあります。
@@ -345,28 +343,40 @@ I2CデバイスドライバはFPSのHALを使用していますので、I2CのHA
 ### 3.2.2. デバイスドライバの使用方法
 (1) I2C(ハードウェア)の設定  
 I2Cデバイスドライバから使用するI2Cの設定をe2studioで行います。  
-`Pin Configuration`で使用する端子のModeを`Peripheral mode`に設定します。  
+`Pin Configuration`で使用する端子のModeを`Peripheral mode`とし、使用するペリフェラルに設定します。  
+またペリフェラルへクロックを供給するように設定を行ってください。  
 
 (参考) 各ボードのI2C信号と、マイコンのI2C端子の対応は以下の通りです。  
 
-| ボードのI2C信号        | EK-RA6M3      | EK-RA8M1      | Arduino UNO R4 | RA4M1 Clicker |
-| ---------------- | ------------- | ------------- | -------------- | ------------- |
-| Grove-1 I2C SDA  | P409/SCI_SDA3 | P401/I3C_SDA0 | -              | -             |
-| Grove-1 I2C SCL  | P408/SCI_SCL3 | P400/I3C_SCL0 | -              | -             |
-| Grove-2 I2C SDA  | P409/SCI_SDA3 | P511/IIC_SDA1 | -              | -             |
-| Grove-2 I2C SCL  | P408/SCI_SCL3 | P512/IIC_SCL1 | -              | -             |
-| Arduino I2C SDA  | P511/IIC_SDA2 | P401/I3C_SDA0 | P101/SCI_SDA0  | -             |
-| Arduino I2C SCL  | P512/IIC_SCL2 | P400/I3C_SCL0 | P100/SCI_SCL0  | -             |
-| mikroBUS I2C SDA | P511/IIC_SDA2 | P401/I3C_SDA0 | -              | P206/IIC_SDA1 |
-| mikroBUS I2C SCL | P512/IIC_SCL2 | P400/I3C_SCL0 | -              | P205/IIC_SCL1 |
+| ボードのI2C信号        | EK-RA6M3      | EK-RA8M1      | EK-RA8D1      | Arduino UNO R4 | RA4M1 Clicker |
+| ---------------- | ------------- | ------------- | ------------- | -------------- | ------------- |
+| Grove-1 I2C SDA  | P409/SCI_SDA3 | P401/I3C_SDA0 | P511/IIC_SDA1 | -              | -             |
+| Grove-1 I2C SCL  | P408/SCI_SCL3 | P400/I3C_SCL0 | P512/IIC_SCL1 | -              | -             |
+| Grove-2 I2C SDA  | P409/SCI_SDA3 | P511/IIC_SDA1 | P401/I3C_SDA0 | -              | -             |
+| Grove-2 I2C SCL  | P408/SCI_SCL3 | P512/IIC_SCL1 | P400/I3C_SCL0 | -              | -             |
+| Arduino I2C SDA  | P511/IIC_SDA2 | P401/I3C_SDA0 | P401 I3C_SDA0 | P101/SCI_SDA0  | -             |
+| Arduino I2C SCL  | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P100/SCI_SCL0  | -             |
+| mikroBUS I2C SDA | P511/IIC_SDA2 | P401/I3C_SDA0 | P401 I3C_SDA0 | -              | P206/IIC_SDA1 |
+| mikroBUS I2C SCL | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | -              | P205/IIC_SCL1 |
 
-**注意**  EK-RA8M1ボードではGrove-1およびArduinoのI2CインタフェースをI2Cとして使用する場合は、以下の端子の設定を行ってください。  
+**注意**  
+- 使用するI2C信号を有効にするためにマイコンボードのディップスイッチやジャンパーの設定が必要な場合があります。各ボードのマニュアルをご覧ください。
+- 使用するI2C信号を有効にするために定められたポート出力が必要な場合があります。各ボードのマニュアルをご覧ください。
+
+  (例) EK-RA8M1ボードの場合  
 
 | 端子   | 設定                         |
 | ---- | -------------------------- |
 | P115 | Output mode (Initial Low)  |
 | P711 | Output mode (Initial High) |
 | PB00 | Output mode (Initial High) |
+
+  (例) EK-RAD1の場合
+
+| 端子   | 設定                         |
+| ---- | -------------------------- |
+| P711 | Output mode (Initial High)  |
+| PB02 | Output mode (Initial High) |
 
 (2) HALの設定
 `Stacks Configuration`で、`New Stack` → `Connectivity`から対象のI2Cペリフェラルを選択します。
@@ -575,6 +585,7 @@ gitのコマンドを使用する場合は、プロジェクトのディレク�
 | -------------- | ---------------------- |
 | EK-RA6M3       | \_RAFSP_EK_RA6M3_      |
 | EK-RA8M1       | \_RAFSP_EK_RA8M1_      |
+| EK-RA8D1       | \_RAFSP_EK_RA8D1_      |
 | Arduino UNO R4 | \_RAFSP_ARDUINO_UNOR4_ |
 | RA4M1 Clicker  | \_RAFSP_CLICKER_RA4M1_ |
 
@@ -716,6 +727,7 @@ EXPORT INT usermain(void)
 
 | 版数      | 日付         | 内容                                                      |
 | ------- | ---------- | ------------------------------------------------------- |
+| 1.00.B6 | 2024.12.20 | 対応ボードにEK-RA8D1を追加。関連情報の記載
 | 1.00.B5 | 2024.09.05 | 対応ボードにRA4M1 Clickerを追加。関連情報の記載                          |
 | 1.00.B4 | 2024.05.24 | 誤記修正                                                    |
 | 1.00.B3 | 2024.04.10 | I2Cデバイスの説明を補足                                           |
