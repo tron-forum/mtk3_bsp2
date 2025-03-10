@@ -19,13 +19,19 @@
 #define _MTKBSP_SYSDEPEND_HALIF_
 #include <stdint.h>
 
-
 /* Get clock frequency (CMSIS wrapper function)*/
+IMPORT UW SystemCoreClock;
 
+uint32_t HAL_RCC_GetCpuClockFreq(void);
 uint32_t HAL_RCC_GetSysClockFreq(void);
 uint32_t HAL_RCC_GetHCLKFreq(void);
 uint32_t HAL_RCC_GetPCLK1Freq(void);
 uint32_t HAL_RCC_GetPCLK2Freq(void);
+
+Inline uint32_t halif_get_cpuclk(void)
+{
+	return HAL_RCC_GetCpuClockFreq();
+}
 
 Inline uint32_t halif_get_sysclk(void)
 {
