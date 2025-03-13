@@ -25,6 +25,7 @@ By using μT-Kernel 3.0 BSP2, you can use the real-time OS μT-Kernel 3.0 on the
 | NUCLEO-G491RE | STM32G491RE | STM32Cube IDE |STMicroelectronics |
 | NUCLEO-F767ZI | STM32F767ZI | STM32Cube IDE |STMicroelectronics |
 | NUCLEO-H723ZG | STM32H723ZG | STM32Cube IDE |STMicroelectronics |
+| STM32N6570-DK | STM32N657X0 | STM32Cube IDE |STMicroelectronics |
 | EK-RA8M1      | RA8M1       | e2studio      |Renesas            |
 | EK-RA8D1      | RA8D1       | e2studio      |Renesas            |
 | EK-RA6M3      | RA6M3       | e2studio      |Renesas            |
