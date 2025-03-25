@@ -28,6 +28,20 @@
 
 /* ------------------------------------------------------------------------ */
 /*
+ * Internal Memorie (Main RAM)
+ */
+#define INTERNAL_RAM_START      0x20000000
+
+#if defined(MTKBSP_CPU_STM32L476)
+#define INTERNAL_RAM_SIZE       0x00018000	/* SRAM1 Size 96KB */
+#elif defined(MTKBSP_CPU_STM32L4R5)
+#define INTERNAL_RAM_SIZE       0x000A0000	/* SRAM Size 640KB */
+#endif
+
+#define INTERNAL_RAM_END        (INTERNAL_RAM_START+INTERNAL_RAM_SIZE)
+
+/* ------------------------------------------------------------------------ */
+/*
  * System Timer clock
  */
 
@@ -46,6 +60,16 @@
  */
 #define	N_SYSVEC		16	/* Number of System Exceptions */
 
+#if defined(MTKBSP_CPU_STM32L476)
+#define N_INTVEC		82	/* Number of Interrupt vectors */
+#elif defined(MTKBSP_CPU_STM32L4R5)
+#define N_INTVEC		95	/* Number of Interrupt vectors */
+#endif
+
+/*
+ * Exception vector table alignment
+*/
+#define	EXCTBL_ALIGN		512
 /*
  * Interrupt Priority Levels
  */
@@ -63,6 +87,12 @@
 /*
  * EXTI (Extended interrupt controller)
  */
+#if defined(MTKBSP_CPU_STM32L476)
+#define	N_EXTIEVT		40	/*  Number of EXTI event input */
+#elif defined(MTKBSP_CPU_STM32L4R5)
+#define	N_EXTIEVT		39	/*  Number of EXTI event input */
+#endif
+
 #define MTK_EXTI_BASE	0x40010400
 
 #define	EXTI_IMR1	(MTK_EXTI_BASE + 0x00)

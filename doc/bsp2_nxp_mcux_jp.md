@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル <!-- omit in toc -->
 ## NXP MCUXpresso編 <!-- omit in toc -->
-## Version 01.00.B4 <!-- omit in toc -->
-## 2024.05.24 <!-- omit in toc -->
+## Version 01.00.B5 <!-- omit in toc -->
+## 2024.09.05 <!-- omit in toc -->
 
 - [1. 概要](#1-概要)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -231,7 +231,7 @@ A/DCデバイスドライバから使用するA/Dコンバータの設定をMCUX
 | その他             | 初期値のまま    |
 
 複数のA/Dコンバータを使用する場合は、必要な数だけ上記を繰り返します。  
-設定後に`Update Code`を押下するとLPADCなどのコードが生成されます。  
+設定後に`Update Code`をクリックするとLPADCなどのコードが生成されます。  
 
 (3) A/DCデバイスドライバの初期化  
 A/DCデバイスドライバを使用するにあたり、最初に`dev_init_hal_adc`関数で初期化を行います。これにより、指定したLPADCドライバが関連付けられたA/DCデバイスドライバが生成されます。本関数は以下のように定義されます。  
@@ -351,7 +351,7 @@ I2Cデバイスドライバから使用するLPI2Cの設定をMCUXpresso IDEで�
 | その他                            | 初期値（必要に応じて設定）                                              |
 
 複数のLPI2Cを使用する場合は、必要な数だけ上記を繰り返します。  
-設定後に`Update Code`を押下するとLPI2Cなどのコードが生成されます。  
+設定後に`Update Code`をクリックするとLPI2Cなどのコードが生成されます。  
 
 (3) I2Cデバイスドライバの初期化  
 I2Cデバイスドライバを使用するにあたり、最初に`dev_init_hal_lpi2c`関数で初期化を行います。これにより、指定したLPI2Cドライバが関連付けられたI2Cデバイスドライバが生成されます。本関数は以下のように定義されます。  
@@ -429,9 +429,9 @@ MCUXpresso IDEには対象とするマイコンボードのMCUXpresso SDKがイ�
 以下の手順で対象マイコンボードのプロジェクトを作成します。  
 
  - メニュー[File]→[New]]→[Create New C/C++ Project]を選択します。  
- - 対象のマイコンボードを選択し、[Next]を押下します。  
- - [Configure th project]のページにて[Project name]に任意の名称を設定します。[Components]から[Drivers]→[Device]→[SDK Drivers]と進み、使用するMCUXpresso SDKのデバイスドライバを選択し、 [Next]を押下します。  
- - [Advanced project setting]のページで必要に応じて設定を行い[Finish]を押下します。
+ - 対象のマイコンボードを選択し、[Next]をクリックします。  
+ - [Configure th project]のページにて[Project name]に任意の名称を設定します。[Components]から[Drivers]→[Device]→[SDK Drivers]と進み、使用するMCUXpresso SDKのデバイスドライバを選択し、 [Next]をクリックします。  
+ - [Advanced project setting]のページで必要に応じて設定を行い[Finish]をクリックします。
 
 以上でプロジェクトが生成され、基本的なソースコードなどが生成されます。  
 
@@ -442,7 +442,7 @@ MCUXpresso IDEには対象とするマイコンボードのMCUXpresso SDKがイ�
  - [Clocks]  CPUやデバイスへ供給するクロックの設定を行います。
  - [Peripherals] MCUXpresso SDKのデバイスドライバの選択、設定などを行います。
 
-設定を終えたのち`Update Code`を押下すると、設定に応じたコードが生成されます。  
+設定を終えたのち`Update Code`をクリックすると、設定に応じたコードが生成されます。  
 
 ## 4.2. μT-Kernel 3.0 BSP2の組込み
 ### 4.2.1. ソースコードの組込み
@@ -621,6 +621,7 @@ EXPORT INT usermain(void)
 
 | 版数      | 日付         | 内容   |
 | ------- | ---------- | ---- |
+| 1.00.B5 | 2024.09.05 | 用語統一(押下→クリック) |
 | 1.00.B4 | 2024.05.24 | 誤記修正 |
 | 1.00.B3 | 2024.05.16 | 「2.2. デバッグ用シリアル出力」機能追加 |
 | 1.00.B2 | 2024.04.12 | 「4.2.2. ビルド設定」　変更、誤字修正 |

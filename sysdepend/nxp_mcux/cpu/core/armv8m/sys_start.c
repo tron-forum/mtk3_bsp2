@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/08.
  *
  *----------------------------------------------------------------------
  */
@@ -26,7 +26,7 @@
 
 /* Exception handler table (RAM) */
 EXPORT UW knl_exctbl[sizeof(UW)*(N_SYSVEC + N_INTVEC)]
-	__attribute__((section(".mtk_exctbl"))) __attribute__ ((aligned(256)));
+	__attribute__((section(".mtk_exctbl"))) __attribute__ ((aligned(EXCTBL_ALIGN)));
 
 EXPORT UW *knl_exctbl_o;	// Exception handler table (Origin)
 

@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/12.
  *
  *----------------------------------------------------------------------
  */
@@ -56,6 +56,12 @@
 
 #elif defined(_RAFSP_EK_RA8M1_)
 #include <sys/sysdepend/ra_fsp/ek_ra8m1/machine.h>
+
+#elif defined(_RAFSP_EK_RA8D1_)
+#include <sys/sysdepend/ra_fsp/ek_ra8d1/machine.h>
+
+#elif defined(_RAFSP_CLICKER_RA4M1_)
+#include <sys/sysdepend/ra_fsp/clicker_ra4m1/machine.h>
 
 #elif defined(_RAFSP_ARDUINO_UNOR4_)
 #include <sys/sysdepend/ra_fsp/arduino_unor4/machine.h>

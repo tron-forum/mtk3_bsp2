@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル <!-- omit in toc -->
 ## RA FSP編 <!-- omit in toc -->
-## Version 01.00.B4 <!-- omit in toc -->
-## 2024.05.24 <!-- omit in toc -->
+## Version 01.00.B6 <!-- omit in toc -->
+## 2024.12.20 <!-- omit in toc -->
 
 - [1. 概要](#1-概要)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -45,19 +45,21 @@
 ## 1.1. 対象マイコンボード
 μT-Kenrel 3.0 BSP2は以下のRAマイコンボードに対応しています。
 
-| マイコンボード        | マイコン                 | CPUコア         | 備考  |
-| -------------- | -------------------- | ------------- | --- |
-| EK-RA6M3       | RA6M3(R7FA6M3AH3CFC) | Arm Cortex-M4 |ルネサス エレクトロニクス RA6M3 MCUグループ評価キット     |
-| EK-RA8M1       | RA8M1(R7FA8M1AHECBD) | Arm Cortex-M85 |ルネサス エレクトロニクス RA8M1 MCUグループ評価キット     |
-| Arduino UNO R4 | RA4M1(R7FA4M1AB3CFM) | Arm Cortex-M4 |     |
+| マイコンボード        | マイコン                 | CPUコア          | 備考                               |
+| -------------- | -------------------- | -------------- | -------------------------------- |
+| EK-RA6M3       | RA6M3(R7FA6M3AH3CFC) | Arm Cortex-M4  | ルネサス エレクトロニクス RA6M3 MCUグループ評価キット |
+| EK-RA8M1       | RA8M1(R7FA8M1AHECBD) | Arm Cortex-M85 | ルネサス エレクトロニクス RA8M1 MCUグループ評価キット |
+| EK-RA8D1       | RA8D1(R7FA8D1BHECBD) | Arm Cortex-M85 | ルネサス エレクトロニクス RA8D1 MCUグループ評価キット |
+| Arduino UNO R4 | RA4M1(R7FA4M1AB3CFM) | Arm Cortex-M4  |                                  |
+| RA4M1 Clicker  | RA4M1(R7FA4M1AB3CFM) | Arm Cortex-M4  | MikroElektronika                 |
 
 ## 1.2. 開発環境
 開発環境は、ルネサス エレクトロニクス株式会社の統合開発環境e2studioを使用します。  
 また、ファームウェアとして、FSP(Flexible Software Package )を使用します。  
 本書では以下のバージョンで動作を確認しています。  
 
-`Renesas e² studio Version: 2023-10 (23.10.0)`  
-`FSP version 5.1.0`  
+`Renesas e² studio Version: 2024-10 (24.10.0)`  
+`FSP version 5.6.0`  
 
 詳しくは以下のWebサイトをご覧ください。
 
@@ -71,7 +73,7 @@ https://www.renesas.com/jp/ja/software-tool/flexible-software-package-fsp
 μT-Kernel 3.0 BSP2は、リアルタイムOS μT-Kernel 3.0と、対象マイコンボード用の依存部プログラムおよびサンプルのデバイスドライバから構成されます。  
 μT-Kernel 3.0は以下のバージョンを使用しています。  
 
-- μT-Kernel 3.0 (v3.00.07.B0)
+- μT-Kernel 3.0 (v3.00.07)
 
 μT-Kernel 3.0 BSP2のファイル構成を以下に示します。
 
@@ -133,16 +135,16 @@ ARMv8-Mの機能によりスタックポインタを監視しています。ス�
 | Stop Bit | 1bit      |
 | フロー制御    | 無し        |
 
-シリアル信号はボードのArduino互換コネクタのTXおよびRXを使用します。本機能を使用する場合は、FSPのコンフィギュレーションにより、これらの端子を`Peripheral mode`に設定します。
-またペリフェラルへの供給クロックの設定を行ってください。低消費電力モードの解除は本機能の初期化で行いますので必要ありません。  
-以下にデバッグ用シリアル出力で使用するマイコンの端子を示します。  
+マイコンボードのシリアル通信信号を使用します。本機能を使用する場合は、FSPのコンフィギュレーションにより、これらの端子を`Peripheral mode`とし使用するペリフェラルに設定します。  
+またペリフェラルへクロックを供給するように設定を行ってください。低消費電力モードの解除は本機能の初期化で行いますので必要ありません。  
+以下にデバッグ用シリアル出力で使用するマイコンボードの信号を示します。  
 
-| マイコンボード        | TX端子       | RX端子       |
-| -------------- | ---------- | ---------- |
-| EK-RA6M3       | P613(TXD7) | P614(RXD7) |
-| EK-RA8M1       | P310(TXD3) | P309(RXD3) |
-| Arduino UNO R4 | P302(TXD2) | P301(RXD2) |
-
+| 信号          | EK-RA6M3   | EK-RA8M1   | EK-RA8D1   | Arduino UNO R4 | RA4M1 Clicker |     |     |
+| ----------- | ---------- | ---------- | ---------- | -------------- | ------------- | --- | --- |
+| Arduino TX  | P613(TXD7) | P310(TXD3) | P409(TXD3) | P302(TXD2)     | -             |     |     |
+| Arduino RX  | P614(RXD7) | P309(RXD3) | P408(RXD3) | P301(RXD2)     | -             |     |     |
+| mikroBUS TX | -          | -          | -          | -              | P411(TXD0)    |     |     |
+| mikroBUS RX | -          | -          | -          | -              | P410(RXD0)    |     |     |
 
 ## 2.3. 標準ヘッダファイルの使用
 C言語の標準ヘッダファイルの使用が可能です。また、μT-Kernel 3.0のプログラムでも、<stddef.h>および<stdint.h>を使用しています。  
@@ -208,16 +210,17 @@ A/DCデバイスドライバはFSPのHALを使用していますので、A/DCの
 A/DCデバイスドライバから使用するA/Dコンバータの設定をe2studioで行います。  
 `Pin Configuration`で使用する端子の`Mode`を`Analog mode`に設定します。  
 
-(参考) 各ボードのArduino互換インタフェースのアナログ入力(A0～A5)と、マイコンのA/Dコンバータの入力の対応は以下の通りです。  
+(参考) 各ボードのアナログ入力信号と、マイコンのA/Dコンバータの入力の対応は以下の通りです。  
 
-| Arduinoアナログ入力 | EK-RA6M3   | EK-RA8M1    | Arduino UNO R4 |
-| ------------- | ---------- | ----------- | -------------- |
-| A0            | P000/AN000 | P004(AN000) | P014/AN009     |
-| A1            | P001/AN001 | P003(AN104) | P000/AN000     |
-| A2            | P002/AN002 | P007(AN004) | P001/AN001     |
-| A3            | P507/AN119 | P001(AN101) | P002/AN002     |
-| A4            | P508/AN020 | P014(AN007) | P101/AN021     |
-| A5            | P014/AN005 | P015(AN105) | P100/AN022     |
+| アナログ入力      | EK-RA6M3   | EK-RA8M1   | EK-RA8D1   | Arduino UNO R4 | RA4M1 Clicker |
+| ----------- | ---------- | ---------- | ---------- | -------------- | ------------- |
+| Arduino A0  | P000/AN000 | P004/AN000 | P004/AN000 | P014/AN009     | -             |
+| Arduino A1  | P001/AN001 | P003/AN104 | P003/AN104 | P000/AN000     | -             |
+| Arduino A2  | P002/AN002 | P007/AN004 | P007/AN004 | P001/AN001     | -             |
+| Arduino A3  | P507/AN119 | P001/AN101 | P011/AN106 | P002/AN002     | -             |
+| Arduino A4  | P508/AN020 | P014/AN007 | P014/AN007 | P101/AN021     | -             |
+| Arduino A5  | P014/AN005 | P015/AN105 | P015/AN105 | P100/AN022     | -             |
+| microBUS AN | P000/AN000 | P004/AN000 | P004/AN000 | -              | P000/AN000    |
 
 (2) HALの設定
 `Stacks Configuration`で、`New Stack` → `Analog` → `ADC(r_adc)`を選択し、プロパティの`Module g_adc0 ADC(r_adc)`の各項目を以下のように設定します。  
@@ -233,7 +236,7 @@ A/DCデバイスドライバから使用するA/Dコンバータの設定をe2st
 |           | その他                         | 初期値のまま              |
 
 複数のA/Dコンバータを使用する場合は、必要な数だけ上記を繰り返します。
-設定後に`Genetate Project Content`を押下するとFSP(HAL)のコードが生成されます。  
+設定後に`Genetate Project Content`をクリックするとFSP(HAL)のコードが生成されます。  
 
 (3) デバイスドライバの初期化  
 A/DCデバイスドライバを使用するにあたり、最初に`dev_init_hal_adc`関数で初期化を行います。これにより、HALが関連付けられたA/DCデバイスドライバが生成されます。本関数は以下のように定義されます。  
@@ -276,7 +279,7 @@ EXPORT ER knl_start_device( void )
 (4) デバイスドライバの操作  
 μT-Kernel 3.0のデバイス管理APIにより、デバイスドライバを操作できます。APIの詳細はμT-Kernel 3.0仕様書を参照してください。    
 最初にオープンAPI tk_opn_devにて対象とするデバイス名を指定しデバイスをオープンします。  
-オープン後はリード同期リードAPI tk_srea_devによりデータを取得することができます。パラメータのデータ開始位置にA/Dコンバータのチャンネルを指定します。  
+オープン後は同期リードAPI tk_srea_devによりデータを取得することができます。パラメータのデータ開始位置にA/Dコンバータのチャンネルを指定します。  
 本デバイスドライバでは、一度のアクセスで一つのチャンネルから1データのみを取得できます。  
 
 以下にA/DCデバイスドライバを使用したサンプル・プログラムを示します。  
@@ -305,10 +308,10 @@ I2Cデバイスドライバは、マイコン内蔵のI2C通信デバイスを�
 本BSPでは以下のデバイスに対応したI2Cデバイスドライバがあります。 
 
 | デバイス名 | BSPのデバイス名 | 説明                               |
-| ------- | --------- | -------------------------------- |
-| IIC     | hiic      | IICバスインタフェース                     |
-| SCI     | hsiic     | シリアルコミュニケーションインタフェースSCIの簡易IICモード |
-| I3C | htiic | I3CバスインタフェースのI2Cバスインタフェース機能 |
+| ----- | --------- | -------------------------------- |
+| IIC   | hiic      | IICバスインタフェース                     |
+| SCI   | hsiic     | シリアルコミュニケーションインタフェースSCIの簡易IICモード |
+| I3C   | htiic     | I3CバスインタフェースのI2Cバスインタフェース機能      |
   
 デバイスドライバは内部の処理でFSPのHALを利用しています。本デバイスドライバはFSPのHALをμT-Kernel 3.0 で使用する方法を示すサンプルプログラムであり、デバイスの基本的な機能のみに対応しています。  
 以下にI2Cデバイスドライバのソースコードがあります。
@@ -340,26 +343,40 @@ I2CデバイスドライバはFPSのHALを使用していますので、I2CのHA
 ### 3.2.2. デバイスドライバの使用方法
 (1) I2C(ハードウェア)の設定  
 I2Cデバイスドライバから使用するI2Cの設定をe2studioで行います。  
-`Pin Configuration`で使用する端子のModeを`Peripheral mode`に設定します。  
+`Pin Configuration`で使用する端子のModeを`Peripheral mode`とし、使用するペリフェラルに設定します。  
+またペリフェラルへクロックを供給するように設定を行ってください。  
 
 (参考) 各ボードのI2C信号と、マイコンのI2C端子の対応は以下の通りです。  
 
-| ボードのI2C信号  | EK-RA6M3      | EK-RA8M1      | Arduino UNO R4 |
-| --------------- | ------------- | ------------- | -------------- |
-| Grove-1 I2C SDA | P409/SCI3_SDA | P401/I3C_SDA0 | -              |
-| Grove-1 I2C SCL | P408/SCI3_SCL | P400/I3C_SCL0 | -              |
-| Grove-2 I2C SDA | P409/SCI3_SDA | P511/SDA1     | -              |
-| Grove-2 I2C SCL | P408/SCI3_SCL | P512/SCL1     | -              |
-| Arduino I2C SDA | P511/SDA2     | P401/I3C_SDA0 | P101/SDA1      |
-| Arduino I2C SCL | P512/SCL2     | P400/I3C_SCL0 | P100/SCL1      |
+| ボードのI2C信号        | EK-RA6M3      | EK-RA8M1      | EK-RA8D1      | Arduino UNO R4 | RA4M1 Clicker |
+| ---------------- | ------------- | ------------- | ------------- | -------------- | ------------- |
+| Grove-1 I2C SDA  | P409/SCI_SDA3 | P401/I3C_SDA0 | P511/IIC_SDA1 | -              | -             |
+| Grove-1 I2C SCL  | P408/SCI_SCL3 | P400/I3C_SCL0 | P512/IIC_SCL1 | -              | -             |
+| Grove-2 I2C SDA  | P409/SCI_SDA3 | P511/IIC_SDA1 | P401/I3C_SDA0 | -              | -             |
+| Grove-2 I2C SCL  | P408/SCI_SCL3 | P512/IIC_SCL1 | P400/I3C_SCL0 | -              | -             |
+| Arduino I2C SDA  | P511/IIC_SDA2 | P401/I3C_SDA0 | P401 I3C_SDA0 | P101/SCI_SDA0  | -             |
+| Arduino I2C SCL  | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P100/SCI_SCL0  | -             |
+| mikroBUS I2C SDA | P511/IIC_SDA2 | P401/I3C_SDA0 | P401 I3C_SDA0 | -              | P206/IIC_SDA1 |
+| mikroBUS I2C SCL | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | -              | P205/IIC_SCL1 |
 
-**注意**  EK-RA8M1ボードではGrove-1およびArduinoのI2CインタフェースをI2Cとして使用する場合は、以下の端子の設定を行ってください。  
+**注意**  
+- 使用するI2C信号を有効にするためにマイコンボードのディップスイッチやジャンパーの設定が必要な場合があります。各ボードのマニュアルをご覧ください。
+- 使用するI2C信号を有効にするために定められたポート出力が必要な場合があります。各ボードのマニュアルをご覧ください。
+
+  (例) EK-RA8M1ボードの場合  
 
 | 端子   | 設定                         |
 | ---- | -------------------------- |
 | P115 | Output mode (Initial Low)  |
 | P711 | Output mode (Initial High) |
 | PB00 | Output mode (Initial High) |
+
+  (例) EK-RAD1の場合
+
+| 端子   | 設定                         |
+| ---- | -------------------------- |
+| P711 | Output mode (Initial High)  |
+| PB02 | Output mode (Initial High) |
 
 (2) HALの設定
 `Stacks Configuration`で、`New Stack` → `Connectivity`から対象のI2Cペリフェラルを選択します。
@@ -395,7 +412,7 @@ I3C (r_i3c)を選択し、プロパティの`Module g_i3c`の各項目を以下�
 | その他              | 初期値のまま               |
 
 複数のI2Cを使用する場合は、必要な数だけ上記を繰り返します。  
-設定後に`Genetate Project Content`を押下するとFSP(HAL)のコードが生成されます。  
+設定後に`Genetate Project Content`をクリックするとFSP(HAL)のコードが生成されます。  
 
 (3) デバイスドライバの初期化  
 I2Cデバイスドライバを使用するにあたり、最初にI2Cデバイスドライバ初期化関数で初期化を行います。これにより、指定したHALが関連付けられたI2Cデバイスドライバが生成されます。本関数は以下のように定義されます。  
@@ -517,9 +534,11 @@ e2studioにはRAマイコン用のFSPがインストールされていること�
 
 (1) メニュー[ファイル]→[新規]→[Renesas C/C++ Project]→[Renesas RA]を選択します。   
 (2) [Renesas RA C/C++ Project] を選択します。  
-(3) 対象のマイコンボードを選択します。対象ボードが無い場合は`Custom User Board`を選択し、`Device`を指定します。  
-Arduino UNO R4はボードの選択できませんので以下のように設定してください。  
+(3) 対象のマイコンボードを選択します。対象ボードが無い場合は`Custom User Board`を選択し、`Device`を設定します。  
+(4) [Project Template Selection]は`Bare Metal - Minimal`を選択します。  
+(5) マイコンのピン設定やクロック、その他ハードウェアの設定を、開発するアプリケーションに応じて行ってください。  
 
+Arduino UNO R4の主な設定
 - Board : Custom User Board
 - Device : R7FA4M1AB3CFM
 - クロックの設定  
@@ -528,8 +547,16 @@ Arduino UNO R4はボードの選択できませんので以下のように設定
   - Clock src : HOCO
 - Subclock Populated: Not Populated
 
-(4) [Project Template Selection]は`Bare Metal - Minimal`を選択します。  
-(5) マイコンのピン設定やクロック、その他ハードウェアの設定を、開発するアプリケーションに応じて行ってください。  
+RA4M1 Clickerの主な設定
+- Board : Custom User Board
+- Device : R7FA4M1AB3CFM
+- クロックの設定  
+  - XTAL : 12MHz
+  - PLL Src : XTAL
+  - PLL : 48MHz
+  - Clock src : PLL
+- Subclock Populated: Populated
+
 
 ## 4.2. μT-Kernel 3.0 BSP2の組込み
 ### 4.2.1. ソースコードの組込み
@@ -558,7 +585,9 @@ gitのコマンドを使用する場合は、プロジェクトのディレク�
 | -------------- | ---------------------- |
 | EK-RA6M3       | \_RAFSP_EK_RA6M3_      |
 | EK-RA8M1       | \_RAFSP_EK_RA8M1_      |
+| EK-RA8D1       | \_RAFSP_EK_RA8D1_      |
 | Arduino UNO R4 | \_RAFSP_ARDUINO_UNOR4_ |
+| RA4M1 Clicker  | \_RAFSP_CLICKER_RA4M1_ |
 
 
 (2) [GNU Arm Cross C Compiler]→[includes]  
@@ -696,10 +725,12 @@ EXPORT INT usermain(void)
 
 # 5. 変更履歴
 
-| 版数      | 日付         | 内容   |
-| ------- | ---------- | ---- |
-| 1.00.B4 | 2024.05.24 | 誤記修正 |
-| 1.00.B3 | 2024.04.10 | I2Cデバイスの説明を補足 |
-| 1.00.B2 | 2024.03.21 | 誤記修正 |
+| 版数      | 日付         | 内容                                                      |
+| ------- | ---------- | ------------------------------------------------------- |
+| 1.00.B6 | 2024.12.20 | 対応ボードにEK-RA8D1を追加。関連情報の記載
+| 1.00.B5 | 2024.09.05 | 対応ボードにRA4M1 Clickerを追加。関連情報の記載                          |
+| 1.00.B4 | 2024.05.24 | 誤記修正                                                    |
+| 1.00.B3 | 2024.04.10 | I2Cデバイスの説明を補足                                           |
+| 1.00.B2 | 2024.03.21 | 誤記修正                                                    |
 | 1.00.B1 | 2024.02.29 | </br>- 対応ボードにEK-RA8M1を追加。関連情報の記載</br>- デバイスドライバなどの内容を更新 |
-| 1.00.B0 | 2023.12.15 | 新規作成 |
+| 1.00.B0 | 2023.12.15 | 新規作成                                                    |

@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2024/08.
  *
  *----------------------------------------------------------------------
  */
@@ -60,8 +60,12 @@
  * Number of Interrupt vectors
  */
 #define	N_SYSVEC		16	/* Number of System Exceptions */
-
 #define N_INTVEC		96	/* Number of Interrupt vectors */
+
+/*
+ * Exception vector table alignment
+*/
+#define	EXCTBL_ALIGN		512
 
 /*
  * The number of the implemented bit width for priority value fields.

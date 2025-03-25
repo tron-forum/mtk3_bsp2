@@ -2,7 +2,7 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2024 by Ken Sakamura.
+ *    Copyright (C) 2023-24 by Ken Sakamura.
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
@@ -14,7 +14,7 @@
 /*
  *	sysdef.h
  *
- *	System dependencies definition (LPC55S69 depended)
+ *	System dependencies definition (RA8M1 depended)
  *	Included also from assembler program.
  */
 
@@ -24,18 +24,24 @@
 #include <sys/machine.h>
 
 /* CPU Core-dependent definition */
-#include <sys/sysdepend/nxp_mcux/cpu/core/armv8m/sysdef.h>
+#include <sys/sysdepend/ra_fsp/cpu/core/armv8m/sysdef.h>
 
 /* ------------------------------------------------------------------------ */
 /*
  * Internal Memorie (Main RAM)
  */
 
-/* LPC55S69 Internal SRAM 20000000 - 0x2003FFFF  (Size 256KB) */
-#define INTERNAL_RAM_START      0x20000000
-#define INTERNAL_RAM_SIZE       0x00040000
+/* RA8M1 Internal SRAM   0x22000000 - 0x220DFFFF  (Size 896KB)     */
+#define INTERNAL_RAM_START      0x22000000
+#define INTERNAL_RAM_SIZE       0x000E0000
 
 #define INTERNAL_RAM_END        (INTERNAL_RAM_START+INTERNAL_RAM_SIZE)
+
+/* ------------------------------------------------------------------------ */
+/*
+ * Initial Stack pointer (Used in initialization process)
+ */
+#define	INITIAL_SP		INTERNAL_RAM_END
 
 /* ------------------------------------------------------------------------ */
 /*
@@ -51,7 +57,7 @@
  * Number of Interrupt vectors
  */
 #define	N_SYSVEC		16	/* Number of System Exceptions */
-#define N_INTVEC		64	/* Number of Interrupt vectors */
+#define N_INTVEC		96	/* Number of Interrupt vectors */
 
 /*
  * Exception vector table alignment
@@ -61,7 +67,7 @@
 /*
  * The number of the implemented bit width for priority value fields.
  */
-#define INTPRI_BITWIDTH		3
+#define INTPRI_BITWIDTH		4
 
 /* ------------------------------------------------------------------------ */
 /*
@@ -70,7 +76,7 @@
 #define INTPRI_MAX_EXTINT_PRI	1	/* Highest Ext. interrupt level */
 #define INTPRI_SVC		0	/* SVCall */
 #define INTPRI_SYSTICK		1	/* SysTick */
-#define INTPRI_PENDSV		7	/* PendSV */
+#define INTPRI_PENDSV		15	/* PendSV */
 
 /*
  * Time-event handler interrupt level
@@ -95,7 +101,27 @@
 
 /* ------------------------------------------------------------------------ */
 /*
- * Physical timer (for LPC55S69)
+ * PORT
+ */
+#define MTK_PORT0_BASE		(0x40400000)
+#define MTK_PORT1_BASE		(0x40400020)
+#define MTK_PORT2_BASE		(0x40400040)
+#define MTK_PORT3_BASE		(0x40400060)
+#define MTK_PORT4_BASE		(0x40400080)
+#define MTK_PORT5_BASE		(0x404000A0)
+#define MTK_PORT6_BASE		(0x404000C0)
+#define MTK_PORT7_BASE		(0x404000E0)
+#define MTK_PORT8_BASE		(0x40400100)
+#define MTK_PORT9_BASE		(0x40400120)
+#define MTK_PORTA_BASE		(0x40400140)
+#define MTK_PORTB_BASE		(0x40400160)
+
+#define PORT_PODR(n)		(MTK_PORT##n##_BASE + 0x02)	/* Port output data register */
+#define PORT_PIDR(n)		(MTK_PORT##n##_BASE + 0x06)	/* Port input data register */
+
+/* ------------------------------------------------------------------------ */
+/*
+ * Physical timer
  */
 #define	CPU_HAS_PTMR	0
 

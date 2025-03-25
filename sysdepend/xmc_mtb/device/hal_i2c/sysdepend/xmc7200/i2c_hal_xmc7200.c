@@ -20,14 +20,14 @@
 #include <sys/machine.h>
 #include <config_bsp/xmc_mtb/config_bsp.h>
 
+#ifdef MTKBSP_MODUSTOOLBOX
+#if DEVCNF_USE_HAL_IIC
+
 #include <cyhal.h>
 #include <cybsp.h>
 #include <cy_sysclk.h>
 #include "i2c_sysdep.h"
 #include "i2c_cnf_sysdep.h"
-
-#ifdef MTKBSP_MODUSTOOLBOX
-#if DEVCNF_USE_HAL_IIC
 
 /* Assign divider type and number for I2C */
 #define I2C_CLK_DIV_TYPE  (CY_SYSCLK_DIV_16_BIT)
