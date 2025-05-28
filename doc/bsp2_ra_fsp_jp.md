@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル <!-- omit in toc -->
 ## RA FSP編 <!-- omit in toc -->
-## Version 01.00.B6 <!-- omit in toc -->
-## 2024.12.20 <!-- omit in toc -->
+## Version 01.00.B7 <!-- omit in toc -->
+## 2025.05.29 <!-- omit in toc -->
 
 - [1. 概要](#1-概要)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -58,8 +58,8 @@
 また、ファームウェアとして、FSP(Flexible Software Package )を使用します。  
 本書では以下のバージョンで動作を確認しています。  
 
-`Renesas e² studio Version: 2024-10 (24.10.0)`  
-`FSP version 5.6.0`  
+`Renesas e² studio Version: 2025-04 (25.4.0)`  
+`FSP version 5.9.0`  
 
 詳しくは以下のWebサイトをご覧ください。
 
@@ -73,7 +73,7 @@ https://www.renesas.com/jp/ja/software-tool/flexible-software-package-fsp
 μT-Kernel 3.0 BSP2は、リアルタイムOS μT-Kernel 3.0と、対象マイコンボード用の依存部プログラムおよびサンプルのデバイスドライバから構成されます。  
 μT-Kernel 3.0は以下のバージョンを使用しています。  
 
-- μT-Kernel 3.0 (v3.00.07)
+- μT-Kernel 3.0 (v3.00.08)
 
 μT-Kernel 3.0 BSP2のファイル構成を以下に示します。
 
@@ -535,8 +535,9 @@ e2studioにはRAマイコン用のFSPがインストールされていること�
 (1) メニュー[ファイル]→[新規]→[Renesas C/C++ Project]→[Renesas RA]を選択します。   
 (2) [Renesas RA C/C++ Project] を選択します。  
 (3) 対象のマイコンボードを選択します。対象ボードが無い場合は`Custom User Board`を選択し、`Device`を設定します。  
-(4) [Project Template Selection]は`Bare Metal - Minimal`を選択します。  
-(5) マイコンのピン設定やクロック、その他ハードウェアの設定を、開発するアプリケーションに応じて行ってください。  
+(4) [Toolchains]は`GNU ARM Embedde`を選択します。
+(5) [Project Template Selection]は`Bare Metal - Minimal`を選択します。
+(6) マイコンのピン設定やクロック、その他ハードウェアの設定を、開発するアプリケーションに応じて行ってください。  
 
 Arduino UNO R4の主な設定
 - Board : Custom User Board
@@ -727,6 +728,7 @@ EXPORT INT usermain(void)
 
 | 版数      | 日付         | 内容                                                      |
 | ------- | ---------- | ------------------------------------------------------- |
+| 1.00.B7 | 2025.05.29 |  OS,IDEのバージョン更新など |
 | 1.00.B6 | 2024.12.20 | 対応ボードにEK-RA8D1を追加。関連情報の記載
 | 1.00.B5 | 2024.09.05 | 対応ボードにRA4M1 Clickerを追加。関連情報の記載                          |
 | 1.00.B4 | 2024.05.24 | 誤記修正                                                    |

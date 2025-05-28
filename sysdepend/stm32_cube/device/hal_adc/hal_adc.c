@@ -111,7 +111,7 @@ LOCAL ER read_data(T_HAL_ADC_DCB *p_dcb, T_DEVREQ *req)
 		req->asize = 1;
 		return E_OK;
 	}
-	// Configure for A/DC
+	/* Configure for A/DC */
 	err = dev_adc_setch(p_dcb->hadc, p_dcb->unit, req->start);
 	if(err != E_OK) return err;
 
@@ -129,6 +129,7 @@ LOCAL ER read_data(T_HAL_ADC_DCB *p_dcb, T_DEVREQ *req)
 			req->asize= 1;
 		}
 	}
+	HAL_ADC_Stop_IT(p_dcb->hadc);
 
 	return err;
 }

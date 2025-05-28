@@ -62,7 +62,7 @@ EXPORT ER knl_start_device( void )
 	err = dev_init_hal_adc(DEV_HAL_ADC3, &hadc3);
 	if(err < E_OK) return err;
 
-#elif defined(MTKBSP_NUCLEO_STM32G431) || defined(MTKBSP_NUCLEO_STM32G491)
+#elif defined(MTKBSP_NUCLEO_STM32G431) || defined(MTKBSP_NUCLEO_STM32G491)|| defined(MTKBSP_DISCOVERY_STM32N657)
 	IMPORT ADC_HandleTypeDef	hadc2;
 	
 	err = dev_init_hal_adc(DEV_HAL_ADC2, &hadc2);
