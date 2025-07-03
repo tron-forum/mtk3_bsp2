@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2025/03.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/06.
  *
  *----------------------------------------------------------------------
  */
@@ -31,71 +31,42 @@
  */
 LOCAL void EnableInt_exti( UINT intno, INT level )
 {
-	if(intno < 32) {
-		*(_UW*)EXTI_CPUIMR1 |= (UW)(1<<intno);
-	} else if(intno < 64) {
-		*(_UW*)EXTI_CPUIMR2 |= (UW)(1<<(intno-32));
-	} else {
-		*(_UW*)EXTI_CPUIMR3 |= (UW)(1<<(intno-64));
-	}	
+	*(_UW*)EXTI_IMR(intno>>5) |= (UW)(1<<(intno%32));
 }
 
 LOCAL void DisableInt_exti( UINT intno )
 {
-	if(intno < 32) {
-		*(_UW*)EXTI_CPUIMR1 &= ~(UW)(1<<intno);
-	} else if(intno < 64) {
-		*(_UW*)EXTI_CPUIMR2 &= ~(UW)(1<<(intno-32));
-	} else {
-		*(_UW*)EXTI_CPUIMR3 &= ~(UW)(1<<(intno-64));
-	}
-
+	*(_UW*)EXTI_IMR(intno>>5) &= ~(UW)(1<<(intno%32));
 }
 
 LOCAL void ClearInt_exti( UINT intno )
 {
-	if(intno < 32) {
-		*(_UW*)EXTI_CPUPR1 |= (UW)(1<<intno);
-	} else if(intno < 64) {
-		*(_UW*)EXTI_CPUPR2 |= (UW)(1<<(intno-32));
-	} else {
-		*(_UW*)EXTI_CPUPR3 |= (UW)(1<<(intno-64));
-	}
+	*(_UW*)EXTI_RPR(intno>>5) |= (UW)(1<<(intno%32));
+	*(_UW*)EXTI_FPR(intno>>5) |= (UW)(1<<(intno%32));
 }
 
 LOCAL BOOL CheckInt_exti( UINT intno )
 {
 	UW	pif;
 
-	if(intno < 32) {
-		pif = *(_UW*)EXTI_CPUPR1 & (UW)(1<<intno);
-	} else if(intno < 64) {
-		pif = *(_UW*)EXTI_CPUPR2 & (UW)(1<<(intno-32));		
-	} else {
-		pif = *(_UW*)EXTI_CPUPR3 & (UW)(1<<(intno-64));		
-	}
+	pif = *(_UW*)EXTI_RPR(intno>>5) & (UW)(1<<(intno%32));
+	pif |= *(_UW*)EXTI_FPR(intno>>5) & (UW)(1<<(intno%32));
+
 	return pif?TRUE:FALSE;
 }
 
 LOCAL void SetIntMode_exti(UINT intno, UINT mode)
 {
 	if(mode & IM_HI) {
-		if(intno < 32) {
-			*(_UW*)EXTI_RTSR1 |= (UW)(1<<intno);
-		} else if(intno < 64) {
-			*(_UW*)EXTI_RTSR2 |= (UW)(1<<(intno-32));
-		} else {
-			*(_UW*)EXTI_RTSR3 |= (UW)(1<<(intno-64));
-		}
+		*(_UW*)EXTI_RTSR(intno>>5) |= (UW)(1<<(intno%32));
+	} else {
+		*(_UW*)EXTI_RTSR(intno>>5) &= ~(UW)(1<<(intno%32));
 	}
+
 	if(mode & IM_LOW) {
-		if(intno < 32) {
-			*(_UW*)EXTI_FTSR1 |= (UW)(1<<intno);
-		} else if(intno < 64) {
-			*(_UW*)EXTI_FTSR2 |= (UW)(1<<(intno-32));
-		} else {
-			*(_UW*)EXTI_FTSR3 |= (UW)(1<<(intno-64));
-		}
+		*(_UW*)EXTI_FTSR(intno>>5) |= (UW)(1<<(intno%32));
+	} else {
+		*(_UW*)EXTI_FTSR(intno>>5) &= ~(UW)(1<<(intno%32));
 	}
 }
 
