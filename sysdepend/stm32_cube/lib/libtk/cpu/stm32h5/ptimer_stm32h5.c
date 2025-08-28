@@ -12,12 +12,12 @@
  */
 
 #include <sys/machine.h>
-#ifdef MTKBSP_CPU_STM32N6
+#ifdef MTKBSP_CPU_STM32H5
 
 /*
- *	ptimer_stm32n6.c
+ *	ptimer_stm32h5.c
  *
- *	Physical timer (STM32CUBE STM32N6)
+ *	Physical timer (STM32CUBE STM32H7)
  */
 #include <tk/tkernel.h>
 #include <tk/syslib.h>
@@ -35,4 +35,4 @@ EXPORT void knl_init_ptmr(void)
 }
 
 #endif	/* USE_PTMR */
-#endif	/* MTKBSP_CPU_STM32N6 */
+#endif	/* MTKBSP_CPU_STM32H5 */

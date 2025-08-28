@@ -3,10 +3,10 @@
  *    micro T-Kernel 3.0 BSP 2.0
  *
  *    Copyright (C) 2023-2025 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2025/03.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/08.
  *
  *----------------------------------------------------------------------
  */
@@ -50,6 +50,9 @@
 
 #elif defined(_STM32CUBE_NUCLEO_H723_)
 #include <sys/sysdepend/stm32_cube/nucleo_stm32h723/machine.h>
+
+#elif defined(_STM32CUBE_NUCLEO_H533_)
+#include <sys/sysdepend/stm32_cube/nucleo_stm32h533/machine.h>
 
 #elif defined(_STM32CUBE_DISCOVERY_N657_)
 #include <sys/sysdepend/stm32_cube/discovery_stm32n657/machine.h>

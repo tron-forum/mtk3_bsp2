@@ -1,8 +1,0 @@
-{
-	"files.associations": {
-		"machine.h": "c",
-		"halif.h": "c",
-		"tkernel.h": "c"
-	},
-	"C_Cpp.dimInactiveRegions": false
-}
