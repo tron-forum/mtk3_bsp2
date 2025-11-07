@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/11.
  *
  *----------------------------------------------------------------------
  */
@@ -14,7 +14,7 @@
 /*
  *	sysdef.h
  *
- *	System dependencies definition (EK-RA6M3)
+ *	Machine type definition (FPB-RA4E1)
  *	Included also from assembler program.
  */
 
@@ -22,22 +22,18 @@
 #define _MTKBSP_SYS_SYSDEF_DEPEND_H_
 
 /* CPU-dependent definition */
-#include <sys/sysdepend/ra_fsp/cpu/ra6m3/sysdef.h>
+#include <sys/sysdepend/ra_fsp/cpu/ra4e1/sysdef.h>
 
 
 /* ------------------------------------------------------------------------ */
 /* Clock frequency
  */
-#define ICLK_MHz	(120)
-#define PCLKA_MHz	(120)
-#define PCLKB_MHz	(60)
-#define PCLKC_MHz	(60)
-#define PCLKD_MHz	(120)
-#define	SDCLK_MHz	(120)
-#define	BCLK_MHz	(120)
-#define	EBCLK_MHz	(60)
-#define	UCLK_MHz	(48)
-#define	FCLK_MHz	(60)
+#define ICLK_MHz	(100)
+#define PCLKA_MHz	(100)
+#define PCLKB_MHz	(50)
+#define PCLKC_MHz	(50)
+#define PCLKD_MHz	(100)
+#define	FCLK_MHz	(50)
 
 #define	SYSCLK		(ICLK_MHz*1000000)	// System clock (Hz)
 #define TMCLK_KHz	(ICLK_MHz*1000)		// System timer clock input (kHz)

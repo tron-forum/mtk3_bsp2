@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/08.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/11.
  *
  *----------------------------------------------------------------------
  */
@@ -14,7 +14,7 @@
 /*
  *	sysdef.h
  *
- *	System dependencies definition (RA4M1 depended)
+ *	System dependencies definition (RA4E1 depended)
  *	Included also from assembler program.
  */
 
@@ -24,16 +24,16 @@
 #include <sys/machine.h>
 
 /* CPU Core-dependent definition */
-#include <sys/sysdepend/ra_fsp/cpu/core/armv7m/sysdef.h>
+#include <sys/sysdepend/ra_fsp/cpu/core/armv8m/sysdef.h>
 
 /* ------------------------------------------------------------------------ */
 /*
  * Internal Memorie (Main RAM)
  */
 
-/* RA4M1 Internal SRAM   0x20000000 - 0x20007FFF  (Size 32KB)     */
+/* RA4M1 Internal SRAM   0x20000000 - 0x2001FFFF  (Size 128KB)     */
 #define INTERNAL_RAM_START      0x20000000
-#define INTERNAL_RAM_SIZE       0x00008000
+#define INTERNAL_RAM_SIZE       0x00020000
 
 #define INTERNAL_RAM_END        (INTERNAL_RAM_START+INTERNAL_RAM_SIZE)
 
@@ -57,12 +57,12 @@
  * Number of Interrupt vectors
  */
 #define	N_SYSVEC		16	/* Number of System Exceptions */
-#define N_INTVEC		32	/* Number of Interrupt vectors */
+#define N_INTVEC		96	/* Number of Interrupt vectors */
 
 /*
  * Exception vector table alignment
 */
-#define	EXCTBL_ALIGN		256
+#define	EXCTBL_ALIGN		512
 
 /*
  * The number of the implemented bit width for priority value fields.
@@ -120,16 +120,12 @@
 /*
  * PORT
  */
-#define MTK_PORT0_BASE		(0x40040000)
-#define MTK_PORT1_BASE		(0x40040020)
-#define MTK_PORT2_BASE		(0x40040040)
-#define MTK_PORT3_BASE		(0x40040060)
-#define MTK_PORT4_BASE		(0x40040080)
-#define MTK_PORT5_BASE		(0x400400A0)
-#define MTK_PORT6_BASE		(0x400400C0)
-#define MTK_PORT7_BASE		(0x400400E0)
-#define MTK_PORT8_BASE		(0x40040100)
-#define MTK_PORT9_BASE		(0x40040120)
+#define MTK_PORT0_BASE		(0x40080000)
+#define MTK_PORT1_BASE		(0x40080020)
+#define MTK_PORT2_BASE		(0x40080040)
+#define MTK_PORT3_BASE		(0x40080060)
+#define MTK_PORT4_BASE		(0x40080080)
+#define MTK_PORT5_BASE		(0x400800A0)
 
 #define PORT_PODR(n)		(MTK_PORT##n##_BASE + 0x00)	/* Port output data register */
 #define PORT_PIDR(n)		(MTK_PORT##n##_BASE + 0x06)	/* Port input data register */

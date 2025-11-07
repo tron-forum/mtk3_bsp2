@@ -3,7 +3,7 @@
  *    micro T-Kernel 3.0 BSP 2.0
  *
  *    Copyright (C) 2023-2024 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
  *    Released by TRON Forum(http://www.tron.org) at 2024/08.
@@ -26,7 +26,7 @@
  * CPU_CORE_xxx		CPU core type
  */
 
-/* ----- Arduino UNO R4 (CPU: R7FA4M1AB3CFM) definition ----- */
+/* ----- Clicker RA4M1 (CPU: R7FA4M1AB3CFM) definition ----- */
 #define MTKBSP_RAFSP			1	/* Target system   : RA FSP */
 #define MTKBSP_CLICKER_RA4M1		1	/* Target Board    : Clicker RA4M1 */
 

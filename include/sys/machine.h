@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2025/08.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/11.
  *
  *----------------------------------------------------------------------
  */
@@ -65,6 +65,9 @@
 
 #elif defined(_RAFSP_EK_RA8D1_)
 #include <sys/sysdepend/ra_fsp/ek_ra8d1/machine.h>
+
+#elif defined(_RAFSP_FPB_RA4E1_)
+#include <sys/sysdepend/ra_fsp/fpb_ra4e1/machine.h>
 
 #elif defined(_RAFSP_CLICKER_RA4M1_)
 #include <sys/sysdepend/ra_fsp/clicker_ra4m1/machine.h>

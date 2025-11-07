@@ -3,10 +3,10 @@
  *    micro T-Kernel 3.0 BSP 2.0
  *
  *    Copyright (C) 2024 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/08.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/10.
  *
  *----------------------------------------------------------------------
  */
@@ -32,7 +32,10 @@ EXPORT UW *knl_exctbl_o;	// Exception handler table (Origin)
 
 EXPORT void		*knl_lowmem_top;	// Head of area (Low address)
 EXPORT void		*knl_lowmem_limit;	// End of area (High address)
-IMPORT const void	*__stack;		// BSP stack address
+
+/* Start address of free space in RAM */
+IMPORT const void	*__ddsc_RAM_END;	// Defined in "fsp_gen.ld"
+#define	RAM_END		(__ddsc_RAM_END)
 
 #if USE_STATIC_SYS_MEM
 EXPORT UW knl_system_mem[SYSTEM_MEM_SIZE/sizeof(UW)] __attribute__((section(".mtk_sysmem")));
@@ -42,11 +45,6 @@ EXPORT UW knl_system_mem[SYSTEM_MEM_SIZE/sizeof(UW)] __attribute__((section(".mt
 EXPORT void		*knl_sysmem_top	= 0;
 EXPORT void		*knl_sysmem_end	= 0;
 #endif
-
-// Inline void set_msplim(uint32_t MainStackPtrLimit)
-// {
-//   Asm ("msr msplim, %0" : : "r" (MainStackPtrLimit));
-// }
 
 EXPORT void knl_start_mtkernel(void)
 {
@@ -88,8 +86,8 @@ EXPORT void knl_start_mtkernel(void)
 	} else {
 		knl_lowmem_top = (UW*)SYSTEMAREA_TOP;
 	}
-	if((UW)knl_lowmem_top < (UW)&__stack) {
-		knl_lowmem_top = (UW*)&__stack;
+	if((UW)knl_lowmem_top < (UW)&RAM_END) {
+		knl_lowmem_top = (UW*)&RAM_END;
 	}
 
 	if((SYSTEMAREA_END != 0) && (INTERNAL_RAM_END > CNF_SYSTEMAREA_END)) {
@@ -106,7 +104,6 @@ EXPORT void knl_start_mtkernel(void)
 #endif	// USE_IMALLOC
 
 	/* Temporarily disable stack pointer protection */
-	// set_msplim((uint32_t)INTERNAL_RAM_START);
 	Asm ("msr msplim, %0" : : "r" ((uint32_t)INTERNAL_RAM_START));
 
 	/* Startup Kernel */

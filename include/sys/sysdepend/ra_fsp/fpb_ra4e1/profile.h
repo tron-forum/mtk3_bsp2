@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2023-24 by Ken Sakamura.
+ *    Copyright (C) 2023-2024 by Ken Sakamura.
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/11.
  *
  *----------------------------------------------------------------------
  */
@@ -14,19 +14,19 @@
 /*
  *	profile.h
  *
- *	Service Profile (EK-RA8M1)
+ *	Machine type definition (FPB-RA4M1)
  */
 
 #ifndef _MTKBSP_SYS_DEPEND_PROFILE_H_
 #define _MTKBSP_SYS_DEPEND_PROFILE_H_
 
 /*
- **** CPU Core depeneded profile (ARMv8M)
+ **** CPU Core depended profile (ARMv8M)
  */
 #include <sys/sysdepend/ra_fsp/cpu/core/armv8m/profile.h>
 
 /*
- **** Target-depeneded profile (RA FSP EK-RA8M1)
+ **** Target-depeneded profile (RA FSP FPB-RA4E1)
  */
 
 /*
