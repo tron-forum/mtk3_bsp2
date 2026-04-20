@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2023-2025 by Ken Sakamura.
+ *    Copyright (C) 2023-2026 by Ken Sakamura.
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2025/11.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/04.
  *
  *----------------------------------------------------------------------
  */
@@ -59,6 +59,9 @@
 
 #elif defined(_RAFSP_EK_RA6M3_)
 #include <sys/sysdepend/ra_fsp/ek_ra6m3/machine.h>
+
+#elif defined(_RAFSP_EK_RA8P1_)
+#include <sys/sysdepend/ra_fsp/ek_ra8p1/machine.h>
 
 #elif defined(_RAFSP_EK_RA8M1_)
 #include <sys/sysdepend/ra_fsp/ek_ra8m1/machine.h>

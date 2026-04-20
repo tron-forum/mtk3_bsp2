@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2024 by Ken Sakamura.
+ *    Copyright (C) 2024-2026 by Ken Sakamura.
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2025/10.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/04.
  *
  *----------------------------------------------------------------------
  */
@@ -34,8 +34,8 @@ EXPORT void		*knl_lowmem_top;	// Head of area (Low address)
 EXPORT void		*knl_lowmem_limit;	// End of area (High address)
 
 /* Start address of free space in RAM */
-IMPORT const void	*__ddsc_RAM_END;	// Defined in "fsp_gen.ld"
-#define	RAM_END		(__ddsc_RAM_END)
+IMPORT const void	*__mtk3_SYSMEM_START;
+#define	SYSMEM_TOP	(__mtk3_SYSMEM_START)
 
 #if USE_STATIC_SYS_MEM
 EXPORT UW knl_system_mem[SYSTEM_MEM_SIZE/sizeof(UW)] __attribute__((section(".mtk_sysmem")));
@@ -86,8 +86,8 @@ EXPORT void knl_start_mtkernel(void)
 	} else {
 		knl_lowmem_top = (UW*)SYSTEMAREA_TOP;
 	}
-	if((UW)knl_lowmem_top < (UW)&RAM_END) {
-		knl_lowmem_top = (UW*)&RAM_END;
+	if((UW)knl_lowmem_top < (UW)&SYSMEM_TOP) {
+		knl_lowmem_top = (UW*)&SYSMEM_TOP;
 	}
 
 	if((SYSTEMAREA_END != 0) && (INTERNAL_RAM_END > CNF_SYSTEMAREA_END)) {

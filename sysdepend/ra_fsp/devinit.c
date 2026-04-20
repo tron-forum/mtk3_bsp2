@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2023-2024 by Ken Sakamura.
+ *    Copyright (C) 2023-2026 by Ken Sakamura.
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/04.
  *
  *----------------------------------------------------------------------
  */
@@ -60,6 +60,11 @@ EXPORT ER knl_start_device( void )
 #if DEVCNF_USE_HAL_ADC
 	err = dev_init_hal_adc( 0, &g_adc0_ctrl, &g_adc0_cfg, &g_adc0_channel_cfg);
 #endif
+
+#if DEVCNF_USE_HAL_ADHB
+	err = dev_init_hal_adhb( 0, &g_adc0_ctrl, &g_adc0_cfg, &g_adc0_scan_cfg);
+#endif
+
 
 	return err;
 }
