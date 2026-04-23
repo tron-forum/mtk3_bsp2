@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル <!-- omit in toc -->
 ## RA FSP編 <!-- omit in toc -->
-## Version 01.00.B9 <!-- omit in toc -->
-## 2025.11.07 <!-- omit in toc -->
+## Version 01.00.B10 <!-- omit in toc -->
+## 2026.04.23 <!-- omit in toc -->
 
 - [1. 概要](#1-概要)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -50,6 +50,7 @@
 | EK-RA6M3       | RA6M3(R7FA6M3AH3CFC) | Arm Cortex-M4  | ルネサス エレクトロニクス RA6M3 MCUグループ評価キット |
 | EK-RA8M1       | RA8M1(R7FA8M1AHECBD) | Arm Cortex-M85 | ルネサス エレクトロニクス RA8M1 MCUグループ評価キット |
 | EK-RA8D1       | RA8D1(R7FA8D1BHECBD) | Arm Cortex-M85 | ルネサス エレクトロニクス RA8D1 MCUグループ評価キット |
+| EK-RA8P1       | RA8P1(R7KA8P1KFLCAC) | Arm Cortex-M85 | ルネサス エレクトロニクス RA8P1 MCUグループ評価キット |
 | FPB-RA4E1      | RA4E1(R7FA4E10D2CFM) | Arm Cortex-M33  | ルネサス エレクトロニクス RA4E1 Fast Prototyping Board |
 | Arduino UNO R4 MINIMA | RA4M1(R7FA4M1AB3CFM) | Arm Cortex-M4  |                                  |
 | RA4M1 Clicker  | RA4M1(R7FA4M1AB3CFM) | Arm Cortex-M4  | MikroElektronika                 |
@@ -59,8 +60,8 @@
 また、ファームウェアとして、FSP(Flexible Software Package )を使用します。  
 本書では以下のバージョンで動作を確認しています。  
 
-`Renesas e² studio Version: 2025-07 (25.7.0)`  
-`FSP version 6.1.0`  
+`Renesas e² studio Version: 2025-12 (25.12.0)`  
+`FSP version 6.4.0`  
 
 詳しくは以下のWebサイトをご覧ください。
 
@@ -140,10 +141,15 @@ ARMv8-Mの機能によりスタックポインタを監視しています。ス�
 またペリフェラルへクロックを供給するように設定を行ってください。低消費電力モードの解除は本機能の初期化で行いますので必要ありません。  
 以下にデバッグ用シリアル出力で使用するマイコンボードの信号を示します。  
 
-| 信号         | EK-RA6M3   | EK-RA8M1   | EK-RA8D1   | FPB-RA4E1  | Arduino UNO R4 MINIMA |
+| 信号       | EK-RA6M3   | EK-RA8M1  　| EK-RA8D1 　| FPB-RA4E1  | Arduino UNO R4 MINIMA |
 | ---------- | ---------- | ---------- | ---------- | ---------- | --------------------- |
 | Arduino TX | P613(TXD7) | P310(TXD3) | P409(TXD3) | P109(TXD9) | P302(TXD2)             |
 | Arduino RX | P614(RXD7) | P309(RXD3) | P408(RXD3) | P110(RXD9) | P301(RXD2)            |
+
+| 信号                        | EK-RA8P1   |
+| --------------------------- | ---------- |
+| Debug Connector (USB) TX    | PD02(TXD8) |
+| Debug Connector (USB) RX    | PD03(RXD8) |
 
 | 信号          | RA4M1 Clicker |
 | ----------- | ------------- |
@@ -188,14 +194,19 @@ FPUを使用するタスクは、タスク属性にTA_FPUを指定する必要�
 A/DCデバイスドライバは、マイコン内蔵のA/Dコンバータを制御することができます。  
 本BSPでは以下のデバイスに対応したA/DCデバイスドライバがあります。  
 
-| デバイス名 | BSPのデバイス名 | 説明                  |
-| ----- | --------- | ------------------- |
-| ADC12 | hadc      | 12bit A/C Converter |
+| デバイス名 | BSPのデバイス名 | 説明        | 対応マイコン |
+| ----- | --------- | ------------------- | ------------ |
+| ADC16H | hadhb    | 16bit A/D Converter | RA8P1        |
+| ADC12 | hadc      | 12bit A/D Converter | RA8P1以外    |
 
 デバイスドライバは内部の処理でFSPのHALを利用します。本デバイスドライバはFSPののHALをμT-Kernel 3.0 で使用する方法を示すサンプルプログラムであり、デバイスの基本的な機能のみに対応しています。  
 以下にA/DCデバイスドライバのソースコードがあります。  
 
+- ADC12
 ```mtk3_bsp2\sysdepend\ra_fsp\device\hal_adc```
+
+- ADC16H
+```mtk3_bsp2\sysdepend\ra_fsp\device\hal_adhb```
 
 このデバイスドライバはBSPコンフィギュレーションファイル (config/config_bsp/ra_fsp/config_bsp.h) の以下を変更しビルドすることにより、使用・不使用を切り替えられます。
 
@@ -205,6 +216,7 @@ A/DCデバイスドライバは、マイコン内蔵のA/Dコンバータを制�
  *	1: Use   0: Do not use
  */
 #define DEVCNF_USE_HAL_ADC		1	// A/D conversion device
+#define DEVCNF_USE_HAL_ADHB		1	// A/D conversion device
 ```
 
 A/DCデバイスドライバはFSPのHALを使用していますので、A/DCのHALを使用可能にしてください。HALと本デバイスドライバの関連付けは次項で説明します。  
@@ -216,18 +228,25 @@ A/DCデバイスドライバから使用するA/Dコンバータの設定をe2st
 
 (参考) 各ボードのアナログ入力信号と、マイコンのA/Dコンバータの入力の対応は以下の通りです。  
 
-| アナログ入力      | EK-RA6M3   | EK-RA8M1   | EK-RA8D1   | FPB-RA4E1  | Arduino UNO R4 MINIMA | RA4M1 Clicker |
-| ----------- | ---------- | ---------- | ---------- | ---------- | --------------------- | ------------- |
-| Arduino A0  | P000/AN000 | P004/AN000 | P004/AN000 | P000/AN000 | P014/AN009            | -             |
-| Arduino A1  | P001/AN001 | P003/AN104 | P003/AN104 | P001/AN001 | P000/AN000            | -             |
-| Arduino A2  | P002/AN002 | P007/AN004 | P007/AN004 | P002AN002  | P001/AN001            | -             |
-| Arduino A3  | P507/AN119 | P001/AN101 | P011/AN106 | P003/AN003 | P002/AN002            | -             |
-| Arduino A4  | P508/AN020 | P014/AN007 | P014/AN007 | P004/AN004 | P101/AN021            | -             |
-| Arduino A5  | P014/AN005 | P015/AN105 | P015/AN105 | P013/AN011 | P100/AN022            | -             |
-| microBUS AN | P000/AN000 | P004/AN000 | P004/AN000 | -          | -                     | P000/AN000    |
+| アナログ入力 | EK-RA6M3   | EK-RA8M1   | EK-RA8D1   | EK-RA8P1   | FPB-RA4E1  | Arduino UNO R4 MINIMA |
+| ----------- | ---------- | ---------- | ---------- | ---------- | ---------- | --------------------- |
+| Arduino A0  | P000/AN000 | P004/AN000 | P004/AN000 | P001/AN001 | P000/AN000 | P014/AN009            |
+| Arduino A1  | P001/AN001 | P003/AN104 | P003/AN104 | P007/AN007 | P001/AN001 | P000/AN000            |
+| Arduino A2  | P002/AN002 | P007/AN004 | P007/AN004 | P003/AN003 | P002AN002  | P001/AN001            |
+| Arduino A3  | P507/AN119 | P001/AN101 | P011/AN106 | P004/AN004 | P003/AN003 | P002/AN002            |
+| Arduino A4  | P508/AN020 | P014/AN007 | P014/AN007 | P014/AN014 | P004/AN004 | P101/AN021            |
+| Arduino A5  | P014/AN005 | P015/AN105 | P015/AN105 | P015/AN015 | P013/AN011 | P100/AN022            |
+| microBUS AN | P000/AN000 | P004/AN000 | P004/AN000 | P004/AN004 | -          | -                     |
+
+| アナログ入力 | RA4M1 Clicker |
+| ----------- | ------------- |
+| microBUS AN | P000/AN000    |
 
 (2) HALの設定
-`Stacks Configuration`で、`New Stack` → `Analog` → `ADC(r_adc)`を選択し、プロパティの`Module g_adc0 ADC(r_adc)`の各項目を以下のように設定します。  
+`Stacks Configuration`で、`New Stack` → `Analog` →から対象のA/DCデバイスを選択します。。  
+
+- ADC12の場合  
+`ADC(r_adc)`を選択し、プロパティの`Module g_adc0 ADC(r_adc)`の各項目を以下のように設定します。  
 
 | 分類        | 項目                          | 設定                  |
 | --------- | --------------------------- | ------------------- |
@@ -242,28 +261,59 @@ A/DCデバイスドライバから使用するA/Dコンバータの設定をe2st
 複数のA/Dコンバータを使用する場合は、必要な数だけ上記を繰り返します。
 設定後に`Genetate Project Content`をクリックするとFSP(HAL)のコードが生成されます。  
 
-(3) デバイスドライバの初期化  
-A/DCデバイスドライバを使用するにあたり、最初に`dev_init_hal_adc`関数で初期化を行います。これにより、HALが関連付けられたA/DCデバイスドライバが生成されます。本関数は以下のように定義されます。  
+- ADC16Hの場合  
+`ADC(r_adc_b)`を選択し、プロパティの`Module g_adc0 ADC Driver on r_adc_b`の各項目を以下のように設定します。 
 
+| 分類        | 項目                          | 設定                  |
+| --------- | --------------------------- | ------------------- |
+| General   | Name                        | g_adc0 (任意の名称に変更可能) |
+|           | その他                         | 初期値のまま              |
+| Interrupt | Scan End Priority              | 任意の割込み優先度        |
+|           | Calibration End Priority       | 任意の割込み優先度        |
+|           | その他                         | 初期値のまま              |
+| Virtual Channnels | Scan Group          | 対応するスキャングループ      |
+|            | Channel Select             | 使用するチャンネル           |
+|           | その他                         | 初期値のまま              |
+| Scan Groups | Enable                     | Enable                    |
+|             | Converter Slection         | 対応するA/Dコンバータ       |
+
+使用するチャンネルを仮想チャンネルに設定します。また、仮想チャンネルには対応するスキャングループを指定し、スキャングループにはA/Dコンバータ(ADC0, ADC1)を設定します。  
+設定後に`Genetate Project Content`をクリックするとFSP(HAL)のコードが生成されます。  
+
+(3) デバイスドライバの初期化  
+A/DCデバイスドライバを使用するにあたり、最初にA/DCデバイスドライバ初期化関数で初期化を行います。これにより、HALが関連付けられたA/DCデバイスドライバが生成されます。本関数は以下のように定義されます。  
+
+- ADC12の場合  
 ```C
 ER dev_init_hal_adc(
     UW unit,        // デバイスのユニット番号(0～DEV_HAL_ADC_UNITNM)
-    adc_instance_ctrl_t *hadc,      // ADC制御構造体
-	  const adc_cfg_t *cadc,          // ADCコンフィギュレーション構造体
+    adc_instance_ctrl_t     *hadc,      // ADC制御構造体
+	  const adc_cfg_t         *cadc,          // ADCコンフィギュレーション構造体
     const adc_channel_cfg_t *cfadc  // ADCチャンネルコンフィギュレーション構造体
 );
 ```
-
 パラメータunitは0から順番に指定します。数字を飛ばすことはできません。  
 パラメータhadc, cadc, cfadcは、FSPを設定すると自動的に生成されるHALの情報です。  
 初期化に成功するとデバイス名`hadc*`のデバイスドライバが生成されます。デバイス名の`*`には`a`から順番に英文字が与えられます。ユニット番号0のデバイス名は`hadca`、ユニット番号1のデバイス名は`hadcb`となります。  
+
+-ADC16Hの場合  
+```C
+ER dev_init_hal_adhb(
+    UW unit,       // デバイスのユニット番号(0～DEV_HAL_ADC_UNITNM)
+    adc_b_instance_ctrl_t   *hadc,    // ADC制御構造体
+	  const adc_cfg_t         *cadc,          // ADCコンフィギュレーション構造体
+    const adc_b_scan_cfg_t  *sadc    // ADCスキャングループ構成構造体
+);
+````
+パラメータunitは0から順番に指定します。数字を飛ばすことはできません。  
+パラメータhadc, cadc, sadcは、FSPを設定すると自動的に生成されるHALの情報です。  
+初期化に成功するとデバイス名`hadhb*`のデバイスドライバが生成されます。デバイス名の`*`には`a`から順番に英文字が与えられます。ユニット番号0のデバイス名は`hadhba`、ユニット番号1のデバイス名は`hadhbb`となります。  
 
 μT-Kernel 3.0 BSP2の起動処理の`knl_start_device`関数にてデバイスドライバの初期化を行っています。knl_start_device関数は以下のファイルに記述されています。  
 
 `mtk3_bsp2/sysdepend/ra_fsp/devinit.c`
 
-以下にknl_start_device関数の内容を示します。ここでは名称`g_adc0`のFSP(HAL)を使用したデバイスドライバを初期化し、デバイス名`hadca`のμT-Kernel 3.0のデバイスドライバが生成されます。  
-実際に使用するFSP(HAL）に応じて変更してください。  
+以下にknl_start_device関数の内容を示します。ここではHALに関連図けられたμT-Kernel 3.0のデバイスドライバが生成されます。実際に使用するFSP（HAL）に応じて変更してください。  
 
 ```C
 EXPORT ER knl_start_device( void )
@@ -274,6 +324,10 @@ EXPORT ER knl_start_device( void )
 
 #if DEVCNF_USE_HAL_ADC
 	err = dev_init_hal_adc( 0, &g_adc0_ctrl, &g_adc0_cfg, &g_adc0_channel_cfg);
+#endif
+
+#if DEVCNF_USE_HAL_ADHB
+	err = dev_init_hal_adhb( 0, &g_adc0_ctrl, &g_adc0_cfg, &g_adc0_scan_cfg);
 #endif
 
 	return err;
@@ -352,16 +406,16 @@ I2Cデバイスドライバから使用するI2Cの設定をe2studioで行いま
 
 (参考) 各ボードのI2C信号と、マイコンのI2C端子の対応は以下の通りです。  
 
-| ボードのI2C信号   | EK-RA6M3      | EK-RA8M1      | EK-RA8D1      | FPB-RA4E1     | Arduino UNO R4 | RA4M1 Clicker |
-| ---------------- | ------------- | ------------- | ------------- | ------------- | -------------- | ------------- |
-| Grove-1 I2C SDA  | P409/SCI_SDA3 | P401/I3C_SDA0 | P511/IIC_SDA1 | -             | -              | -             |
-| Grove-1 I2C SCL  | P408/SCI_SCL3 | P400/I3C_SCL0 | P512/IIC_SCL1 | -             | -              | -             |
-| Grove-2 I2C SDA  | P409/SCI_SDA3 | P511/IIC_SDA1 | P401/I3C_SDA0 | -             | -              | -             |
-| Grove-2 I2C SCL  | P408/SCI_SCL3 | P512/IIC_SCL1 | P400/I3C_SCL0 | -             | -              | -             |
-| Arduino I2C SDA  | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/IIC_SDA0 | P101/SCI_SDA0  | -             |
-| Arduino I2C SCL  | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/IIC_SCL0 | P100/SCI_SCL0  | -             |
-| mikroBUS I2C SDA | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | -             | -              | P206/IIC_SDA1 |
-| mikroBUS I2C SCL | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | -             | -              | P205/IIC_SCL1 |
+| ボードのI2C信号   | EK-RA6M3      | EK-RA8M1      | EK-RA8D1      | EK-RA8P1      | FPB-RA4E1     | Arduino UNO R4 | RA4M1 Clicker |
+| ---------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------- | ------------- |
+| Grove-1 I2C SDA  | P409/SCI_SDA3 | P401/I3C_SDA0 | P511/IIC_SDA1 | -             | -             | -              | -             |
+| Grove-1 I2C SCL  | P408/SCI_SCL3 | P400/I3C_SCL0 | P512/IIC_SCL1 | -             | -             | -              | -             |
+| Grove-2 I2C SDA  | P409/SCI_SDA3 | P511/IIC_SDA1 | P401/I3C_SDA0 | -             | -             | -              | -             |
+| Grove-2 I2C SCL  | P408/SCI_SCL3 | P512/IIC_SCL1 | P400/I3C_SCL0 | -             | -             | -              | -             |
+| Arduino I2C SDA  | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/IIC_SDA0 | P101/SCI_SDA0  | -             |
+| Arduino I2C SCL  | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/IIC_SCL0 | P100/SCI_SCL0  | -             |
+| mikroBUS I2C SDA | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/I3C_SDA0 | -             | -              | P206/IIC_SDA1 |
+| mikroBUS I2C SCL | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/I3C_SCL0 | -             | -              | P205/IIC_SCL1 |
 
 **注意**  
 - 使用するI2C信号を有効にするためにマイコンボードのディップスイッチやジャンパーの設定が必要な場合があります。各ボードのマニュアルをご覧ください。
@@ -585,20 +639,21 @@ gitのコマンドを使用する場合は、プロジェクトのディレク�
 [C/C++ ビルド]→[設定]→[ツール設定]で以下を設定します。
 
 (1) [GNU Arm Cross C Compiler]→[Preprocessor]  
-[Define symbles]に対象マイコンボードのターゲット名を設定します。
+[Define symbles]に対象マイコンボードのターゲット名を設定します。既存の設定は変更しません。  
 
 | マイコンボード        | ターゲット名                 |
 | -------------- | ---------------------- |
 | EK-RA6M3       | \_RAFSP_EK_RA6M3_      |
 | EK-RA8M1       | \_RAFSP_EK_RA8M1_      |
 | EK-RA8D1       | \_RAFSP_EK_RA8D1_      |
+| EK-RA8P1       | \_RAFSP_EK_RA8P1_      |
 | FPB-RA4E1      | \_RAFSP_FPB_RA4E1_     |
 | Arduino UNO R4 | \_RAFSP_ARDUINO_UNOR4_ |
 | RA4M1 Clicker  | \_RAFSP_CLICKER_RA4M1_ |
 
 
 (2) [GNU Arm Cross C Compiler]→[includes]  
-[Include paths]に以下を設定します。  
+[Include paths]に以下を設定します。既存の設定は変更しません。  
 プロジェクトのディレクトリ・ツリーの最上位にμT-Kernel 3.0 BSP2のディレクトリmtk3_bsp2がある前提です。ディレクトリの場所を変えた場合はそれに合わせて変更してください。  
 
 ```
@@ -613,6 +668,13 @@ gitのコマンドを使用する場合は、プロジェクトのディレク�
 
 (4) [GNU Arm Cross Assembler]→[includes]  
 (2)と同じ設定を行います。  
+
+(5) [GNU Arm Cross Linker]→[General]
+[Script files]の最後に以下の設定を追加します。既存の設定は変更しません。  
+
+```
+"${workspace_loc:/${ProjName}/mtk3_bsp2/etc/linker/mtkernel.ld}"
+```
 
 ### 4.2.3. OS起動処理の呼び出し
 生成されたプロジェクトは、ハードウェアの初期化処理などのあと、hal_entry関数を実行します。  
@@ -732,15 +794,16 @@ EXPORT INT usermain(void)
 
 # 5. 変更履歴
 
-| 版数      | 日付         | 内容                                                      |
+| 版数      | 日付         | 内容                                                 |
 | ------- | ---------- | ------------------------------------------------------- |
-| 1.00.B9 | 2025.11.07 | 対応ボードにFPB-RA4E1を追加。関連情報の記載                              |
-| 1.00.B8 | 2025.10.17 | IDEのバージョン更新など                                           |
-| 1.00.B7 | 2025.05.29 | OS,IDEのバージョン更新など                                        |
-| 1.00.B6 | 2024.12.20 | 対応ボードにEK-RA8D1を追加。関連情報の記載                               |
-| 1.00.B5 | 2024.09.05 | 対応ボードにRA4M1 Clickerを追加。関連情報の記載                          |
-| 1.00.B4 | 2024.05.24 | 誤記修正                                                    |
-| 1.00.B3 | 2024.04.10 | I2Cデバイスの説明を補足                                           |
-| 1.00.B2 | 2024.03.21 | 誤記修正                                                    |
+| 1.00.B10 | 2026.04.23 | 対応ボードにEK-RA8P1を追加。IDEのバージョン更新と関連する事項の更新 |
+| 1.00.B9 | 2025.11.07 | 対応ボードにFPB-RA4E1を追加。関連情報の記載                |
+| 1.00.B8 | 2025.10.17 | IDEのバージョン更新など                                   |
+| 1.00.B7 | 2025.05.29 | OS,IDEのバージョン更新など                                |
+| 1.00.B6 | 2024.12.20 | 対応ボードにEK-RA8D1を追加。関連情報の記載                 |
+| 1.00.B5 | 2024.09.05 | 対応ボードにRA4M1 Clickerを追加。関連情報の記載            |
+| 1.00.B4 | 2024.05.24 | 誤記修正                                                 |
+| 1.00.B3 | 2024.04.10 | I2Cデバイスの説明を補足                                   |
+| 1.00.B2 | 2024.03.21 | 誤記修正                                                 |
 | 1.00.B1 | 2024.02.29 | </br>- 対応ボードにEK-RA8M1を追加。関連情報の記載</br>- デバイスドライバなどの内容を更新 |
-| 1.00.B0 | 2023.12.15 | 新規作成                                                    |
+| 1.00.B0 | 2023.12.15 | 新規作成                                                 |
