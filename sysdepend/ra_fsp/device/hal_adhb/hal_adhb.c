@@ -106,6 +106,7 @@ LOCAL ER read_data(T_HAL_ADHB_DCB *p_dcb, T_DEVREQ *req)
 	uint16_t	val;
 	UINT		wflgptn, rflgptn;
 	ER		err;
+	
 	fsp_err_t	fsp_err;
 
 	if(req->size == 0) {
@@ -153,7 +154,8 @@ LOCAL ER dev_adhb_openfn( ID devid, UINT omode, T_MSDI *p_msdi)
 {
 	T_HAL_ADHB_DCB	*p_dcb;
 	UINT		wflgptn, rflgptn;
-	ER		err;
+	ER		err = E_OK;
+
 	fsp_err_t	fsp_err;
 
 	p_dcb = (T_HAL_ADHB_DCB*)(p_msdi->dmsdi.exinf);
@@ -176,9 +178,11 @@ LOCAL ER dev_adhb_openfn( ID devid, UINT omode, T_MSDI *p_msdi)
 	tk_clr_flg(id_flgid, ~wflgptn);
 
 	fsp_err = R_ADC_B_Calibrate( p_dcb->hadc, NULL);
-	if(fsp_err != FSP_SUCCESS) return E_IO;
+	if(fsp_err != FSP_SUCCESS && fsp_err != FSP_ERR_UNSUPPORTED) return E_IO;
 
-	err = tk_wai_flg(id_flgid, wflgptn, TWF_ANDW | TWF_BITCLR, &rflgptn, DEV_HAL_ADHB_CALIB_TMOUT);
+	if( fsp_err == FSP_SUCCESS) {
+		err = tk_wai_flg(id_flgid, wflgptn, TWF_ANDW | TWF_BITCLR, &rflgptn, DEV_HAL_ADC_CALIB_TMOUT);
+	}
 
 	return err;
 }
