@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル <!-- omit in toc -->
 ## RA FSP編 <!-- omit in toc -->
-## Version 01.00.B10 <!-- omit in toc -->
-## 2026.04.23 <!-- omit in toc -->
+## Version 01.00.B11 <!-- omit in toc -->
+## 2026.04.27 <!-- omit in toc -->
 
 - [1. 概要](#1-概要)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -232,7 +232,7 @@ A/DCデバイスドライバから使用するA/Dコンバータの設定をe2st
 | ----------- | ---------- | ---------- | ---------- | ---------- | ---------- | --------------------- |
 | Arduino A0  | P000/AN000 | P004/AN000 | P004/AN000 | P001/AN001 | P000/AN000 | P014/AN009            |
 | Arduino A1  | P001/AN001 | P003/AN104 | P003/AN104 | P007/AN007 | P001/AN001 | P000/AN000            |
-| Arduino A2  | P002/AN002 | P007/AN004 | P007/AN004 | P003/AN003 | P002AN002  | P001/AN001            |
+| Arduino A2  | P002/AN002 | P007/AN004 | P007/AN004 | P003/AN003 | P002/AN002 | P001/AN001            |
 | Arduino A3  | P507/AN119 | P001/AN101 | P011/AN106 | P004/AN004 | P003/AN003 | P002/AN002            |
 | Arduino A4  | P508/AN020 | P014/AN007 | P014/AN007 | P014/AN014 | P004/AN004 | P101/AN021            |
 | Arduino A5  | P014/AN005 | P015/AN105 | P015/AN105 | P015/AN015 | P013/AN011 | P100/AN022            |
@@ -406,35 +406,46 @@ I2Cデバイスドライバから使用するI2Cの設定をe2studioで行いま
 
 (参考) 各ボードのI2C信号と、マイコンのI2C端子の対応は以下の通りです。  
 
-| ボードのI2C信号   | EK-RA6M3      | EK-RA8M1      | EK-RA8D1      | EK-RA8P1      | FPB-RA4E1     | Arduino UNO R4 | RA4M1 Clicker |
-| ---------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------- | ------------- |
-| Grove-1 I2C SDA  | P409/SCI_SDA3 | P401/I3C_SDA0 | P511/IIC_SDA1 | -             | -             | -              | -             |
-| Grove-1 I2C SCL  | P408/SCI_SCL3 | P400/I3C_SCL0 | P512/IIC_SCL1 | -             | -             | -              | -             |
-| Grove-2 I2C SDA  | P409/SCI_SDA3 | P511/IIC_SDA1 | P401/I3C_SDA0 | -             | -             | -              | -             |
-| Grove-2 I2C SCL  | P408/SCI_SCL3 | P512/IIC_SCL1 | P400/I3C_SCL0 | -             | -             | -              | -             |
-| Arduino I2C SDA  | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/IIC_SDA0 | P101/SCI_SDA0  | -             |
-| Arduino I2C SCL  | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/IIC_SCL0 | P100/SCI_SCL0  | -             |
-| mikroBUS I2C SDA | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/I3C_SDA0 | -             | -              | P206/IIC_SDA1 |
-| mikroBUS I2C SCL | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/I3C_SCL0 | -             | -              | P205/IIC_SCL1 |
+| ボードのI2C信号   | EK-RA6M3      | EK-RA8M1      | EK-RA8D1      | EK-RA8P1      |
+| ---------------- | ------------- | ------------- | ------------- | ------------- |
+| Grove-1 I2C SDA  | P409/SCI_SDA3 | P401/I3C_SDA0 | P511/IIC_SDA1 | -             |
+| Grove-1 I2C SCL  | P408/SCI_SCL3 | P400/I3C_SCL0 | P512/IIC_SCL1 | -             |
+| Grove-2 I2C SDA  | P409/SCI_SDA3 | P511/IIC_SDA1 | P401/I3C_SDA0 | -             |
+| Grove-2 I2C SCL  | P408/SCI_SCL3 | P512/IIC_SCL1 | P400/I3C_SCL0 | -             |
+| Arduino I2C SDA  | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/I3C_SDA0 |
+| Arduino I2C SCL  | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/I3C_SCL0 |
+| mikroBUS I2C SDA | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/I3C_SDA0 |
+| mikroBUS I2C SCL | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/I3C_SCL0 |
+
+| ボードのI2C信号   | FPB-RA4E1     | Arduino UNO R4 | RA4M1 Clicker |
+| ---------------- | ------------- | -------------- | ------------- |
+| Arduino I2C SDA  | P401/IIC_SDA0 | P101/SCI_SDA0  | -             |
+| Arduino I2C SCL  | P400/IIC_SCL0 | P100/SCI_SCL0  | -             |
+| mikroBUS I2C SDA | -             | -              | P206/IIC_SDA1 |
+| mikroBUS I2C SCL | -             | -              | P205/IIC_SCL1 |
 
 **注意**  
-- 使用するI2C信号を有効にするためにマイコンボードのディップスイッチやジャンパーの設定が必要な場合があります。各ボードのマニュアルをご覧ください。
-- 使用するI2C信号を有効にするために定められたポート出力が必要な場合があります。各ボードのマニュアルをご覧ください。
+- 使用するI2C信号を有効にするためにマイコンボードのディップスイッチやジャンパーの設定が必要な場合があります。各ボードのマニュアルをご覧ください。  
+- 使用するI2C信号を有効にするために定められたポート出力が必要な場合があります。各ボードのマニュアルをご覧ください。  
 
-  (例) EK-RA8M1ボードの場合  
-
-| 端子   | 設定                         |
+(例) EK-RA8M1ボードの場合  
+| 端子   | 設定                      |
 | ---- | -------------------------- |
 | P115 | Output mode (Initial Low)  |
 | P711 | Output mode (Initial High) |
 | PB00 | Output mode (Initial High) |
 
-  (例) EK-RAD1の場合
-
-| 端子   | 設定                         |
+(例) EK-RA8D1ボードの場合
+| 端子   | 設定                     |
 | ---- | -------------------------- |
-| P711 | Output mode (Initial High)  |
+| P711 | Output mode (Initial High) |
 | PB02 | Output mode (Initial High) |
+
+(例) EK-RA8P1ボードの場合
+| 端子   | 設定                      |
+| ---- | -------------------------- |
+| P013 | Output mode (Initial High) |
+| P109 | Output mode (Initial High) |
 
 (2) HALの設定
 `Stacks Configuration`で、`New Stack` → `Connectivity`から対象のI2Cペリフェラルを選択します。
@@ -796,6 +807,7 @@ EXPORT INT usermain(void)
 
 | 版数      | 日付         | 内容                                                 |
 | ------- | ---------- | ------------------------------------------------------- |
+| 1.00.B11 | 2026.04.27 | EK-RA8P1 I2Cの設定などの更新                            |
 | 1.00.B10 | 2026.04.23 | 対応ボードにEK-RA8P1を追加。IDEのバージョン更新と関連する事項の更新 |
 | 1.00.B9 | 2025.11.07 | 対応ボードにFPB-RA4E1を追加。関連情報の記載                |
 | 1.00.B8 | 2025.10.17 | IDEのバージョン更新など                                   |
