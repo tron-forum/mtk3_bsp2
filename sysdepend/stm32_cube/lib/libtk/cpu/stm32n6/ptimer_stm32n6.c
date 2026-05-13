@@ -3,10 +3,10 @@
  *    micro T-Kernel 3.0 BSP 2.0
  *
  *    Copyright (C) 2025 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2025/03.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/08.
  *
  *----------------------------------------------------------------------
  */
@@ -15,9 +15,9 @@
 #ifdef MTKBSP_CPU_STM32N6
 
 /*
- *	ptimer_stm32h7.c
+ *	ptimer_stm32n6.c
  *
- *	Physical timer (STM32CUBE STM32H7)
+ *	Physical timer (STM32CUBE STM32N6)
  */
 #include <tk/tkernel.h>
 #include <tk/syslib.h>

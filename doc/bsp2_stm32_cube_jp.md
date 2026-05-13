@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル  <!-- omit in toc -->
 ## STM32Cube編  <!-- omit in toc -->
-## Version 01.00.B6 <!-- omit in toc -->
-## 2025.05.29  <!-- omit in toc -->
+## Version 01.00.B7 <!-- omit in toc -->
+## 2026.05.01  <!-- omit in toc -->
 
 - [1. はじめに](#1-はじめに)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -20,8 +20,9 @@
     - [3.2.1. 概要](#321-概要)
     - [3.2.2. デバイスドライバの使用方法](#322-デバイスドライバの使用方法)
 - [4. プログラムの作成手順](#4-プログラムの作成手順)
-  - [4.1. STM32Cube IDEによるプロジェクト作成](#41-stm32cube-ideによるプロジェクト作成)
+  - [4.1. STM32Cube MXによるプロジェクト作成](#41-stm32cube-mxによるプロジェクト作成)
   - [4.2. μT-Kernel 3.0 BSP2の組込み](#42-μt-kernel-30-bsp2の組込み)
+    - [4.2.1. プロジェクトのインポート](#421-プロジェクトのインポート)
     - [4.2.1. ソースコードの組込み](#421-ソースコードの組込み)
     - [4.2.2. ビルド設定の追加](#422-ビルド設定の追加)
     - [4.2.3. OS起動処理の呼び出し](#423-os起動処理の呼び出し)
@@ -55,6 +56,7 @@
 | NUCLEO-G491RE | STM32G491RE | Arm Cortex-M4 | STマイクロエレクトロニクス Nucleo-64  |
 | NUCLEO-F767ZI | STM32F767ZI | Arm Cortex-M7 | STマイクロエレクトロニクス Nucleo-144 |
 | NUCLEO-H723ZG | STM32H723ZG | Arm Cortex-M7 | STマイクロエレクトロニクス Nucleo-144 |
+| NUCLEO-H533RE | STM32H533RE | Arm Cortex-M33 | STマイクロエレクトロニクス Nucleo-64 |
 | STM32N6570-DK | STM32N657X0H3Q | Arm Cortex-M55 | STマイクロエレクトロニクス Discovery kit |
 
 ## 1.2. 開発環境
@@ -62,10 +64,13 @@
 また、ファームウェアとして、STM32Cubeの各種ソフトウェアを使用します。  
 本書では以下のバージョンで動作を確認しています。  
 
-`STM32CubeIDE Version: 1.18.1`  
+`STM32CubeMX Version: 6.17.0`
+`STM32CubeIDE Version: 2.1.1`  
 
 詳しくは以下のWebサイトをご覧ください。
 
+STM32Cube初期化コード生成ツール
+https://www.st.com/ja/development-tools/stm32cubemx.html
 STM32用統合開発環境  
 https://www.st.com/ja/development-tools/stm32cubeide.html  
 
@@ -94,8 +99,8 @@ deviceディレクトリにはSTM32Cubeを利用したデバイスドライバ�
 
 ## 1.4 TrustZone対応
 TrustZone機能があり、かつ有効にしているマイコンは以下の点に注意してください。  
-本バージョンのμT-Kernel 3.0 BSP2はセキュアでの実行にのみ対応しています。基本的にはFSBL(First Stage Boot loader)とセキュアアプリケーションのみの構成での使用を想定しています。セキュア、非セキュアから構成されるアプリケーションについては今後のバージョンで対応の予定です。  
-STM32CubeIDEによるTrustZone対応の開発では、プロジェクトはFSBL、セキュアアプリケーション、非セキュアアプリケーションなどの複数のサブプロジェクトから構成されます。μT-Kernel 3.0 BSP2はセキュアステータスで実行するサブプロジェクトにのみ組み込むことができます。  
+本バージョンのμT-Kernel 3.0 BSP2はセキュアでの実行にのみ対応しています。基本的にはセキュアアプリケーションのみでの使用を想定しています。セキュア、非セキュアから構成されるアプリケーションについては今後のバージョンで対応の予定です。  
+STM32N657などのTrustZoneに対応の開発では、プロジェクトはFSBL(First Stage Boot loader)、セキュアアプリケーション、非セキュアアプリケーションなどの複数のサブプロジェクトから構成されます。μT-Kernel 3.0 BSP2はセキュアステータスで実行するサブプロジェクトにのみ組み込むことができます。  
 
 # 2. BSP固有の機能について
 ## 2.1. デバッグ用シリアル出力
@@ -113,17 +118,17 @@ STM32CubeIDEによるTrustZone対応の開発では、プロジェクトはFSBL�
 デバッグ用シリアル出力はT-Monitor互換API tm_printfが使用できます。tm_printfはC言語の標準関数printfとほぼ同等の機能を持ちますが、浮動小数点は使用できません。  
 シリアル出力は以下の設定となります。  
 
-| 項目       | 値         |
-| -------- | --------- |
+| 項目       | 値        |
+| --------- | --------- |
 | 速度       | 115200bps |
-| データ長     | 8bit      |
-| パリティ     | なし        |
-| Stop Bit | 1bit      |
-| フロー制御    | 無し        |
+| データ長   | 8bit      |
+| パリティ   | なし       |
+| Stop Bit   | 1bit      |
+| フロー制御  | 無し      |
 
 シリアル信号はボードのデバッガST-LINK micro USBコネクタに接続されます。具体的には以下のマイコンのペリフェラルを使用しています。  
 
-| マイコンボード       | ペリフェラル|
+| マイコンボード | ペリフェラル|
 | ------------- | ----------- |
 | NUCLEO-L476RG | USART2 |
 | NUCLEO-L4R5ZI | LPUART1|
@@ -197,30 +202,39 @@ A/DCデバイスドライバは、マイコン内蔵のA/Dコンバータを制�
 
 ### 3.1.2. デバイスドライバの使用方法
 (1) STM32CubeFWの設定
-A/DCデバイスドライバから使用するA/Dコンバータの設定をSTM32CubeIDEで行います。  
-プロジェクトの中の拡張子iocのファイルが設定ファイルです。STM32CubeIDEでこのファイルを開きます。  
+A/DCデバイスドライバから使用するA/Dコンバータの設定をSTM32CubeMXで行います。  
+プロジェクトの中の拡張子iocのファイルが設定ファイルです。STM32CubeMXでこのファイルを開きます。  
 `Pinout & Configuration`の`Pinout`で使用するA/Dコンバータの端子を設定します。  
 
 (参考) 各ボードのArduino互換インタフェースのアナログ入力(A0～A5)と、マイコンのA/Dコンバータの入力の対応は以下の通りです。  
 
-| Arduinoアナログ入力 | F401,F411 | F446        | L476       |
-| ------------- | --------- | ----------- | ---------- |
-| A0            | ADC1_0    | ADC123_IN0  | ADC12_IN5  |
-| A1            | ADC1_1    | ADC123_IN1  | ADC12_IN6  |
-| A2            | ADC1_4    | ADC12_IN4   | ADC12_IN9  |
-| A3            | ADC1_8    | ADC12_IN8   | ADC12_IN15 |
-| A4            | ADC1_11   | ADC123_IN11 | ADC123_IN2 |
-| A5            | ADC1_10   | ADC123_IN10 | ADC123_IN1 |
+| Arduinoアナログ入力 | F401,F411 | F446        | L476       | L4R5       |
+| ------------------ | --------- | ----------- | ---------- | ---------- |
+| A0                 | ADC1_0    | ADC123_IN0  | ADC12_IN5  | ADC12_IN8  |
+| A1                 | ADC1_1    | ADC123_IN1  | ADC12_IN6  | ADC123_IN1 |
+| A2                 | ADC1_4    | ADC12_IN4   | ADC12_IN9  | ADC123_IN4 |
+| A3                 | ADC1_8    | ADC12_IN8   | ADC12_IN15 | ADC123_IN2 |
+| A4                 | ADC1_11   | ADC123_IN11 | ADC123_IN2 | ADC12_IN13 |
+| A5                 | ADC1_10   | ADC123_IN10 | ADC123_IN1 | ADC12_IN14 |
 
 
-| Arduinoアナログ入力 | H723         | F767        | L4R5       | G431, G491             |
-| ------------- | ------------ | ----------- | ---------- | ---------------------- |
-| A0            | ADC12_INP15  | ADC123_IN3  | ADC12_IN8  | ADC12_IN1              |
-| A1            | ADC123_INP10 | ADC123_IN10 | ADC123_IN1 | ADC12_IN2              |
-| A2            | ADC12_INP13  | ADC123_IN13 | ADC123_IN4 | ADC2_IN17              |
-| A3            | ADC12_INP5   | ADC3_IN9    | ADC123_IN2 | ADC3_IN12 or ADC1_IN15 |
-| A4            | ADC123_INP12 | ADC3_IN15   | ADC12_IN13 | ADC12_IN7              |
-| A5            | ADC3_INP6    | ADC3_IN8    | ADC12_IN14 | ADC12_IN6              |
+| Arduinoアナログ入力 | H723         | F767        | G431, G491             |
+| ------------------ | ------------ | ----------- | ---------------------- |
+| A0                 | ADC12_INP15  | ADC123_IN3  |  ADC12_IN1              |
+| A1                 | ADC123_INP10 | ADC123_IN10 |  ADC12_IN2              |
+| A2                 | ADC12_INP13  | ADC123_IN13 |  ADC2_IN17              |
+| A3                 | ADC12_INP5   | ADC3_IN9    |  ADC3_IN12 or ADC1_IN15 |
+| A4                 | ADC123_INP12 | ADC3_IN15   |  ADC12_IN7              |
+| A5                 | ADC3_INP6    | ADC3_IN8    |  ADC12_IN6              |
+
+| Arduinoアナログ入力 | H533        | N657         |
+| ------------------ | ----------- |------------- |
+| A0                 | ADC1_INP0   | ADC2_18      |
+| A1                 | ADC1_INP1   | ADC1_10      |
+| A2                 | ADC1_INP5   | ADC1_11      |
+| A3                 | ADC1_INP9   | ADC1_13      |
+| A4                 | ADC1_INP11  | ADC1_16      |
+| A5                 | ADC1_INP10  | ADC1_8       |
 
 | Arduinoアナログ入力 | STM32N6570-DK |     |
 | ------------- | ------------ | --- |
@@ -235,7 +249,21 @@ A/DCデバイスドライバから使用するA/Dコンバータの設定をSTM3
 `Mode`にてA/Dコンバータの使用する入力を`Single-ended`に設定します。  
 `Configuration`の`NVIC Settings`で割り込みを有効にします。その他の設定はデフォルトの設定値を前提としています。  
 割り込み優先度は`System Core`から`NVIC`を選択して設定を行いします。  
-設定後にiocファイルを保存すると、STM32CubeFWのソースコードが自動生成されます。  
+設定後に[GENERATE CODE]を押下すると、STM32CubeFWのソースコードが自動生成されます。  
+
+※ TrustZoneを使用する場合  
+TrustZoneを使用する場合は、μT-Kernel3.0が組み込まれているサブプロジェクトについて設定を行ってください（現バージョンではセキュアアプリケーションでのみ実行可能です）。 
+
+※ STM32N6570の設定  
+STM32N6570はTrustZoneが有効となっています。A/Dコンバータをセキュアから使用するにあたり RIFSCの設定が必要です。  
+STM32CubeMXで生成されたmain.cファイルのMX_ADC1_Init関数中の`USER CODE BEGIN ADC1_Init 1`の領域に以下の様に設定コードを追記してください。  
+
+```C
+ /* USER CODE BEGIN ADC1_Init 1 */
+  __HAL_RCC_RIFSC_CLK_ENABLE();
+    RIFSC->RISC_SECCFGRx[2] |= 0x1;
+  /* USER CODE END ADC1_Init 1 */
+```
 
 ※ TrustZoneを使用する場合  
 TrustZoneを使用する場合は、μT-Kernel3.0が組み込まれているサブプロジェクトについて設定を行ってください（現バージョンではセキュアアプリケーションでのみ実行可能です）。 
@@ -262,7 +290,7 @@ ER dev_init_hal_adc(
 ```
 
 パラメータunitは0から順番に指定します。数字を飛ばすことはできません。  
-パラメータhadcは、STM32CubeIDEで自動的に生成される情報です。  
+パラメータhadcは、STM32CubeMXで自動的に生成される情報です。  
 初期化に成功するとデバイス名`hadc*`のデバイスドライバが生成されます。デバイス名の`*`には`a`から順番に英文字が与えられます。ユニット番号0のデバイス名は`hadca`、ユニット番号1のデバイス名は`hadcb`となります。  
 
 μT-Kernel 3.0 BSP2の起動処理の`knl_start_device`関数にてデバイスドライバの初期化を行っています。knl_start_device関数は以下のファイルに記述されています。  
@@ -367,22 +395,25 @@ I2CデバイスドライバはSTM32CubeFWを使用していますので、STM32C
 
 ### 3.2.2. デバイスドライバの使用方法
 (1) STM32CubeFWの設定
-I2Cデバイスドライバから使用するA/Dコンバータの端子設定をSTM32CubeIDEで行います。  
-プロジェクトの中の拡張子iocのファイルが設定ファイルです。STM32CubeIDEでこのファイルを開きます。  
+I2Cデバイスドライバから使用するA/Dコンバータの端子設定をSTM32CubeMXで行います。  
+プロジェクトの中の拡張子iocのファイルが設定ファイルです。STM32CubeMXでこのファイルを開きます。  
 `Pinout & Configuration`の`Pinout`で使用するI2Cコンバータの端子を設定します。  
 
 (参考) 各ボードのArduino互換インタフェースのI2C信号と、マイコンのI2C端子の対応は以下の通りです。  
 
-| ボードのI2C信号       | STM32N6570-DK | その他のボード      |
-| --------------- | ------------- | ------------ |
-| Arduino I2C SCL | PH9/I2C1_SCL  | PB8/I2C1_SCL |
-| Arduino I2C SDA | PC1/I2C1_SDA  | PB9/I2C1_SDA |
+| ボードのI2C信号  | H533         | N657         | その他のボード |
+| --------------- | ------------ | ------------ | ------------- |
+| Arduino I2C SCL | PB6/I2C1_SCL | PH9/I2C1_SCL | PB8/I2C1_SCL  |
+| Arduino I2C SDA | PB7/I2C1_SDA | PC1/I2C1_SDA | PB9/I2C1_SDA  |
 
 `Pinout & Configuration`の`Software Packs`で`Connectivity`から使用するI2Cを選択し設定を行います。  
 `Mode`にてI2Cのモードを`I2C`に設定します。  
 `Configuration`の`NVIC Settings`で割り込みを有効にします。その他の設定はデフォルトの設定値を前提としています。  
 割り込み優先度は`System Core`から`NVIC`を選択して設定を行いします。  
-設定後にiocファイルを保存すると、STM32CubeFWのソースコードが自動生成されます。  
+設定後に[GENERATE CODE]を押下すると、STM32CubeFWのソースコードが自動生成されます。  
+
+※ TrustZoneを使用する場合  
+TrustZoneを使用する場合は、μT-Kernel3.0が組み込まれているサブプロジェクトについて設定を行ってください（現バージョンではセキュアアプリケーションでのみ実行可能です）。  
 
 ※ TrustZoneを使用する場合  
 TrustZoneを使用する場合は、μT-Kernel3.0が組み込まれているサブプロジェクトについて設定を行ってください（現バージョンではセキュアアプリケーションでのみ実行可能です）。  
@@ -455,19 +486,22 @@ ER i2c_write_reg(
 ```
 
 # 4. プログラムの作成手順
-STM32Cube IDEでプログラムのプロジェクトを作成し、μT-Kenrel 3.0 BSP2を組み込んでビルド、実行までの手順を説明します。
+STM32Cube MX および STM32Cube IDE を使用してプログラムのプロジェクトを作成し、μT-Kenrel 3.0 BSP2を組み込んでビルド、実行までの手順を説明します。  
+STM32Cube MX および STM32Cube IDE の操作はそれぞれのマニュアルなどを参照してください。  
 
-## 4.1. STM32Cube IDEによるプロジェクト作成
-以下の手順で対象マイコンボードのプロジェクトを作成します。これはSTM32Cube IDEの標準の手順です。
+## 4.1. STM32Cube MXによるプロジェクト作成
+STM32Cube MXを実行し、以下の手順で対象マイコンボードのプロジェクトを作成します。
 
-(1) メニュー[File]→[New]→[STM32 Project]を選択します。  
-(2) 対象のマイコンボードを選択します。  
-(3) 以下の設定のプロジェクトを作成します。  
-- Target Language : C
-- Target Binary Type : Executable
-- Target Project Type : STM32Cube
+(1) メニュー[File]→[New Project]を選択します。  
+(2) 対象のマイコンボードを選択し[Start Project]を押下します。  
+(3) TrustZone機能を持つマイコンの場合は[without TrustZone activated]を選択し、この機能を無効にします。(※)
+(3) TrustZone機能を無効にできない場合は[Secure domain only]を選択します。  
+(4) [Project Manager]タブを選択し、[Project]の[Toolchain/IDE]を [STM32CubeIDE]に設定します。  
+(5) [GENERATE CODE]を押下するとプロジェクトが生成されます。  
 
-マイコンのピン設定、コンフィギュレーションの基本的な設定はできていますで、開発するアプリケーションに応じて必要な設定を行ってください。
+※ STM32N657はTrustZone機能を無効にすることは出来ません。
+
+基本的なマイコンのピン設定、コンフィギュレーション設定が行われます。その他は開発するアプリケーションに応じて必要な設定を行ってください。STM32N657はブートローダの設定も必要です。  
 
 ※ TrustZoneを使用する場合
 本バージョンのμT-Kernel 3.0 BSP2はセキュアアプリケーションでの実行のみに対応しています。プロジェクト作成の際には`Project Structure`を以下の設定としてください。
@@ -478,20 +512,31 @@ STM32Cube IDEでプログラムのプロジェクトを作成し、μT-Kenrel 3.
 FSBLとセキュアアプリケーションの二つのサブモジュールが生成されます。μT-Kernel 3.0 BSP2はセキュアアプリケーションのサブプロジェクトに組み込みます。
 
 ## 4.2. μT-Kernel 3.0 BSP2の組込み
+### 4.2.1. プロジェクトのインポート
+STM32CubeIDEを実行し、STM32CubeMXで作成したプロジェクトをインポートします。  
+
+(1) メニュー[File]→[Import]を選択します。 
+(2) [General]から[Existion Projects into Workspace]を選択し、STM32CubeMXで作成したプロジェクトを選択して[Finish]を押下します。    
+(3) プロジェクトがインポートされ、[Project Explorer]に表示されます。
+
+
 ### 4.2.1. ソースコードの組込み
 作成したプロジェクトにμT-Kernel 3.0 BSP2のソースコードを組込みます。  
-以下のGitHubのリポジトリからμT-Kernel 3.0 BSP2から入手し、プロジェクトのディレクトリ中にμT-Kernel 3.0 BSP2のソースコードのディレクトリmtk3_bsp2を置きます。
+STM32N657では、プロジェクト内にFSBLとアプリケーションの二つのサブプロジェクトが生成されています。μT-Kernel 3.0 BSP2はアプリケーションのサブプロジェクトに組み込みます。  
+
+以下のGitHubのリポジトリからμT-Kernel 3.0 BSP2から入手します。
 
 `https://github.com/tron-forum/mtk3_bsp2.git`  
 
-gitのコマンドを使用する場合は、プロジェクトのディレクトリをカレントディレクトリとし、以下のコマンドを実行します。  
+gitのコマンドを使用する場合は、組み込む対象プロジェクトのディレクトリをカレントディレクトリとし、以下のコマンドを実行します。  
 
 `git clone --recursive  https://github.com/tron-forum/mtk3_bsp2.git`  
 
-μT-Kernel 3.0 BSP2はμT-Kernel 3.0のリポジトリをgitのサブモジュールとして内包していますので、全ソースコードを取得するには--recursiveが必要となります。  
+μT-Kernel 3.0 BSP2はμT-Kernel 3.0のリポジトリをgitのサブモジュールとして内包していますので、全ソースコードを取得するには--recursiveが必須となります。  
 
+プロジェクトのディレクトリ中にμT-Kernel 3.0 BSP2のソースコードのディレクトリ`mtk3_bsp2`が取り込まれます。  
 取り込んだμT-Kernel 3.0 BSP2のディレクトリは、STM32Cube IDEのビルド対象外の設定になっている可能性がありますので、プロパティを変更します。  
-`Exclude resource from build`にチェックが入っている場合は外してください。  
+`Exclude resource from build`にチェックが入っている場合は、これを外してください。    
 
 ### 4.2.2. ビルド設定の追加
 プロジェクトのプロパティに、μT-Kernel 3.0 BSP2のスースコードをビルドするための設定を追加します。  
@@ -511,6 +556,7 @@ gitのコマンドを使用する場合は、プロジェクトのディレク�
 | NUCLEO-G491RE | \_STM32CUBE_NUCLEO_G491_ |
 | NUCLEO-F767ZI | \_STM32CUBE_NUCLEO_F767_ |
 | NUCLEO-H723ZG | \_STM32CUBE_NUCLEO_H723_ |
+| NUCLEO-H533RE | \_STM32CUBE_NUCLEO_H533_ |
 | STM32N6570-DK | \_STM32CUBE_DISCOVERY_N657_ |
 
 (2) [MCU GCC Compiler]→[include paths]  
@@ -548,25 +594,8 @@ int main(void)
 
   /* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+      /*** 一部省略 ***/
 
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
-  SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_USART2_UART_Init();
-  MX_I2C1_Init();
-  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   
   void knl_start_mtkernel(void);  << 追加
@@ -674,18 +703,15 @@ STM32 Nucleoボードではデバッガはボード上に搭載されていま�
 実行プログラムはマイコンボードのフラッシュメモリーに書き込まれますので、デバッガを外した状態でマイコンボードの電源を入れれば、そのまま実行されます。
 なお、マイコンボードによってはデバッグ実行を行うために、ボード上のスイッチなどを設定する必要があるものがあります。マイコンボードのマニュアルなどをご覧ください。  
 
-※ TrustZoneを使用する場合
-TrustZoneを使用する場合はプロジェクトは複数のサブプロジェクトから構成されます。デバッグ実行する際にはサブプロジェクトの実行ファイルの関連付けが必要となります。各マイコンとSTM32CubeIDEのマニュアルなどをご覧ください。
-
-
 # 5. 変更履歴
 
 | 版数      | 日付         | 内容   |
 | ------- | ---------- | ---- |
+| 1.00.B7 | 2026.05.01 | NUCLEO-H533の情報を記載</br>IDEのバージョン更新および関連する情報の更新 |
 | 1.00.B6 | 2025.05.29 | OS,IDEのバージョン更新など |
 | 1.00.B5 | 2025.03.28 | STM32N6570-DKおよびTrustZoneに関する情報の追加 |
 | 1.00.B4 | 2025.03.13 | 対応ボードにSTM32N6570-DKを追加。関連情報の記載 |
 | 1.00.B3 | 2024.05.24 | 誤記修正 |
 | 1.00.B2 | 2024.04.19 | 誤記修正 |
-| 1.00.B1 | 2024.03.21 | </br>- 対応ボードにNUCLEO-L4R5ZIを追加。関連情報の記載</br>-「2. BSP固有の機能について」説明の追加．デバイスドライバ名の変更などの内容を更新 |
+| 1.00.B1 | 2024.03.21 | 対応ボードにNUCLEO-L4R5ZIを追加。関連情報の記載</br>「2. BSP固有の機能について」説明の追加．デバイスドライバ名の変更などの内容を更新 |
 | 1.00.B0 | 2023.12.15 | 新規作成 |

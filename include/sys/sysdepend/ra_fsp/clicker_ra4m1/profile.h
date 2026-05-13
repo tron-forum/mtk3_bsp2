@@ -3,7 +3,7 @@
  *    micro T-Kernel 3.0 BSP 2.0
  *
  *    Copyright (C) 2023-2024 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
  *    Released by TRON Forum(http://www.tron.org) at 2024/08.
@@ -26,7 +26,7 @@
 #include <sys/sysdepend/ra_fsp/cpu/core/armv7m/profile.h>
 
 /*
- **** Target-depeneded profile (RA FSP Arduino UNO R4)
+ **** Target-depeneded profile (RA FSP Clicker RA4M1)
  */
 
 /*

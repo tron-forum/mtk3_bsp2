@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2025 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    Copyright (C) 2025 -2026 by Ken Sakamura.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2025/03.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/05.
  *
  *----------------------------------------------------------------------
  */
@@ -24,7 +24,7 @@
 #include "cpu_status.h"
 
 /* HLL Interrupt Handler Table */
-LOCAL UW hllint_tbl[sizeof(UW)*N_INTVEC];
+LOCAL UW hllint_tbl[sN_INTVEC];
 
 /* ------------------------------------------------------------------------ */
 /*

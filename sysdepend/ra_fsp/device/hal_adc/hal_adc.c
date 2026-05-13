@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2023-2024 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    Copyright (C) 2023-2026 by Ken Sakamura.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/03.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/04.
  *
  *----------------------------------------------------------------------
  */
@@ -90,6 +90,7 @@ LOCAL void HAL_ADC_Callback(adc_callback_args_t *p_args)
 
 	switch(p_args->event) {
 		case ADC_EVENT_SCAN_COMPLETE:
+		case ADC_EVENT_CALIBRATION_COMPLETE:
 			p_dcb->err = E_OK;
 			break;
 		default:
@@ -105,23 +106,32 @@ LOCAL ER read_data(T_HAL_ADC_DCB *p_dcb, T_DEVREQ *req)
 	uint16_t	val;
 	UINT		wflgptn, rflgptn;
 	ER		err;
+	
+	fsp_err_t	fsp_err;
 
 	if(req->size == 0) {
 		req->asize = 1;
 		return E_OK;
 	}
 
+	/* Start the ADC scan */
 	wflgptn = 1 << p_dcb->unit;
 	tk_clr_flg(id_flgid, ~wflgptn);
-	R_ADC_ScanStart(p_dcb->hadc);
+
+	fsp_err = R_ADC_ScanStart(p_dcb->hadc);
+	if(fsp_err != FSP_SUCCESS) return E_IO;
 
 	err = tk_wai_flg(id_flgid, wflgptn, TWF_ANDW | TWF_BITCLR, &rflgptn, DEV_HAL_ADC_TMOUT);
 	if(err >= E_OK) {
 		err = p_dcb->err;
 		if(err >= E_OK) {
-			R_ADC_Read(p_dcb->hadc, req->start, &val);
-			*(UW*)(req->buf) = val;
-			req->asize= 1;
+			fsp_err = R_ADC_Read(p_dcb->hadc, req->start, &val);
+			if(fsp_err == FSP_SUCCESS) {
+				*(UW*)(req->buf) = val;
+				req->asize= 1;
+			} else {
+				err = E_IO;
+			}
 		}
 	}
 
@@ -142,17 +152,38 @@ LOCAL ER write_data(T_HAL_ADC_DCB *p_dcb, T_DEVREQ *req)
 LOCAL ER dev_adc_openfn( ID devid, UINT omode, T_MSDI *p_msdi)
 {
 	T_HAL_ADC_DCB	*p_dcb;
+	UINT		wflgptn, rflgptn;
+	ER		err = E_OK;
+	
+	fsp_err_t	fsp_err;
 
 	p_dcb = (T_HAL_ADC_DCB*)(p_msdi->dmsdi.exinf);
 	if(p_dcb->hadc == NULL) return E_IO;
 
 	p_dcb->omode = omode;
 
-	R_ADC_Open(p_dcb->hadc, p_dcb->cadc);
-	R_ADC_ScanCfg(p_dcb->hadc, p_dcb->cfadc);
+	/* Open/Initialize ADC module */
+	fsp_err = R_ADC_Open(p_dcb->hadc, p_dcb->cadc);
+	if(fsp_err != FSP_SUCCESS) return E_IO;
+
 	R_ADC_CallbackSet(p_dcb->hadc, HAL_ADC_Callback, p_dcb, NULL);
 
-	return E_OK;
+	 /* Configures the ADC scan parameters */
+	fsp_err = R_ADC_ScanCfg(p_dcb->hadc, p_dcb->cfadc);
+	if(fsp_err != FSP_SUCCESS) return E_IO;
+
+	/* Calibrate the ADC */
+	wflgptn = 1 << p_dcb->unit;
+	tk_clr_flg(id_flgid, ~wflgptn);
+
+	fsp_err = R_ADC_Calibrate( p_dcb->hadc, NULL);
+	if(fsp_err != FSP_SUCCESS && fsp_err != FSP_ERR_UNSUPPORTED) return E_IO;
+
+	if( fsp_err == FSP_SUCCESS) {
+		err = tk_wai_flg(id_flgid, wflgptn, TWF_ANDW | TWF_BITCLR, &rflgptn, DEV_HAL_ADC_CALIB_TMOUT);
+	}
+
+	return err;
 }
 
 /*
@@ -160,7 +191,19 @@ LOCAL ER dev_adc_openfn( ID devid, UINT omode, T_MSDI *p_msdi)
  */
 LOCAL ER dev_adc_closefn( ID devid, UINT option, T_MSDI *p_msdi)
 {
-	return E_OK;
+	T_HAL_ADC_DCB	*p_dcb;
+	fsp_err_t	fsp_err;
+
+	p_dcb = (T_HAL_ADC_DCB*)(p_msdi->dmsdi.exinf);
+	if(p_dcb->hadc == NULL) return E_IO;
+
+	/* Stop ADC scan */
+	R_ADC_ScanStop(p_dcb->hadc);
+
+	/* Close the ADC module */
+	fsp_err = R_ADC_Close(p_dcb->hadc);
+
+	return (fsp_err == FSP_SUCCESS)? E_OK: E_IO;
 }
 
 /*

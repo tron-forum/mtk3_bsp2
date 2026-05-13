@@ -3,10 +3,10 @@
  *    micro T-Kernel 3.0 BSP 2.0
  *
  *    Copyright (C) 2023-2025 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2025/03.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/08.
  *
  *----------------------------------------------------------------------
  */
@@ -28,6 +28,9 @@
 
 #elif MTKBSP_CPU_STM32H7
 #include <stm32h7xx_hal.h>
+
+#elif MTKBSP_CPU_STM32H5
+#include <stm32h5xx_hal.h>
 
 #elif MTKBSP_CPU_STM32F7
 #include <stm32f7xx_hal.h>

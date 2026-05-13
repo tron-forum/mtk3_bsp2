@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2023-2024 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    Copyright (C) 2023-2025 by Ken Sakamura.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/08.
  *
  *----------------------------------------------------------------------
  */
@@ -70,7 +70,7 @@ EXPORT ER knl_start_device( void )
 	err = dev_init_hal_adc(DEV_HAL_ADC3, NULL);	// hadc3 is not used.
 	if(err < E_OK) return err;
 #else
-//#elif defined(MTKBSP_NUCLEO_STM32L476) || defined(MTKBSP_NUCLEO_STM32F401) || defined(MTKBSP_NUCLEO_STM32F411) || defined(MTKBSP_NUCLEO_STM32F446)
+//#elif defined(MTKBSP_NUCLEO_STM32L476) || defined(MTKBSP_NUCLEO_STM32F401) || defined(MTKBSP_NUCLEO_STM32F411) || defined(MTKBSP_NUCLEO_STM32F446) || defined(MTKBSP_NUCLEO_STM32H533)
 	err = dev_init_hal_adc(DEV_HAL_ADC2, NULL);	// hadc2 is not used
 	if(err < E_OK) return err;
 	err = dev_init_hal_adc(DEV_HAL_ADC3, NULL);	// hadc3 is not used

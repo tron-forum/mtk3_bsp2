@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.1.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2025/03.
+ *    Released by TRON Forum(http://www.tron.org) at 2025/06.
  *
  *----------------------------------------------------------------------
  */
@@ -99,35 +99,48 @@
 #define	EXTI_RTSR1	(MTK_EXTI_BASE + 0x00)
 #define	EXTI_FTSR1	(MTK_EXTI_BASE + 0x04)
 #define	EXTI_SWIER1	(MTK_EXTI_BASE + 0x08)
-#define	EXTI_D3PMR1	(MTK_EXTI_BASE + 0x0C)
-#define	EXTI_D3PCR1L	(MTK_EXTI_BASE + 0x10)
-#define	EXTI_D3PCR1H	(MTK_EXTI_BASE + 0x14)
+#define	EXTI_RPR1	(MTK_EXTI_BASE + 0x0C)
+#define	EXTI_FPR1	(MTK_EXTI_BASE + 0x10)
+#define	EXTI_SECCFGR1	(MTK_EXTI_BASE + 0x14)
+#define EXTI_PRIVCFGR1	(MTK_EXTI_BASE + 0x18)
 
 #define	EXTI_RTSR2	(MTK_EXTI_BASE + 0x20)
 #define	EXTI_FTSR2	(MTK_EXTI_BASE + 0x24)
 #define	EXTI_SWIER2	(MTK_EXTI_BASE + 0x28)
-#define	EXTI_D3PMR2	(MTK_EXTI_BASE + 0x2C)
-#define	EXTI_D3PCR2L	(MTK_EXTI_BASE + 0x30)
-#define	EXTI_D3PCR2H	(MTK_EXTI_BASE + 0x34)
+#define	EXTI_RPR2	(MTK_EXTI_BASE + 0x2C)
+#define	EXTI_FPR2	(MTK_EXTI_BASE + 0x30)
+#define	EXTI_SECCFGR2	(MTK_EXTI_BASE + 0x34)
+#define EXTI_PRIVCFGR2	(MTK_EXTI_BASE + 0x38)
 
 #define	EXTI_RTSR3	(MTK_EXTI_BASE + 0x40)
 #define	EXTI_FTSR3	(MTK_EXTI_BASE + 0x44)
 #define	EXTI_SWIER3	(MTK_EXTI_BASE + 0x48)
-#define	EXTI_D3PMR3	(MTK_EXTI_BASE + 0x4C)
-#define	EXTI_D3PCR3L	(MTK_EXTI_BASE + 0x50)
-#define	EXTI_D3PCR3H	(MTK_EXTI_BASE + 0x54)
+#define	EXTI_RPR3	(MTK_EXTI_BASE + 0x4C)
+#define	EXTI_FPR3	(MTK_EXTI_BASE + 0x50)
+#define	EXTI_SECCFGR3	(MTK_EXTI_BASE + 0x54)
+#define EXTI_PRIVCFGR3	(MTK_EXTI_BASE + 0x58)
 
-#define	EXTI_CPUIMR1	(MTK_EXTI_BASE + 0x80)
-#define	EXTI_CPUEMR1	(MTK_EXTI_BASE + 0x84)
-#define	EXTI_CPUPR1	(MTK_EXTI_BASE + 0x88)
+#define	EXTI_EXTICR1	(MTK_EXTI_BASE + 0x60)
+#define	EXTI_EXTICR2	(MTK_EXTI_BASE + 0x64)
+#define	EXTI_EXTICR3	(MTK_EXTI_BASE + 0x68)
+#define	EXTI_EXTICR4	(MTK_EXTI_BASE + 0x6C)
 
-#define	EXTI_CPUIMR2	(MTK_EXTI_BASE + 0x90)
-#define	EXTI_CPUEMR2	(MTK_EXTI_BASE + 0x94)
-#define	EXTI_CPUPR2	(MTK_EXTI_BASE + 0x98)
+#define	EXTI_LOCKR	(MTK_EXTI_BASE + 0x70)
 
-#define	EXTI_CPUIMR3	(MTK_EXTI_BASE + 0xA0)
-#define	EXTI_CPUEMR3	(MTK_EXTI_BASE + 0xA4)
-#define	EXTI_CPUPR3	(MTK_EXTI_BASE + 0xA8)
+#define	EXTI_IMR1	(MTK_EXTI_BASE + 0x80)
+#define	EXTI_EMR1	(MTK_EXTI_BASE + 0x84)
+
+#define	EXTI_IMR2	(MTK_EXTI_BASE + 0x90)
+#define	EXTI_EMR2	(MTK_EXTI_BASE + 0x94)
+
+#define	EXTI_IMR3	(MTK_EXTI_BASE + 0xA0)
+#define	EXTI_EMR3	(MTK_EXTI_BASE + 0xA4)
+
+#define	EXTI_RTSR(n)	(MTK_EXTI_BASE + 0x00 +(0x20)*(n))
+#define	EXTI_FTSR(n)	(MTK_EXTI_BASE + 0x04 +(0x20)*(n))
+#define EXTI_RPR(n)	(MTK_EXTI_BASE + 0x0C +(0x20*(n)))	
+#define EXTI_FPR(n)	(MTK_EXTI_BASE + 0x10 +(0x20*(n)))	
+#define EXTI_IMR(n)	(MTK_EXTI_BASE + 0x80 +(0x10*(n)))
 
 /* ------------------------------------------------------------------------ */
 /*
