@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2023-2024 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    Copyright (C) 2023-2026 by Ken Sakamura.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/06.
  *
  *----------------------------------------------------------------------
  */
@@ -123,6 +123,12 @@
 #define USE_SYSTEM_MESSAGE	(1)	/* System Message */
 #define USE_EXCEPTION_DBG_MSG	(1)	/* Excepttion debug message */
 #define USE_TASK_DBG_MSG	(0)	/* Tsak debug message */
+
+/*---------------------------------------------------------------------- */
+/* Use Cache.
+ *  1: Valid  0: Invalid
+ */
+#define	USE_CACHE		(1)	/*　Use Cache */
 
 /*---------------------------------------------------------------------- */
 /* Use Co-Processor.

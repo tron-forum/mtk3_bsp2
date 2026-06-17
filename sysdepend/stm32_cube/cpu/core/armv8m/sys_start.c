@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2025 by Ken Sakamura.
- *    This software is distributed under the T-License 2.1.
+ *    Copyright (C) 2025-2026 by Ken Sakamura.
+ *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2025/03.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/06.
  *
  *----------------------------------------------------------------------
  */
@@ -61,6 +61,17 @@ EXPORT void knl_start_mtkernel(void)
 		*top++ = *src++;
 	}
 	out_w(SCB_VTOR, (UW)knl_exctbl);
+
+#if USE_CACHE
+	if(knl_check_dcache()) {	// Clear D-cache if it is valid
+		knl_clean_dcache_adr(knl_exctbl, sizeof(knl_exctbl));
+	}
+	if(knl_check_icache()) {	// Clear I-cache if it is valid
+		knl_dsb();
+		knl_invalidate_icache();
+		knl_isb();
+	}
+#endif	/* USE_CACHE */
 
 	/* Configure exception priorities */
 	reg = *(_UW*)SCB_AIRCR;
