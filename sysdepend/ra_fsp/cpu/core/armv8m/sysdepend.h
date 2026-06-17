@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2024 by Ken Sakamura.
+ *    Copyright (C) 2024-2026 by Ken Sakamura.
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/06.
  *
  *----------------------------------------------------------------------
  */
@@ -80,5 +80,51 @@ Inline UW knl_get_primask(void)
 	return primask;
 }
 
+/*
+ *	Memory Barrier
+ */
+Inline void knl_isb(void)
+{
+	Asm("isb 0xF":::"memory");
+}
+
+Inline void knl_dsb(void)
+{
+	Asm("dsb 0xF":::"memory");
+}
+
+Inline void knl_dmb(void)
+{
+	Asm("dmb 0xF":::"memory");
+}
+
+#if USE_CACHE && CPU_HAS_CACHE
+/*
+ * Cache control (cache.c)
+ */
+IMPORT void knl_enable_icache(void);
+IMPORT void knl_disable_icache(void);
+IMPORT void knl_invalidate_icache(void);
+
+IMPORT void knl_enable_dcache(void);
+IMPORT void knl_disable_dcache(void);
+IMPORT void knl_invalidate_dcache(void);
+IMPORT void knl_clean_dcache(void);
+IMPORT void knl_clean_inval_dcache(void);
+
+IMPORT void knl_invalidate_dcache_adr(volatile void *daddr, W dsize);
+IMPORT void knl_clean_dcache_adr(volatile void *daddr, W dsize);
+IMPORT void knl_clean_inval_dcache_adr(volatile void *daddr, W dsize);
+
+Inline BOOL knl_check_icache(void)
+{
+	return (in_w(SCB_CCR)&CCR_IC)?TRUE:FALSE;
+}
+
+Inline BOOL knl_check_dcache(void)
+{
+	return (in_w(SCB_CCR)&CCR_DC)?TRUE:FALSE;
+}
+#endif	/* USE_CACHE && CPU_HAS_CACHE */
 
 #endif /* _MTKBSP_SYSDEPEND_CPU_CORE_SYSDEPEND_ */
