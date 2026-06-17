@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2026/05.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/06.
  *
  *----------------------------------------------------------------------
  */
@@ -40,7 +40,7 @@ EXPORT void knl_hll_inthdr(void)
 	intno	= knl_get_ipsr() - 16;
 	inthdr	= (FP)hllint_tbl[intno];
 
-	(*inthdr)(intno);
+	(*(void(*)(UW))inthdr)(intno);
 
 	LEAVE_TASK_INDEPENDENT;
 }
@@ -77,6 +77,17 @@ EXPORT ER knl_define_inthdr( INT intno, ATR intatr, FP inthdr )
 	intvet = (FP*)(knl_exctbl + N_SYSVEC);
 	intvet[intno] = inthdr;
 
+#if USE_CACHE
+	if(knl_check_dcache()) {	// Clear D-cache if it is valid
+		knl_clean_dcache_adr(&intvet[intno], sizeof(inthdr));
+	}
+	if(knl_check_icache()) {	// Clear I-cache if it is valid
+		knl_dsb();
+		knl_invalidate_icache();
+		knl_isb();
+	}
+#endif	/* USE_CACHE */
+
 	return E_OK;
 }
 
@@ -88,12 +99,6 @@ EXPORT void knl_return_inthdr(void)
 {
 	/* No processing in ARM. */
 	return;
-}
-
-void knl_default_handler(void)
-{
-	tm_printf((UB*)"Default Handler\n");
-	while(1);
 }
 
 /* ------------------------------------------------------------------------ */
@@ -114,6 +119,17 @@ EXPORT ER knl_init_interrupt( void )
 
 	knl_exctbl[14]	= (UW)knl_dispatch_entry;	/* 14: Pend SV */
 	knl_exctbl[15]	= (UW)knl_systim_inthdr;	/* 15: Systick */
+
+#if USE_CACHE
+	if(knl_check_dcache()) {	// Clear D-cache if it is valid
+		knl_clean_dcache_adr(&knl_exctbl[2], sizeof(UW)*9);
+	}
+	if(knl_check_icache()) {	// Clear I-cache if it is valid
+		knl_dsb();
+		knl_invalidate_icache();
+		knl_isb();
+	}
+#endif	/* USE_CACHE */
 
 	return E_OK;
 }
