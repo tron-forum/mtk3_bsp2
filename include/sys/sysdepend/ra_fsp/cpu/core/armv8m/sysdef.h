@@ -50,7 +50,7 @@
 /* ------------------------------------------------------------------------ */
 
 /*
- * NVIC register - System control block
+ * System control block
  */
 #define SCB_ICSR	0xE000ED04
 #define SCB_VTOR	0xE000ED08
@@ -68,15 +68,34 @@
 #define SCB_MMFAR	0xE000ED34
 #define SCB_BFAR	0xE000ED38
 
+#define SCB_CCSIDR	0xE000ED80
+#define SCB_CSSELR	0xE000ED84
+
 #define SCB_STIR	0xE000EF00
+#define SCB_ICIALLU	0xE000EF50
+#define SCB_DCIMVAC	0xE000EF5C
+#define SCB_DCISW	0xE000EF60
+#define	SCB_DCCMVAC	0xE000EF68
+#define	SCB_DCCSW	0xE000EF6C
+#define SCB_DCCIMVAC	0xE000EF70
+#define SCB_DCCISW	0xE000EF74
 
 #define ICSR_PENDSVSET	0x10000000	/* Trigger PendSV exception. */
 #define ICSR_PENDSVCLR	0x08000000	/* Remove the pending state from the PendSV exception. */
 #define ICSR_PENDSTCLR	0x02000000	/* SysCTick Clean pending */
 
+#define	CCR_IC		(1<<17)
+#define	CCR_DC		(1<<16)
+
 #define SHCSR_USGFAULTENA	(1<<18)	/* Enable UsageFault */
 #define SHCSR_BUSFAULTENA	(1<<17)	/* Enable BusFault */
 #define SHCSR_MEMFAULTENA	(1<<16)	/* Enable MemFault */
+
+#define CCSIDR_VAL_WAYS(x)	(((x) & (0x1FF8))>>3)
+#define CCSIDR_VAL_SETS(x)	(((x) & (0x0FFFE000)) >> 13)
+
+#define SCB_VAL_SET(x)	((x<<5) & 0x00003FE0)	/* SCB_DCISW, DCCSW, DCCISW SET */
+#define SCB_VAL_WAY(x)	((x<<30) & 0xC0000000)	/* SCB_DCISW, DCCSW, DCCISW WAY */
 
 #define AIRCR_VECTKEY	0x05FA0000	/* AIRCR bit.31~16  VECTKEY */
 #define AIRCR_PRIGROUP7	0x00000700	/* AIRCR bit.10~8   PRIGROUP */
@@ -107,7 +126,7 @@
 /*
  * CPU Cache (Cortex-M55&M85 has CPU cache)
  */
-#if defined(CPU_CORE_ACM85) || defined(CPU_CORE_ACM55)
+#if defined(MTKBSP_CPU_CORE_ACM85) || defined(MTKBSP_CPU_CORE_ACM55)
 #define CPU_HAS_CACHE		1
 #define	SCB_DCACHE_LINE_SIZE	32
 #define	SCB_ICACHE_LINE_SIZE	32
@@ -115,7 +134,7 @@
 #else
 #define CPU_HAS_CACHE	0
 
-#endif	/* defined(CPU_CORE_ACM85) || defined(CPU_CORE_ACM55) */
+#endif	/* defined(MTKBSP_CPU_CORE_ACM85) || defined(MTKBSP_CPU_CORE_ACM55) */
 
 /*
  * System Timer

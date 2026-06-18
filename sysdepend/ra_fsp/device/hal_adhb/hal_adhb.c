@@ -6,7 +6,7 @@
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2026/04.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/06.
  *
  *----------------------------------------------------------------------
  */
@@ -181,7 +181,7 @@ LOCAL ER dev_adhb_openfn( ID devid, UINT omode, T_MSDI *p_msdi)
 	if(fsp_err != FSP_SUCCESS && fsp_err != FSP_ERR_UNSUPPORTED) return E_IO;
 
 	if( fsp_err == FSP_SUCCESS) {
-		err = tk_wai_flg(id_flgid, wflgptn, TWF_ANDW | TWF_BITCLR, &rflgptn, DEV_HAL_ADC_CALIB_TMOUT);
+		err = tk_wai_flg(id_flgid, wflgptn, TWF_ANDW | TWF_BITCLR, &rflgptn, DEV_HAL_ADHB_CALIB_TMOUT);
 	}
 
 	return err;

@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル <!-- omit in toc -->
 ## RA FSP編 <!-- omit in toc -->
-## Version 01.00.B11 <!-- omit in toc -->
-## 2026.04.27 <!-- omit in toc -->
+## Version 01.00.B12 <!-- omit in toc -->
+## 2026.06.18 <!-- omit in toc -->
 
 - [1. 概要](#1-概要)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -60,8 +60,8 @@
 また、ファームウェアとして、FSP(Flexible Software Package )を使用します。  
 本書では以下のバージョンで動作を確認しています。  
 
-`Renesas e² studio Version: 2025-12 (25.12.0)`  
-`FSP version 6.4.0`  
+`Renesas e² studio Version: 2026-94.2 (26.4.2)`  
+`FSP version 6.5.0`  
 
 詳しくは以下のWebサイトをご覧ください。
 
@@ -406,16 +406,16 @@ I2Cデバイスドライバから使用するI2Cの設定をe2studioで行いま
 
 (参考) 各ボードのI2C信号と、マイコンのI2C端子の対応は以下の通りです。  
 
-| ボードのI2C信号   | EK-RA6M3      | EK-RA8M1      | EK-RA8D1      | EK-RA8P1      |
+| ボードのI2C信号   | EK-RA6M3      | EK-RA8M1      | EK-RA8D1      |EK-RA8P1       |
 | ---------------- | ------------- | ------------- | ------------- | ------------- |
 | Grove-1 I2C SDA  | P409/SCI_SDA3 | P401/I3C_SDA0 | P511/IIC_SDA1 | -             |
 | Grove-1 I2C SCL  | P408/SCI_SCL3 | P400/I3C_SCL0 | P512/IIC_SCL1 | -             |
 | Grove-2 I2C SDA  | P409/SCI_SDA3 | P511/IIC_SDA1 | P401/I3C_SDA0 | -             |
 | Grove-2 I2C SCL  | P408/SCI_SCL3 | P512/IIC_SCL1 | P400/I3C_SCL0 | -             |
-| Arduino I2C SDA  | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/I3C_SDA0 |
-| Arduino I2C SCL  | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/I3C_SCL0 |
-| mikroBUS I2C SDA | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P401/I3C_SDA0 |
-| mikroBUS I2C SCL | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P400/I3C_SCL0 |
+| Arduino I2C SDA  | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P511/I2C_SDA1 |
+| Arduino I2C SCL  | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P512/I2C_SCL1 |
+| mikroBUS I2C SDA | P511/IIC_SDA2 | P401/I3C_SDA0 | P401/I3C_SDA0 | P511/I2C_SDA1 |
+| mikroBUS I2C SCL | P512/IIC_SCL2 | P400/I3C_SCL0 | P400/I3C_SCL0 | P512/I2C_SCL1 |
 
 | ボードのI2C信号   | FPB-RA4E1     | Arduino UNO R4 | RA4M1 Clicker |
 | ---------------- | ------------- | -------------- | ------------- |
@@ -456,7 +456,7 @@ I2C Master(r_iic_master)を選択し、プロパティの`Module g_i2c_master0`�
 | 項目                | 設定                         |
 | ------------------ | -------------------------- |
 | Name               | g_i2c_master0 (任意の名称に変更可能) |
-| Unit               | 使用するI2Cのチャンネル番号            |
+| Channel            | 使用するI2Cのチャンネル番号     |
 | Interrupt Priority | 任意の割込み優先度                  |
 | その他              | 初期値のまま                     |
 
@@ -807,6 +807,7 @@ EXPORT INT usermain(void)
 
 | 版数      | 日付         | 内容                                                 |
 | ------- | ---------- | ------------------------------------------------------- |
+| 1.00.B12 | 2026.06.18 | IDEのバージョン更新。EK-RA8P1 I3CをI2Cに変更(ペリフェラルの競合回避) |
 | 1.00.B11 | 2026.04.27 | EK-RA8P1 I2Cの設定などの更新                            |
 | 1.00.B10 | 2026.04.23 | 対応ボードにEK-RA8P1を追加。IDEのバージョン更新と関連する事項の更新 |
 | 1.00.B9 | 2025.11.07 | 対応ボードにFPB-RA4E1を追加。関連情報の記載                |

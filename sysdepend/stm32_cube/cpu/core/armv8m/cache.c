@@ -12,7 +12,7 @@
  */
 
 #include <sys/machine.h>
-#ifdef CPU_CORE_ARMV8M
+#if defined(MTKBSP_STM32CUBE) && defined(MTKBSP_CPU_CORE_ARMV8M)
 
 /*
  *	cache.c (ARMv8-M)
@@ -24,7 +24,7 @@
 #include "sysdepend.h"
 #include "cpu_status.h"
 
-#if USE_CACHE
+#if USE_CACHE && CPU_HAS_CACHE
 
 #define MEMORY_BARRIER	knl_dsb();knl_isb();
 
@@ -266,5 +266,5 @@ EXPORT void knl_clean_inval_dcache_adr(volatile void *daddr, W dsize)
 	MEMORY_BARRIER
 }
 
-#endif	/* USE_CACHE */
-#endif /* CPU_CORE_ARMV8M */
+#endif	/* USE_CACHE && CPU_HAS_CACHE */
+#endif	/* defined(MTKBSP_STM32CUBE) && defined(MTKBSP_CPU_CORE_ARMV8M) */

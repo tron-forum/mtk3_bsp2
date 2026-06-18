@@ -64,7 +64,7 @@ EXPORT void knl_start_mtkernel(void)
 	}
 	out_w(SCB_VTOR, (UW)knl_exctbl);
 
-#if USE_CACHE
+#if USE_CACHE && CPU_HAS_CACHE
 	if(knl_check_dcache()) {	// Clear D-cache if it is valid
 		knl_clean_dcache_adr(knl_exctbl, sizeof(knl_exctbl));
 	}
@@ -73,7 +73,7 @@ EXPORT void knl_start_mtkernel(void)
 		knl_invalidate_icache();
 		knl_isb();
 	}
-#endif	/* USE_CACHE */
+#endif	/* USE_CACHE && CPU_HAS_CACHE */
 
 	/* Configure exception priorities */
 	reg = *(_UW*)SCB_AIRCR;
