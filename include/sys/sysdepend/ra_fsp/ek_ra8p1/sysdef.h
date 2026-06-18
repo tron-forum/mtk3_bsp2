@@ -22,7 +22,7 @@
 #define _MTKBSP_SYS_SYSDEF_DEPEND_H_
 
 /* CPU-dependent definition */
-#include <sys/sysdepend/ra_fsp/cpu/ra8m1/sysdef.h>
+#include <sys/sysdepend/ra_fsp/cpu/ra8p1/sysdef.h>
 
 
 /* ------------------------------------------------------------------------ */
