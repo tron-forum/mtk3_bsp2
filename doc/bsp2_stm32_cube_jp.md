@@ -1,7 +1,7 @@
 # μT-Kernel 3.0 BSP2 ユーザーズマニュアル  <!-- omit in toc -->
 ## STM32Cube編  <!-- omit in toc -->
-## Version 01.00.B7 <!-- omit in toc -->
-## 2026.05.01  <!-- omit in toc -->
+## Version 01.00.B8 <!-- omit in toc -->
+## 2026.06.23  <!-- omit in toc -->
 
 - [1. はじめに](#1-はじめに)
   - [1.1. 対象マイコンボード](#11-対象マイコンボード)
@@ -236,34 +236,20 @@ A/DCデバイスドライバから使用するA/Dコンバータの設定をSTM3
 | A4                 | ADC1_INP11  | ADC1_16      |
 | A5                 | ADC1_INP10  | ADC1_8       |
 
-| Arduinoアナログ入力 | STM32N6570-DK |     |
-| ------------- | ------------ | --- |
-| A0            | ADC2_18      |     |
-| A1            | ADC1_10      |     |
-| A2            | ADC1_11      |     |
-| A3            | ADC1_13      |     |
-| A4            | ADC1_16      |     |
-| A5            | ADC1_8       |     |
+| Arduinoアナログ入力 | STM32N6570-DK |
+| ------------- | ------------ |
+| A0            | ADC2_18      |
+| A1            | ADC1_10      |
+| A2            | ADC1_11      |
+| A3            | ADC1_13      |
+| A4            | ADC1_16      |
+| A5            | ADC1_8       |
 
 `Pinout & Configuration`の`Software Packs`で`Analog`から使用するA/Dコンバータを選択し設定を行います。  
 `Mode`にてA/Dコンバータの使用する入力を`Single-ended`に設定します。  
 `Configuration`の`NVIC Settings`で割り込みを有効にします。その他の設定はデフォルトの設定値を前提としています。  
 割り込み優先度は`System Core`から`NVIC`を選択して設定を行いします。  
 設定後に[GENERATE CODE]を押下すると、STM32CubeFWのソースコードが自動生成されます。  
-
-※ TrustZoneを使用する場合  
-TrustZoneを使用する場合は、μT-Kernel3.0が組み込まれているサブプロジェクトについて設定を行ってください（現バージョンではセキュアアプリケーションでのみ実行可能です）。 
-
-※ STM32N6570の設定  
-STM32N6570はTrustZoneが有効となっています。A/Dコンバータをセキュアから使用するにあたり RIFSCの設定が必要です。  
-STM32CubeMXで生成されたmain.cファイルのMX_ADC1_Init関数中の`USER CODE BEGIN ADC1_Init 1`の領域に以下の様に設定コードを追記してください。  
-
-```C
- /* USER CODE BEGIN ADC1_Init 1 */
-  __HAL_RCC_RIFSC_CLK_ENABLE();
-    RIFSC->RISC_SECCFGRx[2] |= 0x1;
-  /* USER CODE END ADC1_Init 1 */
-```
 
 ※ TrustZoneを使用する場合  
 TrustZoneを使用する場合は、μT-Kernel3.0が組み込まれているサブプロジェクトについて設定を行ってください（現バージョンではセキュアアプリケーションでのみ実行可能です）。 
@@ -707,6 +693,7 @@ STM32 Nucleoボードではデバッガはボード上に搭載されていま�
 
 | 版数      | 日付         | 内容   |
 | ------- | ---------- | ---- |
+| 1.00.B8 | 2026.06.23 | 不要な記述(重複など)削除 |
 | 1.00.B7 | 2026.05.01 | NUCLEO-H533の情報を記載</br>IDEのバージョン更新および関連する情報の更新 |
 | 1.00.B6 | 2025.05.29 | OS,IDEのバージョン更新など |
 | 1.00.B5 | 2025.03.28 | STM32N6570-DKおよびTrustZoneに関する情報の追加 |
