@@ -2,11 +2,11 @@
  *----------------------------------------------------------------------
  *    micro T-Kernel 3.0 BSP 2.0
  *
- *    Copyright (C) 2024 by Ken Sakamura.
+ *    Copyright (C) 2024 -2026 by Ken Sakamura.
  *    This software is distributed under the T-License 2.2.
  *----------------------------------------------------------------------
  *
- *    Released by TRON Forum(http://www.tron.org) at 2024/02.
+ *    Released by TRON Forum(http://www.tron.org) at 2026/07.
  *
  *----------------------------------------------------------------------
  */
@@ -63,13 +63,16 @@ EXPORT	void	tm_rcv_dat( UB* buf, INT size )
 {
 	UW	csr;
 
-	while(size-- > 0) {
-		csr = in_w(SCI3_CSR);
-		if( (csr & CSR_RDRF) != 0) {
-			*buf++ = in_b( SCI3_RDR );
-		} else if( csr & CSR_ERR ) {	/* check Communication error */
-			out_w( SCI3_CFCLR, csr & CSR_ERR);
-			size++;
+	for( ; size > 0; size--, buf++ ){
+		while(1) {
+			csr = in_w(SCI3_CSR);
+			if( (csr & CSR_RDRF) != 0) {
+				*buf++ = in_b( SCI3_RDR );
+				break;
+			} else if( csr & CSR_ERR ) {	/* check Communication error */
+				out_w( SCI3_CFCLR, csr & CSR_ERR);
+				size++;
+			}
 		}
 	}
 }
