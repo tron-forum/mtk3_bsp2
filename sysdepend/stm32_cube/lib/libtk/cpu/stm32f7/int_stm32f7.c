@@ -46,7 +46,7 @@ LOCAL void DisableInt_exti( UINT intno )
 LOCAL void ClearInt_exti( UINT intno )
 {
 	if(intno < N_EXTIEVT) {
-		*(_UW*)EXTI_PR |= (UW)(1<<intno);
+		*(_UW*)EXTI_PR = (UW)(1<<intno);
 	}
 }
 

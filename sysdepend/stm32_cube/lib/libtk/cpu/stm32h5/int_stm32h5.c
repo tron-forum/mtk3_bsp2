@@ -41,8 +41,8 @@ LOCAL void DisableInt_exti( UINT intno )
 
 LOCAL void ClearInt_exti( UINT intno )
 {
-	*(_UW*)EXTI_RPR(intno>>5) |= (UW)(1<<(intno%32));
-	*(_UW*)EXTI_FPR(intno>>5) |= (UW)(1<<(intno%32));
+	*(_UW*)EXTI_RPR(intno>>5) = (UW)(1<<(intno%32));
+	*(_UW*)EXTI_FPR(intno>>5) = (UW)(1<<(intno%32));
 }
 
 LOCAL BOOL CheckInt_exti( UINT intno )
