@@ -20,6 +20,7 @@
 #define _MTKBSP_SYS_MACHINE_H_
 
 #define ADD_PREFIX_KNL_TO_GLOBAL_NAME		(1)
+#define ADD_PREFIX_MAIN_FUNC			(1)
 #define Csym(sym) sym
 
 /* ===== System dependencies definitions ================================ */
