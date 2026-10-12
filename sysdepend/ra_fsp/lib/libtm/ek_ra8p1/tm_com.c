@@ -67,7 +67,7 @@ EXPORT	void	tm_rcv_dat( UB* buf, INT size )
 		while(1) {
 			csr = in_w(SCI8_CSR);
 			if( (csr & CSR_RDRF) != 0) {
-				*buf++ = in_b( SCI8_RDR );
+				*buf = in_b( SCI8_RDR );
 				break;
 			} else if( csr & CSR_ERR ) {	/* check Communication error */
 				out_w( SCI8_CFCLR, csr & CSR_ERR);
